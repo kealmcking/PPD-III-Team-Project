@@ -8,4 +8,7 @@ public class Dialogue : ScriptableObject
     public string dialogue;
     public bool hasBeenRead;
     public string[] response;
+
+    //public Clue requiredClue;
+    public Dialogue newDialogue;
 }
