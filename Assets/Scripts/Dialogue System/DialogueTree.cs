@@ -6,6 +6,4 @@ using UnityEngine;
 public class DialogueTree : ScriptableObject
 {
     public List<Dialogue> dialogues;
-
-    public NPC speaker;
 }
