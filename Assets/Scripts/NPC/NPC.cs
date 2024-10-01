@@ -5,9 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "NPC")]
 public class NPC : ScriptableObject
 {
-    [Header("Dialogue")]
-    public DialogueTree[] dialogueTrees;
-    
     [Header("NPC Factions")]
     public bool isKiller;
     public bool isGhost;

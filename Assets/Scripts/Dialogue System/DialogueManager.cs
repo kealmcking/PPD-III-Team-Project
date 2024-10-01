@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DialogueSystem
 {
@@ -11,13 +12,14 @@ namespace DialogueSystem
         [Header("Dialogue/Dialogue Trees")]
         [SerializeField] private DialogueTree currentTree;
         [SerializeField] private Dialogue currentDialogueLine;
-        [SerializeField] private int currentDialogueIndex;
+        [SerializeField] private int currentDialogueIndex = 0;
 
         [Header("UI Elements")]
         [SerializeField] private DialogueButton[] dialogueButtons;
-        [SerializeField] private GameObject lastClickedDialogueButton;
         [SerializeField] private GameObject speakerTextContainer;
         [SerializeField] private TMP_Text speakerText;
+        [SerializeField] private Image speakerImage;
+        public DialogueButton lastClickedDialogueButton;
 
         private void Awake()
         {
@@ -32,32 +34,40 @@ namespace DialogueSystem
             
             // for debugging
             selectDialogueTree(currentTree);
+            initializeVar();
+        }
+
+        private void initializeVar()
+        {
+            currentDialogueIndex = 0;
+            speakerText.text = "";
+            speakerTextContainer.SetActive(false);
+            speakerImage.sprite = currentTree.speaker.characterSprite_base;
         }
         
         // We can input the current dialogue tree here
         public void selectDialogueTree(DialogueTree newTree)
         {
-            currentTree = newTree;
             buttonInitialization();
         }
 
         // We can send the currently selected dialogue option here
-        public void selectDialogueLine(Dialogue newDialogue)
+        public void selectDialogueLine(Dialogue newLine)
         {
-            currentDialogueLine = newDialogue;
+            currentDialogueLine = newLine;
             readDialogueLine();
         }
         
         // We can read said dialogue option
         public void readDialogueLine(int dialogueIndex = 0) {
             switchDialogueButtons(false);
-            speakerText.text = currentDialogueLine.response[dialogueIndex];
             speakerTextContainer.SetActive(true);
+            speakerText.text = currentTree.speaker.name + ": " + currentDialogueLine.response[dialogueIndex];
         }
 
         public void advanceToNextDialogueLine()
         {
-            if (currentDialogueIndex < currentTree.dialogues.Count)
+            if (currentDialogueIndex < currentDialogueLine.response.Length - 1)
             {
                 currentDialogueIndex++;
                 readDialogueLine(currentDialogueIndex);
@@ -68,8 +78,7 @@ namespace DialogueSystem
         public void exitSpeakerDialogue()
         {
             switchDialogueButtons(true);
-            speakerText.text = "";
-            speakerTextContainer.SetActive(false);
+            initializeVar();
             lastClickedDialogueButton.GetComponentInChildren<TMP_Text>().color = Color.gray;
         }
 
