@@ -57,8 +57,12 @@ namespace DialogueSystem
 
         public void advanceToNextDialogueLine()
         {
-            currentDialogueIndex++;
-            readDialogueLine(currentDialogueIndex);
+            if (currentDialogueIndex < currentTree.dialogues.Count)
+            {
+                currentDialogueIndex++;
+                readDialogueLine(currentDialogueIndex);
+            }
+            else { exitSpeakerDialogue(); }
         }
 
         public void exitSpeakerDialogue()
