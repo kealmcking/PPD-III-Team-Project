@@ -113,11 +113,21 @@ namespace Input
         public void OnPause(InputAction.CallbackContext context)
         {
             isPause = !isPause;
-           
-            if (isPause) { cancelAction.Disable(); }
-            else { cancelAction.Enable(); }
+            
+            
 
-            if (!isInMenu)
+            if (isPause)
+            {
+                DisableCharacterInputs();
+                cancelAction.Disable(); 
+            }
+            else
+            {
+                cancelAction.Enable(); 
+                Debug.Log("!isPause");
+            }
+
+            if (!isInMenu && !isPause)
             {
                 EnableCharacterInputs();
             }
