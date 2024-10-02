@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79b69d03215fec047b0de43ab1b52ec4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   moveAction:
     m_Name: Move
     m_Type: 0
@@ -252,9 +251,60 @@ MonoBehaviour:
       m_Action: Flash Light
       m_Flags: 0
     m_Flags: 0
+  inventoryAction:
+    m_Name: Inventory
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 55540687-7825-47f5-96cd-5db41e101881
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 17673293-b760-48af-bb66-c14e17c311ac
+      m_Path: <Keyboard>/i
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Inventory
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 99ec97e8-8408-4db1-a124-885af311c723
+      m_Path: <Gamepad>/buttonNorth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Inventory
+      m_Flags: 0
+    m_Flags: 0
+  cancelAction:
+    m_Name: Cancel
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 8b2d2353-40ae-4c6d-9a36-bbf6d3c707e1
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 805b30f7-6380-42e2-bed0-f5a9f7add127
+      m_Path: <Gamepad>/buttonEast
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cancel
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 66ecd01f-8007-4f27-9d8c-bba52ad34903
+      m_Path: <Keyboard>/escape
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cancel
+      m_Flags: 0
+    m_Flags: 0
   moveAmount: {x: 0, y: 0}
   aimAmount: {x: 0, y: 0}
   isPause: 0
   isSprint: 0
   isCrouch: 0
   isFlashLight: 0
+  isInMenu: 0
