@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Input;
 
 public class CameraController : MonoBehaviour
 {
@@ -30,8 +31,8 @@ public class CameraController : MonoBehaviour
 
     void cameraMovement()
     {
-        float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-        float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        float mouseY = InputManager.instance.getAimAmount().y * sensitivity * Time.deltaTime;
+        float mouseX = InputManager.instance.getAimAmount().x * sensitivity * Time.deltaTime;
 
         if (invertY)
         {
