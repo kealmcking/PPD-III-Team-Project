@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,7 +6,7 @@ using UnityEngine;
 public class Director : MonoBehaviour
 {
     //wait here and listen for event to start or stop the timer
-
+    //Listen for event that updates what objectives have been guessed  
     public static Action<Suspect> FinalDay;
     public static Action<List<Puzzle>> SendPuzzles;
     public static Action<List<Lore>> SendLore;
@@ -15,14 +14,15 @@ public class Director : MonoBehaviour
     public static Action<int> SendDayCounter;
     public static Action TimerStart;
     public static Action TimerStop;
-
-    //Listen for event that updates what objectives have been guessed    
+     
     [SerializeField,Tooltip("This is a list of the game winning conditions, (It should never change)")] ConditionConfig[] sceneConditions;
-    [SerializeField,Tooltip("This contains the list of names where the murder can take place. " +
-        "It is also used to update the UI for instance when guessing the room in which the murder takes place")] Room[] rooms;
-    [SerializeField,Tooltip("This contains the list of names of the murder weapons. " +
+    [SerializeField,Tooltip("This contains the list of where the murder can take place. " +
+        "It is also used to update the UI for instance when guessing the room in which the murder takes place")] MurderRoom[] rooms;
+    [SerializeField,Tooltip("This contains the list of the murder weapons. " +
         "It is also used to update the UI for instance when guessing the weapon which was used for the murder")] MurderWeapon[] weapons;
-    [SerializeField,Tooltip("This represents all the possible motives(cases) available for this level")] Motive[] motives;
+    [SerializeField, Tooltip("This contains the list of the motives. " +
+      "It is also used to update the UI for instance when guessing the motive which was used for the murder")]MurderMotive[] motives;
+    [SerializeField,Tooltip("This represents all the possible cases available for this level")] Case[] cases;
     [Range(1,60),SerializeField, Tooltip("The length each day (round) should be. The number placed here is multiplied by 60 to represent one minute " +
         "Example: 5 = 5 minutes")] int dayLength ;
     private Puzzle[] scenePuzzles;
@@ -51,7 +51,7 @@ public class Director : MonoBehaviour
         suspects = FindObjectsByType<Suspect>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         scenePuzzles = FindObjectsByType<Puzzle>(FindObjectsInactive.Include,FindObjectsSortMode.None);
         sceneLore = FindObjectsByType<Lore>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        gameSelection = new GameSelection(suspects,rooms,weapons,motives);
+        gameSelection = new GameSelection(suspects,rooms,weapons,cases,motives);
         cController = new ClueController();
         List<Puzzle> activeP = new List<Puzzle>();
         List<Lore> activeL = new List<Lore>();

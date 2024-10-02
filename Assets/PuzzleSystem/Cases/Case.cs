@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(fileName = "Motive", menuName = "PuzzleSystem/Killer/Motive")]
-public class Motive : ScriptableObject
+[CreateAssetMenu(fileName = "Case", menuName = "PuzzleSystem/Killer/Case")]
+public class Case : ScriptableObject
 {
     [SerializeField] CaseDifficulty difficulty = CaseDifficulty.Easy;
     [SerializeField,Tooltip("This can be a unique name for the killers 'case' ")] string caseName;

@@ -56,4 +56,10 @@ public class Condition : MonoBehaviour, IInteractable
         if (config is InteractConditionConfig iConfig)
         iConfig.Interact(this);
     }
+    public Payload GetPayload() {
+        if (isPickUp)
+            return new Payload { isEmpty = true };
+        else
+            return new Payload { isEmpty = true };
+    }
 }

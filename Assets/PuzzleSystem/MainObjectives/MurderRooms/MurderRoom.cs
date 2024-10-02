@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(fileName = "Room", menuName = "PuzzleSystem/Killer/Room")]
-public class Room : ScriptableObject
+[CreateAssetMenu(fileName = "Room", menuName = "PuzzleSystem/Killer/MurderRoom")]
+public class MurderRoom : ScriptableObject
 {
     [SerializeField] string roomName;
     [SerializeField] Sprite icon;

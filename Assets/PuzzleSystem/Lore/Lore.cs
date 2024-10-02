@@ -5,16 +5,16 @@ using UnityEngine;
 //This will create a prefab and add the prefab to the correct scriptable object for this puzzle
 public class Lore : MonoBehaviour,IInteractable
 {
-    public static Action<LorePayload> SendLore;
+    public static Action<IInteractable> SendLore;
     [SerializeField, Tooltip("Place a description explaining the lore here")] Description description;
     [SerializeField, Tooltip("represents icon image")] protected Sprite icon;
     public void Interact()
     {
-        SendLore.Invoke(new LorePayload{description = description, icon = icon });
+        SendLore.Invoke(this);
     }
-}
-public struct LorePayload
-{
-    public Description description;
-    public Sprite icon;
+
+    public Payload GetPayload()
+    {
+        return new Payload { isEmpty = false, lore = this };
+    }
 }

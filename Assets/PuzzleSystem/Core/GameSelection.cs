@@ -4,19 +4,22 @@ using UnityEngine;
 public class GameSelection
 {
     private Suspect killer;
-    private Room room;
+    private MurderRoom room;
     private MurderWeapon weapon;
-    private Motive caseFile;
-    public GameSelection(Suspect[] suspects, Room[] rooms, MurderWeapon[] weapons, Motive[] motives)
+    private MurderMotive motive;
+    private Case caseFile;
+    public GameSelection(Suspect[] suspects, MurderRoom[] rooms, MurderWeapon[] weapons, Case[] cases, MurderMotive[] motives)
     {
         killer = Randomizer.GetRandomizedObjectFromArray(suspects);
         killer.IsKiller = true;
         room = Randomizer.GetRandomizedObjectFromArray(rooms);
         weapon = Randomizer.GetRandomizedObjectFromArray(weapons);
-        caseFile = Randomizer.GetRandomizedObjectFromArray(motives);
+        motive = Randomizer.GetRandomizedObjectFromArray(motives);
+        caseFile = Randomizer.GetRandomizedObjectFromArray(cases);
     }
     public Suspect GetKiller() { return killer; }
-    public Room GetRoomName() { return room; }
-    public MurderWeapon GetWeaponName() { return weapon; }
-    public Motive GetCase() { return caseFile; }
+    public MurderRoom GetRoom() { return room; }
+    public MurderWeapon GetWeapon() { return weapon; }
+    public MurderMotive GetMotive() { return motive; }
+    public Case GetCase() { return caseFile; }
 }
