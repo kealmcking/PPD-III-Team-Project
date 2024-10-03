@@ -12,6 +12,7 @@ public class Director : MonoBehaviour
     public static Action<List<Puzzle>> SendPuzzles;
     public static Action<List<Lore>> SendLore;
     public static Action<List<BaseClueData>> SendFoundClues;
+    public static Action<GameSelection> SendGameSelection;
     public static Action<int> SendDayCounter;
     public static Action TimerStart;
     public static Action TimerStop;
@@ -86,6 +87,8 @@ public class Director : MonoBehaviour
         if(suspects.Count() > 0)
         DayCounter = suspects.Count();
         DayLength = dayLength * 60f;
+
+        SendGameSelection.Invoke(gameSelection);
     }
     public void Update()
     {
