@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Input;
 
 public class playerController : MonoBehaviour
 {
@@ -57,35 +58,38 @@ public class playerController : MonoBehaviour
 
     void movement()
 {
-        _moveDir = Input.GetAxis("Horizontal") * transform.right +
-                      Input.GetAxis("Vertical") * transform.forward;
+        _moveDir = InputManager.instance.getMoveAmount().x * transform.right 
+                   + InputManager.instance.getMoveAmount().y * transform.forward;
+        
         charController.Move(_moveDir * _walkSpeed * Time.deltaTime);
     }
 
     void sprint()
-{
-
-    if (Input.GetButtonDown("Sprint") && !_isCrouching)
     {
-        _walkSpeed *= _sprintMod;
-        _isSprinting = true;
+        if (InputManager.instance.getSprintHeld())
+        {
+            if (!_isSprinting)
+            {
+                _walkSpeed *= _sprintMod;
+            }
+            _isSprinting = true;
+        }
+        else if (!InputManager.instance.getSprintHeld())
+        {
+            _walkSpeed = _origSpeed;
+            _isSprinting = false;
+        }
     }
-    else if (Input.GetButtonUp("Sprint") && !_isCrouching)
-    {
-        _walkSpeed = _origSpeed;
-        _isSprinting = false;
-    }
-}
 
     void crouch()
     {
-        if (Input.GetButtonDown("Crouch") && !_isSprinting)
+        if (InputManager.instance.getIsCrouch())
         {
             _walkSpeed *= _crouchMod;
             _newHeight = _crouchHeight;
             _isCrouching = true;
         }
-        else if (Input.GetButtonUp("Crouch") && !_isSprinting)
+        else if (!InputManager.instance.getIsCrouch())
         {
             _walkSpeed = _origSpeed;
             _newHeight = _origHeight;
