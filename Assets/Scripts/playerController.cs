@@ -14,6 +14,7 @@ public class playerController : MonoBehaviour
     private float vertInput;
 
     [Header("Player Stats - Movement Mods")]
+    private float _currentSpeed;
     [Range(0.0f, 10.0f)][SerializeField] private float _origSpeed;
     [Range(0.0f, 10.0f)][SerializeField] float _walkSpeed;
     [Range(0.0f, 10.0f)][SerializeField] float _crouchMod;
@@ -28,6 +29,7 @@ public class playerController : MonoBehaviour
 
     [Header("Player Stats - Misc")]
     [SerializeField] float interactDistance;
+    [SerializeField] private Light flashlight;
 
     Vector3 _moveDir;
     Vector3 _playerVel;
@@ -42,7 +44,7 @@ public class playerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _walkSpeed = _origSpeed;
+        _currentSpeed = _origSpeed;
         charController = GetComponent<CharacterController>();
     }
 
@@ -53,6 +55,8 @@ public class playerController : MonoBehaviour
         movement();
         crouch();
         sprint();
+        toggleFlashlight();
+        updateFlashlightDirection();
     }
 
 
@@ -60,8 +64,7 @@ public class playerController : MonoBehaviour
 {
         _moveDir = InputManager.instance.getMoveAmount().x * transform.right 
                    + InputManager.instance.getMoveAmount().y * transform.forward;
-        
-        charController.Move(_moveDir * _walkSpeed * Time.deltaTime);
+        charController.Move(_moveDir * _currentSpeed * Time.deltaTime);
     }
 
     void sprint()
@@ -70,13 +73,13 @@ public class playerController : MonoBehaviour
         {
             if (!_isSprinting)
             {
-                _walkSpeed *= _sprintMod;
+                _currentSpeed = _origSpeed * _sprintMod;
             }
             _isSprinting = true;
         }
         else if (!InputManager.instance.getSprintHeld())
         {
-            _walkSpeed = _origSpeed;
+            _currentSpeed = _origSpeed;
             _isSprinting = false;
         }
     }
@@ -85,16 +88,28 @@ public class playerController : MonoBehaviour
     {
         if (InputManager.instance.getIsCrouch())
         {
-            _walkSpeed *= _crouchMod;
+            _currentSpeed = _origSpeed * _crouchMod;
             _newHeight = _crouchHeight;
             _isCrouching = true;
         }
         else if (!InputManager.instance.getIsCrouch())
         {
-            _walkSpeed = _origSpeed;
+            _currentSpeed = _origSpeed;
             _newHeight = _origHeight;
             _isCrouching = false;
         }
-        charController.height = Mathf.SmoothDamp(charController.height, _newHeight, ref _curVel, _crouchTime);
+        charController.height = Mathf.Lerp(charController.height, _newHeight, Time.deltaTime / _crouchTime);
+    }
+
+    void toggleFlashlight()
+    {
+        flashlight.enabled = InputManager.instance.getFlashlight();
+    }
+    void updateFlashlightDirection()
+    {
+        if (flashlight.enabled)
+        {
+            flashlight.transform.rotation = Camera.main.transform.rotation;
+        }
     }
 }

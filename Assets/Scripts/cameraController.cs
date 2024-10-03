@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     [Header("Camera - Sensitivity")]
     public float sensitivity = 100f;
     [SerializeField] private int lockVertMin = -60;
-    [SerializeField] private int lockVertMax = -60;
+    [SerializeField] private int lockVertMax = 60;
     [SerializeField] private bool invertY;
 
     [Header("Camera - Player Ref")]
