@@ -161,6 +161,7 @@ namespace Input
         public void OnFlashLight(InputAction.CallbackContext context)
         {
             isFlashLight = !isFlashLight;
+            
         }
 
         // Controls opening Inventory input

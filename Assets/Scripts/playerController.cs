@@ -29,6 +29,7 @@ public class playerController : MonoBehaviour
 
     [Header("Player Stats - Misc")]
     [SerializeField] float interactDistance;
+    [SerializeField] private Light flashlight;
 
     Vector3 _moveDir;
     Vector3 _playerVel;
@@ -43,6 +44,7 @@ public class playerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _currentSpeed = _origSpeed;
         charController = GetComponent<CharacterController>();
     }
 
@@ -53,6 +55,8 @@ public class playerController : MonoBehaviour
         movement();
         crouch();
         sprint();
+        toggleFlashlight();
+        updateFlashlightDirection();
     }
 
 
@@ -95,5 +99,17 @@ public class playerController : MonoBehaviour
             _isCrouching = false;
         }
         charController.height = Mathf.Lerp(charController.height, _newHeight, Time.deltaTime / _crouchTime);
+    }
+
+    void toggleFlashlight()
+    {
+        flashlight.enabled = InputManager.instance.getFlashlight();
+    }
+    void updateFlashlightDirection()
+    {
+        if (flashlight.enabled)
+        {
+            flashlight.transform.rotation = Camera.main.transform.rotation;
+        }
     }
 }
