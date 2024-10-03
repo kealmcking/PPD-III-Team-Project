@@ -42,7 +42,6 @@ public class playerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _walkSpeed = _origSpeed;
         charController = GetComponent<CharacterController>();
     }
 
@@ -61,7 +60,6 @@ public class playerController : MonoBehaviour
         _moveDir = InputManager.instance.getMoveAmount().x * transform.right 
                    + InputManager.instance.getMoveAmount().y * transform.forward;
         
-        charController.Move(_moveDir * _walkSpeed * Time.deltaTime);
     }
 
     void sprint()
@@ -70,13 +68,11 @@ public class playerController : MonoBehaviour
         {
             if (!_isSprinting)
             {
-                _walkSpeed *= _sprintMod;
             }
             _isSprinting = true;
         }
         else if (!InputManager.instance.getSprintHeld())
         {
-            _walkSpeed = _origSpeed;
             _isSprinting = false;
         }
     }
@@ -85,16 +81,13 @@ public class playerController : MonoBehaviour
     {
         if (InputManager.instance.getIsCrouch())
         {
-            _walkSpeed *= _crouchMod;
             _newHeight = _crouchHeight;
             _isCrouching = true;
         }
         else if (!InputManager.instance.getIsCrouch())
         {
-            _walkSpeed = _origSpeed;
             _newHeight = _origHeight;
             _isCrouching = false;
         }
-        charController.height = Mathf.SmoothDamp(charController.height, _newHeight, ref _curVel, _crouchTime);
     }
 }
