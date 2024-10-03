@@ -14,6 +14,7 @@ public class playerController : MonoBehaviour
     private float vertInput;
 
     [Header("Player Stats - Movement Mods")]
+    private float _currentSpeed;
     [Range(0.0f, 10.0f)][SerializeField] private float _origSpeed;
     [Range(0.0f, 10.0f)][SerializeField] float _walkSpeed;
     [Range(0.0f, 10.0f)][SerializeField] float _crouchMod;
@@ -59,7 +60,7 @@ public class playerController : MonoBehaviour
 {
         _moveDir = InputManager.instance.getMoveAmount().x * transform.right 
                    + InputManager.instance.getMoveAmount().y * transform.forward;
-        
+        charController.Move(_moveDir * _currentSpeed * Time.deltaTime);
     }
 
     void sprint()
@@ -68,11 +69,13 @@ public class playerController : MonoBehaviour
         {
             if (!_isSprinting)
             {
+                _currentSpeed = _origSpeed * _sprintMod;
             }
             _isSprinting = true;
         }
         else if (!InputManager.instance.getSprintHeld())
         {
+            _currentSpeed = _origSpeed;
             _isSprinting = false;
         }
     }
@@ -81,13 +84,16 @@ public class playerController : MonoBehaviour
     {
         if (InputManager.instance.getIsCrouch())
         {
+            _currentSpeed = _origSpeed * _crouchMod;
             _newHeight = _crouchHeight;
             _isCrouching = true;
         }
         else if (!InputManager.instance.getIsCrouch())
         {
+            _currentSpeed = _origSpeed;
             _newHeight = _origHeight;
             _isCrouching = false;
         }
+        charController.height = Mathf.Lerp(charController.height, _newHeight, Time.deltaTime / _crouchTime);
     }
 }
