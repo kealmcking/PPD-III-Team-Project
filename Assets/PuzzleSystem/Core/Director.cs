@@ -7,7 +7,8 @@ public class Director : MonoBehaviour
 {
     //wait here and listen for event to start or stop the timer
     //Listen for event that updates what objectives have been guessed  
-    public static Action<Suspect> FinalDay;
+    //send the array of muder objects for decision making/UI
+    public static Action<Suspect> FinalDay; //Allows you to change suspects(killer) functioning
     public static Action<List<Puzzle>> SendPuzzles;
     public static Action<List<Lore>> SendLore;
     public static Action<List<BaseClueData>> SendFoundClues;
@@ -15,13 +16,13 @@ public class Director : MonoBehaviour
     public static Action TimerStart;
     public static Action TimerStop;
      
-    [SerializeField,Tooltip("This is a list of the game winning conditions, (It should never change)")] ConditionConfig[] sceneConditions;
+    [SerializeField,Tooltip("This is a list of the game winning conditions, (It should never change)")] ConditionConfig[] globalWinConditions;
     [SerializeField,Tooltip("This contains the list of where the murder can take place. " +
         "It is also used to update the UI for instance when guessing the room in which the murder takes place")] MurderRoom[] rooms;
     [SerializeField,Tooltip("This contains the list of the murder weapons. " +
         "It is also used to update the UI for instance when guessing the weapon which was used for the murder")] MurderWeapon[] weapons;
     [SerializeField, Tooltip("This contains the list of the motives. " +
-      "It is also used to update the UI for instance when guessing the motive which was used for the murder")]MurderMotive[] motives;
+      "It is also used to update the UI for instance when guessing the motive which was used for the murder")] MurderMotive[] motives;
     [SerializeField,Tooltip("This represents all the possible cases available for this level")] Case[] cases;
     [Range(1,60),SerializeField, Tooltip("The length each day (round) should be. The number placed here is multiplied by 60 to represent one minute " +
         "Example: 5 = 5 minutes")] int dayLength ;
@@ -45,6 +46,10 @@ public class Director : MonoBehaviour
     }
     private float currentTimer = 0;
     private bool isTimerGoing = false;
+    public Case[] Cases => cases;
+    public MurderMotive[] Motives => motives;
+    public MurderRoom[] Rooms => rooms;  
+    public MurderWeapon[] Weapons => weapons;
     public GameSelection GameSelection => gameSelection;
     public void Start()
     {
@@ -55,26 +60,30 @@ public class Director : MonoBehaviour
         cController = new ClueController();
         List<Puzzle> activeP = new List<Puzzle>();
         List<Lore> activeL = new List<Lore>();
-        foreach (Puzzle puzzle in gameSelection.GetCase().Puzzles)
+        if(scenePuzzles.Length > 0 && sceneLore.Length > 0)
         {
-            Puzzle sPuzzle = scenePuzzles.FirstOrDefault(sp => sp.Equals(puzzle));
-            if (sPuzzle != null)
+            foreach (Puzzle puzzle in gameSelection.GetCase().Puzzles)
             {
-                puzzle.gameObject.SetActive(true);
-                activeP.Add(sPuzzle);
-            }          
-        }
-        foreach (Lore lore in gameSelection.GetCase().Lore)
-        {
-            Lore sLore = sceneLore.FirstOrDefault(sp => sp.Equals(lore));
-            if (sLore != null)
-            {
-                lore.gameObject.SetActive(true);
-                activeL.Add(sLore);
+                Puzzle sPuzzle = scenePuzzles.FirstOrDefault(sp => sp.Equals(puzzle));
+                if (sPuzzle != null)
+                {
+                    puzzle.gameObject.SetActive(true);
+                    activeP.Add(sPuzzle);
+                }
             }
+            foreach (Lore lore in gameSelection.GetCase().Lore)
+            {
+                Lore sLore = sceneLore.FirstOrDefault(sp => sp.Equals(lore));
+                if (sLore != null)
+                {
+                    lore.gameObject.SetActive(true);
+                    activeL.Add(sLore);
+                }
+            }
+            pController = new PuzzleController(activeP);
+            lController = new LoreController(activeL);
         }
-        pController = new PuzzleController(activeP);
-        lController = new LoreController(activeL);
+        if(suspects.Count() > 0)
         DayCounter = suspects.Count();
         DayLength = dayLength * 60f;
     }

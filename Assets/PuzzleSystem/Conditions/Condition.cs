@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 [RequireComponent(typeof(Collider))]
-public class Condition : MonoBehaviour, IInteractable
+public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
 {
     public Action ConditionStatus;
     public static Action<Transform> ConditionPickUp;
@@ -10,16 +10,15 @@ public class Condition : MonoBehaviour, IInteractable
     [SerializeField] CraftableItemData requiredItem;
     [SerializeField] ConditionEndPoint goal;
     [SerializeField] bool isPickUp;
+    [SerializeField] bool isConditionMet;
+    public ConditionConfig Config => config;
     public bool IsConditionMet
     {
-        get
-        {
-            return IsConditionMet;
-        }
+        get { return isConditionMet; }
         set
         {
-            bool original = IsConditionMet;
-            IsConditionMet = value;
+            bool original = isConditionMet;
+            isConditionMet = value;
             if (original != value)
                 ConditionStatus.Invoke();
         }

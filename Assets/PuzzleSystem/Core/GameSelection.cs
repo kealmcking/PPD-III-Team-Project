@@ -10,11 +10,18 @@ public class GameSelection
     private Case caseFile;
     public GameSelection(Suspect[] suspects, MurderRoom[] rooms, MurderWeapon[] weapons, Case[] cases, MurderMotive[] motives)
     {
-        killer = Randomizer.GetRandomizedObjectFromArray(suspects);
-        killer.IsKiller = true;
+        if(suspects.Length > 0)
+        {
+            killer = Randomizer.GetRandomizedObjectFromArray(suspects);
+            killer.IsKiller = true;
+        }
+        if(rooms.Length > 0) 
         room = Randomizer.GetRandomizedObjectFromArray(rooms);
+        if(weapons.Length > 0)
         weapon = Randomizer.GetRandomizedObjectFromArray(weapons);
+        if(motives.Length > 0)
         motive = Randomizer.GetRandomizedObjectFromArray(motives);
+        if(cases.Length > 0)
         caseFile = Randomizer.GetRandomizedObjectFromArray(cases);
     }
     public Suspect GetKiller() { return killer; }

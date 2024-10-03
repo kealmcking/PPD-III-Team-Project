@@ -1,6 +1,6 @@
 using UnityEngine;
 [CreateAssetMenu(fileName = "MurderMotive", menuName = "PuzzleSystem/Killer/MurderMotive")]
-public class MurderMotive : ScriptableObject
+public class MurderMotive : ScriptableObject, ICustomizableComponent
 {
     [SerializeField] string motiveName;
     [SerializeField] Sprite icon;

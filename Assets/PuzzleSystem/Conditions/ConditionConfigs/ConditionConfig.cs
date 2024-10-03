@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class ConditionConfig : ScriptableObject
+public abstract class ConditionConfig : ScriptableObject, ICustomizableComponent
 {
     public abstract void EnterSetup(Condition conditionObject);
     public abstract bool ConditionStatus(Condition conditionObject);

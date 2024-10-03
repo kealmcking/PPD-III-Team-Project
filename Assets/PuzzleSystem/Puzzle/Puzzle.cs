@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 //make editor script for a button when finalize puzzle is pressed a window will pop-up that asks which case/motive should be a list of all the Motive class scriptable objects select one you want to add it to then press ok.
 //This will create a prefab of this puzzle and add the prefab to this folder 'Assets\PuzzleSystem\PrefabDump\Puzzles'. and then add the prefab to the selected Motives list of puzzles if no scriptable object motive is made then create one this newly created motive will be placed in Assets\PuzzleSystem\Motives\SO
 //then here add the prefab to the newly created motives list of puzzles
-public class Puzzle : MonoBehaviour
+public class Puzzle : MonoBehaviour, ICustomizableComponent
 {
     [SerializeField] List<Condition> conditions = new List<Condition>();
     [SerializeField] BaseClueData reward;
@@ -37,6 +38,7 @@ public class Puzzle : MonoBehaviour
     }
     public void UpdateCondition()
     {
+        if (conditions.Count <= 0) return;
         foreach (var condition in conditions)
         {
             if (!condition.IsConditionMet) return;
@@ -48,7 +50,7 @@ public class Puzzle : MonoBehaviour
         vfx.Play();
         if (clip != null) { }
           //playclip here  clip.
-        Instantiate(reward).GameObject().transform.position = rewardSpawnPosition.position;
+        Instantiate(reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
         IsComplete = true;
     }
 }

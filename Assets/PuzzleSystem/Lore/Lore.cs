@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 //make editor script for Lore when make Lore button is pressed a window will pop-up that asks which case/motive you want to add it to then press ok.
 //This will create a prefab and add the prefab to the correct scriptable object for this puzzle
-public class Lore : MonoBehaviour,IInteractable
+public class Lore : MonoBehaviour,IInteractable, ICustomizableComponent
 {
     public static Action<IInteractable> SendLore;
     [SerializeField, Tooltip("Place a description explaining the lore here")] Description description;
