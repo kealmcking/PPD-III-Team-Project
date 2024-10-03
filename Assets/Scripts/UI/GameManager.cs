@@ -13,13 +13,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
 
     [Header("Menu UI")]
-    //[SerializeField] private GameObject sleepUI;
-    //[SerializeField] private GameObject pauseUI;
-    //[SerializeField] private GameObject loseUI;
-    //[SerializeField] private GameObject winUI;
-    //[SerializeField] private GameObject optionsUI;
-    //[SerializeField] private GameObject characterUI;
-    //[SerializeField] private GameObject menuActive;
+    [SerializeField] private GameObject sleepUI;
+    [SerializeField] private GameObject pauseUI;
+    [SerializeField] private GameObject loseUI;
+    [SerializeField] private GameObject winUI;
+    [SerializeField] private GameObject optionsUI;
+    [SerializeField] private GameObject characterUI;
+    [SerializeField] private GameObject menuActive;
 
     [Header("Day System")]
     [SerializeField] int _day;
