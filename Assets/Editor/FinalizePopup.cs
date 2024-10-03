@@ -1,8 +1,10 @@
+using NUnit.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
 using UnityEngine;
 using static UnityEngine.AudioSettings;
@@ -93,6 +95,19 @@ public class FinalizePopup : EditorWindow
                 DisplayBaseItemData();
                 DisplayItemButtons(item);
                 break;
+            case CraftableComponentData data:
+                LoadConditions();
+                Type craftItemData = typeof(CraftableItemData);
+                Type[] compFilter = { craftItemData};
+                LoadBaseItemData(compFilter);
+                MergeListsAndDisplay();
+                DisplayCraftableComponentDataButtons(data);
+                break;
+            case CraftableItemData data:
+                LoadConditions();
+                DisplayConditions();
+                DisplayCraftableItemDataButtons(data);
+                break;
             case BaseItemData itemData:
                 LoadItem();
                 DisplayItem();
@@ -104,6 +119,8 @@ public class FinalizePopup : EditorWindow
         }       
         AssetDatabase.SaveAssets();
     }
+
+  
 
     private void LoadItem()
     {
@@ -476,8 +493,38 @@ public class FinalizePopup : EditorWindow
         }
         GUILayout.EndHorizontal();
     }
+    private void DisplayCraftableComponentDataButtons(CraftableComponentData data)
+    {
+        GUILayout.Space(20);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Apply") && itemObjs.Count > 0)
+        {
+            ConstructCraftableComponentData(data);
+            Close();
+        }
+        if (GUILayout.Button("Cancel"))
+        {
+            Close();
+        }
+        GUILayout.EndHorizontal();
+    }
+    private void DisplayCraftableItemDataButtons(CraftableItemData data)
+    {
+        GUILayout.Space(20);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Apply") && itemObjs.Count > 0)
+        {
+            ConstructCraftableItemData(data);
+            Close();
+        }
+        if (GUILayout.Button("Cancel"))
+        {
+            Close();
+        }
+        GUILayout.EndHorizontal();
+    }
 
-    
+  
 
     private void ConstructPuzzle(Puzzle puzzle)
     {
@@ -546,6 +593,20 @@ public class FinalizePopup : EditorWindow
         FieldInfo[] fields = selectedItem.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         FieldInfo info = fields.FirstOrDefault(field => field.FieldType == typeof(BaseItemData));
         info.SetValue(selectedItem, itemData);
+        EditorUtility.SetDirty(selectedItem);
+    }
+    private void ConstructCraftableComponentData(CraftableComponentData data)
+    {
+        FieldInfo[] fields = selectedItem.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        FieldInfo info = fields.FirstOrDefault(field => field.FieldType == typeof(CraftableComponentData));
+        info.SetValue(selectedItem, data);
+        EditorUtility.SetDirty(selectedItem);
+    }
+    private void ConstructCraftableItemData(CraftableItemData data)
+    {
+        FieldInfo[] fields = selectedItem.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        FieldInfo info = fields.FirstOrDefault(field => field.FieldType == typeof(CraftableItemData));
+        info.SetValue(selectedItem, data);
         EditorUtility.SetDirty(selectedItem);
     }
 }
