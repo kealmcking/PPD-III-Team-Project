@@ -1,7 +1,10 @@
+using Input;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,11 +24,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject characterUI;
     [SerializeField] private GameObject menuActive;
 
+    [Header("Input")]
+    private InputActionMap playerInputActions;
+
     [Header("Day System")]
     [SerializeField] int _day;
 
     [Header("Timer System")]
     [SerializeField] float _time;
+
+
+    [Header("Tracker Toggles")]
+    [SerializeField] private List<Toggle> suspectList;
+    [SerializeField] private List<Toggle> weaponList;
+    [SerializeField] private List<Toggle> roomList;
+    [SerializeField] private List<Toggle> motiveList;
+    [SerializeField] private List<bool> suspectListbools;
+
 
     public bool timerOn;
     public bool isTimeToSleep;
@@ -53,40 +68,40 @@ public class GameManager : MonoBehaviour
         isPaused = false;
 
         timeScaleOG = Time.timeScale;
+
+        suspectList = new List<Toggle>();
+        weaponList = new List<Toggle>();
+        roomList = new List<Toggle>();
+        motiveList = new List<Toggle>();
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateTimer(_time);
-        if (Input.GetButtonDown("Cancel"))
-        {
-            if (menuActive == null)
-            {
-                PauseGame();
-                menuActive = pauseUI;
-                menuActive.SetActive(isPaused);
-            }
-            else if(menuActive == pauseUI)
-            {
-                UnpauseGame();
-            }
-        }
+        
+    }
+
+    public void TrackerMenu()
+    {
+        
     }
 
     public void PauseGame()
     {
-        isPaused = !isPaused;
-        Time.timeScale = 0;
+        
+        
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         characterUI.SetActive(false);
+        menuActive = pauseUI;
+        menuActive.SetActive(true);
     }
 
     public void UnpauseGame()
     {
-        isPaused = !isPaused;
-        Time.timeScale = timeScaleOG;
+       
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(isPaused);

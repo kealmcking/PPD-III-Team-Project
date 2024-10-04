@@ -113,18 +113,20 @@ namespace Input
         public void OnPause(InputAction.CallbackContext context)
         {
             isPause = !isPause;
-            
+
             
 
             if (isPause)
             {
                 DisableCharacterInputs();
-                cancelAction.Disable(); 
+                cancelAction.Disable();
+                GameManager.instance.PauseGame();
             }
             else
             {
                 cancelAction.Enable(); 
                 Debug.Log("!isPause");
+                GameManager.instance.UnpauseGame();
             }
 
             if (!isInMenu && !isPause)
@@ -178,6 +180,7 @@ namespace Input
             isInMenu = false;
             EnableCharacterInputs();
             Debug.Log("Cancel Button Pressed");
+            
         }
 
         // Disables all inputs the player can use in general gameplay
