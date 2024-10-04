@@ -11,7 +11,11 @@ public class Director : MonoBehaviour
     public static Action<Suspect> FinalDay; //Allows you to change suspects(killer) functioning
     public static Action<List<Puzzle>> SendPuzzles;
     public static Action<List<Lore>> SendLore;
-    public static Action<List<BaseClueData>> SendFoundClues;
+    public static Action<BaseClueData> SendFoundClue;
+    public static Action<List<MurderRoom>> SendMurderRooms;
+    public static Action<List<Suspect>> SendSuspects;
+    public static Action<List<MurderWeapon>> SendMurderWeapons;
+    public static Action<List<MurderMotive>> SendMurderMotives;
     public static Action<GameSelection> SendGameSelection;
     public static Action<int> SendDayCounter;
     public static Action TimerStart;
@@ -19,17 +23,17 @@ public class Director : MonoBehaviour
      
     [SerializeField,Tooltip("This is a list of the game winning conditions, (It should never change)")] ConditionConfig[] globalWinConditions;
     [SerializeField,Tooltip("This contains the list of where the murder can take place. " +
-        "It is also used to update the UI for instance when guessing the room in which the murder takes place")] MurderRoom[] rooms;
+        "It is also used to update the UI for instance when guessing the room in which the murder takes place")] List<MurderRoom> rooms;
     [SerializeField,Tooltip("This contains the list of the murder weapons. " +
-        "It is also used to update the UI for instance when guessing the weapon which was used for the murder")] MurderWeapon[] weapons;
+        "It is also used to update the UI for instance when guessing the weapon which was used for the murder")] List<MurderWeapon> weapons;
     [SerializeField, Tooltip("This contains the list of the motives. " +
-      "It is also used to update the UI for instance when guessing the motive which was used for the murder")] MurderMotive[] motives;
-    [SerializeField,Tooltip("This represents all the possible cases available for this level")] Case[] cases;
+      "It is also used to update the UI for instance when guessing the motive which was used for the murder")] List<MurderMotive> motives;
+    [SerializeField,Tooltip("This represents all the possible cases available for this level")] List<Case> cases;
     [Range(1,60),SerializeField, Tooltip("The length each day (round) should be. The number placed here is multiplied by 60 to represent one minute " +
         "Example: 5 = 5 minutes")] int dayLength ;
     private Puzzle[] scenePuzzles;
     private Lore[] sceneLore;
-    private Suspect[] suspects;
+    private List<Suspect> suspects;
     private GameSelection gameSelection;
     private ClueController cController;
     private PuzzleController pController;
@@ -47,14 +51,14 @@ public class Director : MonoBehaviour
     }
     private float currentTimer = 0;
     private bool isTimerGoing = false;
-    public Case[] Cases => cases;
-    public MurderMotive[] Motives => motives;
-    public MurderRoom[] Rooms => rooms;  
-    public MurderWeapon[] Weapons => weapons;
+    public List<Case> Cases => cases;
+    public List<MurderMotive> Motives => motives;
+    public List<MurderRoom> Rooms => rooms;  
+    public List<MurderWeapon> Weapons => weapons;
     public GameSelection GameSelection => gameSelection;
     public void Start()
     {
-        suspects = FindObjectsByType<Suspect>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        suspects = FindObjectsByType<Suspect>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
         scenePuzzles = FindObjectsByType<Puzzle>(FindObjectsInactive.Include,FindObjectsSortMode.None);
         sceneLore = FindObjectsByType<Lore>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         gameSelection = new GameSelection(suspects,rooms,weapons,cases,motives);
@@ -89,6 +93,10 @@ public class Director : MonoBehaviour
         DayLength = dayLength * 60f;
 
         SendGameSelection.Invoke(gameSelection);
+        SendMurderWeapons.Invoke(weapons);
+        SendMurderRooms.Invoke(rooms);
+        SendMurderMotives.Invoke(motives);
+        SendSuspects.Invoke(suspects);
     }
     public void Update()
     {
@@ -144,7 +152,7 @@ public class Director : MonoBehaviour
         public void AddClue(BaseClueData clue)
         { 
             foundClues.Add(clue);
-            SendFoundClues.Invoke(foundClues);
+            SendFoundClue.Invoke(clue);
         }       
     }
 }

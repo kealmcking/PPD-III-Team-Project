@@ -66,6 +66,11 @@ namespace Input
             return isPause;
         }
 
+        public void SetIsPause(bool pause)
+        {
+            isPause = pause;
+        }
+
         public bool getIsCrouch()
         {
             return isCrouch;
@@ -184,7 +189,7 @@ namespace Input
         }
 
         // Disables all inputs the player can use in general gameplay
-        private void DisableCharacterInputs()
+        public void DisableCharacterInputs()
         {
             moveAction.Disable();
             aimAction.Disable();
@@ -196,7 +201,7 @@ namespace Input
         }
 
         // Enables all inputs the player can use in general gameplay
-        private void EnableCharacterInputs()
+        public void EnableCharacterInputs()
         {
             moveAction.Enable();
             aimAction.Enable();

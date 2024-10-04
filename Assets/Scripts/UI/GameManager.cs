@@ -1,8 +1,11 @@
 using Input;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -39,13 +42,46 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Toggle> weaponList;
     [SerializeField] private List<Toggle> roomList;
     [SerializeField] private List<Toggle> motiveList;
-    [SerializeField] private List<bool> suspectListbools;
 
+
+    [SerializeField] Button resumeOptionsButtons;
+    [SerializeField] Button resumePauseButtons;
+    [SerializeField] Button replayLoseButtons;
+    [SerializeField] Button replayWinButtons;
+    [SerializeField] Button quitWinButtons;
+    [SerializeField] Button quitLoseButtons;
+    [SerializeField] Button quitPauseButtons;
+    [SerializeField] Button optionsButton;
+
+    private GameSelection gameSelection;
+    
 
     public bool timerOn;
     public bool isTimeToSleep;
     public bool wentToSleep;
     public bool isPaused;
+
+    private float DayLength;
+    [Range(1, 60), SerializeField, Tooltip("The length each day (round) should be. The number placed here is multiplied by 60 to represent one minute " +
+        "Example: 5 = 5 minutes")]
+    int dayLength;
+    private float currentTimer = 0;
+    public int DayCounter
+    {
+        get { return DayCounter; }
+        private set
+        {
+            DayCounter = value;
+            //SendDayCounter.Invoke(DayCounter);
+            UpdateDayText(DayCounter);
+            if (DayCounter <= 1)
+            {
+                FinalDay.Invoke(gameSelection.GetKiller());
+            }
+        }
+    }
+    private bool isTimerGoing = false;
+    public static Action<Suspect> FinalDay;
 
     float timeScaleOG;
 
@@ -73,24 +109,136 @@ public class GameManager : MonoBehaviour
         weaponList = new List<Toggle>();
         roomList = new List<Toggle>();
         motiveList = new List<Toggle>();
+
+        optionsButton.AddComponent<Selectable>();
+        resumeOptionsButtons.AddComponent<Selectable>();
+        resumePauseButtons.AddComponent<Selectable>();
+        quitWinButtons.AddComponent<Selectable>();
+        quitLoseButtons.AddComponent<Selectable>();
+        quitPauseButtons.AddComponent<Selectable>();
+
+    }
+
+    private void OnEnable()
+    {
+        Director.SendMurderRooms += UpdateMurderRoom;
+        Director.SendMurderWeapons += UpdateMurderWeapons;
+        Director.SendSuspects += UpdateSuspects;
+        Director.SendMurderMotives += UpdateMotives;
+        Director.SendGameSelection += UpdateGameSelection;
+        Director.SendFoundClue += UpdateToggles;
+       //StartTimer();
+    }
+
+    private void OnDisable()
+    {
+        Director.SendMurderRooms -= UpdateMurderRoom;
+        Director.SendMurderWeapons -= UpdateMurderWeapons;
+        Director.SendSuspects -= UpdateSuspects;
+        Director.SendMurderMotives -= UpdateMotives;
+        Director.SendGameSelection -= UpdateGameSelection;
+        Director.SendFoundClue -= UpdateToggles;
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateTimer(_time);
-        
+         UpdateTimer(_time);
     }
 
-    public void TrackerMenu()
+    public void UpdateToggles(BaseClueData clue)
     {
-        
+        foreach (Toggle toggle in weaponList)
+        {
+            if(toggle.name == clue.name)
+            {
+                toggle.isOn = true;
+            }
+        }
+        foreach (Toggle toggle in suspectList)
+        {
+            if (toggle.name == clue.name)
+            {
+                toggle.isOn = true;
+            }
+        }
+        foreach (Toggle toggle in roomList)
+        {
+            if (toggle.name == clue.name)
+            {
+                toggle.isOn = true;
+            }
+        }
+        foreach (Toggle toggle in motiveList)
+        {
+            if (toggle.name == clue.name)
+            {
+                toggle.isOn = true;
+            }
+        }
     }
+
+    public void UpdateGameSelection(GameSelection selection)
+    {
+        gameSelection = selection;
+
+    }
+
+    public void UpdateSuspects(List<Suspect> suspects)
+    {
+        foreach(Toggle toggle in suspectList)
+        {
+            foreach(Suspect suspect in suspects)
+            {
+                toggle.GetComponentInChildren<Toggle>().image.sprite = suspect.Icon;
+                toggle.name = suspect.Name;
+            }
+        }
+    }
+
+    public void UpdateMurderWeapons(List<MurderWeapon> murderweapons)
+    {
+        foreach (Toggle toggle in weaponList)
+        {
+            foreach (MurderWeapon weapon in murderweapons)
+            {
+                toggle.GetComponentInChildren<Toggle>().image.sprite = weapon.Icon;
+                toggle.name = weapon.Name;
+            }
+        }
+    }
+
+    public void UpdateMurderRoom(List<MurderRoom> murderRooms)
+    {
+        foreach (Toggle toggle in roomList)
+        {
+            foreach (MurderRoom room in murderRooms)
+            {
+                toggle.GetComponentInChildren<Toggle>().image.sprite = room.Icon;
+                toggle.name = room.Name;
+                
+            }
+        }
+    }
+
+    public void UpdateMotives(List<MurderMotive> motives)
+    {
+        foreach (Toggle toggle in motiveList)
+        {
+            foreach (MurderMotive motive in motives)
+            {
+                toggle.GetComponentInChildren<Toggle>().image.sprite = motive.Icon;
+                toggle.name= motive.Name;  
+            }
+        }
+    }
+
+    
 
     public void PauseGame()
     {
         
-        
+        EventSystem.current.SetSelectedGameObject(resumePauseButtons.gameObject);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         characterUI.SetActive(false);
@@ -111,6 +259,7 @@ public class GameManager : MonoBehaviour
 
     public void WinGame()
     {
+        EventSystem.current.SetSelectedGameObject(replayWinButtons.gameObject);
         PauseGame();
         menuActive = winUI;
         menuActive.SetActive(true);
@@ -118,6 +267,7 @@ public class GameManager : MonoBehaviour
 
     public void LoseGame()
     {
+        EventSystem.current.SetSelectedGameObject(replayLoseButtons.gameObject);
         PauseGame();
         menuActive = loseUI;
         menuActive.SetActive(true);
@@ -128,6 +278,7 @@ public class GameManager : MonoBehaviour
         optionsUI.SetActive(true);
         menuActive = optionsUI;
         pauseUI.SetActive(false);
+       
     }
 
     public void UpdateObjectiveText(string text)
@@ -146,8 +297,8 @@ public class GameManager : MonoBehaviour
             
             _time -= Time.deltaTime;
 
-            float minutes = Mathf.FloorToInt(_time / 60);
-            float seconds = Mathf.FloorToInt(_time % 60);
+            int minutes = Mathf.FloorToInt(_time / 60);
+            int seconds = Mathf.FloorToInt(_time % 60);
 
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         }
@@ -160,14 +311,21 @@ public class GameManager : MonoBehaviour
         }
         
     }
+    
+  
 
     private void TimeToGoToSleep()
     {
         if(isTimeToSleep && wentToSleep)
         {
+            
             _day++;
             UpdateDayText(_day);
             StartCoroutine(Sleeping());
+            if (_day == 7)
+            {
+                FinalDay.Invoke(gameSelection.GetKiller());
+            }
         }
     }
 
@@ -177,4 +335,5 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         sleepUI.SetActive(false);
     }
+    
 }
