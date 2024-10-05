@@ -39,7 +39,6 @@ public class FinalizePopup : EditorWindow
         LoadAllMonoOfType<Puzzle>();
         LoadAllMonoOfType<Condition>();
 
-        Debug.Log($"Loaded {classScripts.Count} scripts.");
     }
     /// <summary>
     /// Used statically from the generic component button script to set specific parameters pertaining to the selected script
@@ -75,9 +74,7 @@ public class FinalizePopup : EditorWindow
                 prefabFolderPath = $"Assets/PuzzleSystem/PrefabDump";
                 prefabPath = $"{prefabFolderPath}/{mono.name}.prefab";
                 prefab = PrefabUtility.SaveAsPrefabAsset(mono.gameObject, prefabPath);
-
-                Debug.Log($"field type: {type.Name}");
-                Debug.Log($"prefab component type: {prefab.GetType().Name}");
+            
                 if (typeof(IList).IsAssignableFrom(type))
                 {
                     IList list = (IList)selectedKey.Value.GetValue(selectedKey.Key);
@@ -137,15 +134,13 @@ public class FinalizePopup : EditorWindow
             {
                 T component = prefab.GetComponent<T>();
                 if (component != null)
-                {
-                    Debug.Log($"Found {typeof(T).Name} in prefab: {prefab.name} at {path}");
+                {                    
                     classScripts.Add(component);
                 }
 
                 T[] componentsInChildren = prefab.GetComponentsInChildren<T>(true);
                 if (componentsInChildren.Length > 0)
-                {
-                    Debug.Log($"Found {componentsInChildren.Length} {typeof(T).Name}(s) in children of prefab: {prefab.name} at {path}");
+                {                   
                     classScripts.AddRange(componentsInChildren);
                 }
             }
@@ -156,13 +151,10 @@ public class FinalizePopup : EditorWindow
         {
             GameObject objGameObject = obj.gameObject;
             if (objGameObject.scene.name != null)
-            {
-                Debug.Log($"Found {typeof(T).Name} in scene object: {objGameObject.name} (Scene: {objGameObject.scene.name})");
+            {              
                 classScripts.Add(obj);
             }
-        }
-
-        Debug.Log($"Total {typeof(T).Name} objects found: {classScripts.Count}");
+        }      
     }
     /// <summary>
     /// Used to appropriatly load any class/object if it is derived from scriptable object.
@@ -179,7 +171,7 @@ public class FinalizePopup : EditorWindow
             if(asset != null)
             {
                 classScripts.Add(asset);
-                Debug.Log($"Added ScriptableObject of type: {asset.GetType().Name} from path: {path}");
+               
             }
         }
         T[] resourceAssets = Resources.FindObjectsOfTypeAll<T>();
@@ -187,8 +179,7 @@ public class FinalizePopup : EditorWindow
         {
             if (!classScripts.Contains(asset))
             {
-                classScripts.Add(asset);
-                Debug.Log($"Added MonoBehaviour of type: {asset.GetType().Name}");
+                classScripts.Add(asset);               
             }
         }
     }
@@ -218,7 +209,7 @@ public class FinalizePopup : EditorWindow
                     if (!filteredScripts.ContainsKey(item))
                     {
                         filteredScripts.Add(item, field);
-                        Debug.Log($"Added field '{field.Name}' of type: {field.FieldType.Name} to Filter from {itemType.Name}");
+                    
                     }
                 }
               
@@ -230,7 +221,7 @@ public class FinalizePopup : EditorWindow
                         if (!filteredScripts.ContainsKey(item))
                         {
                             filteredScripts.Add(item, field);
-                            Debug.Log($"Added list field '{field.Name}' containing {listElementType.Name} to Filter from {itemType.Name}");
+                           
                         }
                     }
                 }
