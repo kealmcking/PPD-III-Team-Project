@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEditor;
+/// <summary>
+/// Sets all items that are marked with the ICustomInterfaceComponent to use this button and its coinciding functionality.
+/// </summary>
 [CustomEditor(typeof(Object),true)]
 public class GenericComponentEditor : Editor
 {

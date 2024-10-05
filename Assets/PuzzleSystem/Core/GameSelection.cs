@@ -1,6 +1,7 @@
-using System.Runtime.CompilerServices;
-using UnityEngine;
-
+using System.Collections.Generic;
+/// <summary>
+/// Represents the randomly selected choices for each global objective. 
+/// </summary>
 public class GameSelection
 {
     private Suspect killer;
@@ -8,21 +9,21 @@ public class GameSelection
     private MurderWeapon weapon;
     private MurderMotive motive;
     private Case caseFile;
-    public GameSelection(Suspect[] suspects, MurderRoom[] rooms, MurderWeapon[] weapons, Case[] cases, MurderMotive[] motives)
+    public GameSelection(List<Suspect> suspects, List<MurderRoom> rooms, List<MurderWeapon> weapons, List<Case> cases, List<MurderMotive> motives)
     {
-        if(suspects.Length > 0)
+        if(suspects.Count > 0)
         {
-            killer = Randomizer.GetRandomizedObjectFromArray(suspects);
+            killer = Randomizer.GetRandomizedObjectFromList(suspects);
             killer.IsKiller = true;
         }
-        if(rooms.Length > 0) 
-        room = Randomizer.GetRandomizedObjectFromArray(rooms);
-        if(weapons.Length > 0)
-        weapon = Randomizer.GetRandomizedObjectFromArray(weapons);
-        if(motives.Length > 0)
-        motive = Randomizer.GetRandomizedObjectFromArray(motives);
-        if(cases.Length > 0)
-        caseFile = Randomizer.GetRandomizedObjectFromArray(cases);
+        if(rooms.Count > 0) 
+        room = Randomizer.GetRandomizedObjectFromList(rooms);
+        if(weapons.Count > 0)
+        weapon = Randomizer.GetRandomizedObjectFromList(weapons);
+        if(motives.Count > 0)
+        motive = Randomizer.GetRandomizedObjectFromList(motives);
+        if(cases.Count > 0)
+        caseFile = Randomizer.GetRandomizedObjectFromList(cases);
     }
     public Suspect GetKiller() { return killer; }
     public MurderRoom GetRoom() { return room; }

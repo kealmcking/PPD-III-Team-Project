@@ -1,189 +1,264 @@
-using NUnit.Framework.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.AudioSettings;
 
 
+/// <summary>
+/// Loads all classes/objects pertaining to the puzzle system. 
+/// used for easily assigning a newly made puzzle system object to a field of its same type
+/// </summary>
 public class FinalizePopup : EditorWindow
 {
     ICustomizableComponent inspectorTarget;
-    Case selectedCase;
-    Condition selectedCondition;
-    ScriptableObject selectedData;
-    BaseItemData selectedItemData;
-    Director selectedDirector;
-    UnityEngine.Object selectedObj;
-    Item selectedItem;
-
-    List<Case> cases;
-    List<Item> items;
-    List<Puzzle> puzzles;
-    List<Condition> conditions;
-    List<BaseItemData> itemDatas;
-    List<Item> itemObjs;
-    List<Director> directors;
-    List<UnityEngine.Object> mergedList;
-    Dictionary<ScriptableObject,FieldInfo> fields;
-
+    KeyValuePair<UnityEngine.Object, FieldInfo> selectedKey = new KeyValuePair<UnityEngine.Object, FieldInfo>();
+    static List<UnityEngine.Object> classScripts = new List<UnityEngine.Object>();
+    Dictionary<UnityEngine.Object,FieldInfo> filteredScripts = new Dictionary<UnityEngine.Object, FieldInfo>();
+    public bool isLoaded = false;
     string prefabFolderPath;
     string prefabPath;
     GameObject prefab;
-    public static void ShowPopup(ICustomizableComponent target)
+    /// <summary>
+    /// Initializes the classes used in the puzzle system. 
+    /// </summary>
+    [InitializeOnLoadMethod]
+    static void InitializeList()
     {
+        LoadAllSOOfType<Case>();
+        LoadAllSOOfType<BaseItemData>();
+        LoadAllSOOfType<ConditionConfig>();
+        LoadAllSOOfType<MurderMotive>();
+        LoadAllSOOfType<MurderRoom>();
+        LoadAllSOOfType<MurderWeapon>();
+        LoadAllMonoOfType<Lore>();
+        LoadAllMonoOfType<Item>();
+        LoadAllMonoOfType<Director>();
+        LoadAllMonoOfType<Puzzle>();
+        LoadAllMonoOfType<Condition>();
+
+        Debug.Log($"Loaded {classScripts.Count} scripts.");
+    }
+    /// <summary>
+    /// Used statically from the generic component button script to set specific parameters pertaining to the selected script
+    /// </summary>
+    /// <param name="target"></param>
+    public static void ShowPopup(ICustomizableComponent target)
+    {     
         var window = GetWindow<FinalizePopup>("Finalize");
         window.inspectorTarget = target;
         window.position = new Rect(Screen.width / 2, Screen.height / 2, 400, 200);
+        window.isLoaded = false;
     }
-    
+    /// <summary>
+    /// Contains two buttons. Cancel button closes the window. Apply button will determine if the object is derived from monobehaviour 
+    /// it then creates a prefab and adds it to the prefab dump directory. After this the selected script from the filtered dropdown is prepared
+    /// to have the script that opened this window to be added to the appropriate field on the selected script. 
+    /// The field can either be of type IList or a standard variable field.  
+    /// </summary>
     private void OnGUI()
     {
-        if (inspectorTarget == null) return;     
-        switch (inspectorTarget)
+        if (inspectorTarget == null) return;
+        Filter();
+        Display();
+        GUILayout.Space(20);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Apply") && filteredScripts.Count > 0)
         {
-            case Puzzle puzzle:
-                LoadCases();
-                DisplayCases();
-                DisplayPuzzleButtons(puzzle);                
-                break;
-            case Lore lore:
-                LoadCases();
-                DisplayCases();
-                DisplayLoreButtons(lore);                
-                break;
-            case ConditionConfig config:
-                LoadConditions();
-                DisplayConditions();
-                DisplayConditionConfigButtons(config);
-                break;
-            case Description description:
-                LoadDescriptionObjects();
-                DisplayDescriptions();
-                DisplayDescriptionButtons(description);
-                break;
-            case MurderRoom room:
-                LoadDirectors();
-                DisplayDirectors();
-                DisplayMurderRoomButtons(room);
-                break;
-            case MurderWeapon weapon:
-                LoadDirectors();
-                DisplayDirectors();
-                DisplayMurderWeaponButtons(weapon);
-                break;
-            case MurderMotive motive:
-                LoadDirectors();
-                DisplayDirectors();
-                DisplayMurderMotiveButtons(motive);
-                break;
-            case Case caseObj:
-                LoadDirectors();
-                DisplayDirectors();
-                DisplayCaseButtons(caseObj);
-                break;
-            case Item item:
-                Type clue = typeof(BaseClueData);
-                Type craftItem = typeof(CraftableItemData);
-                Type craftComponent = typeof(CraftableComponentData);
-                Type[] filter = { clue, craftItem, craftComponent };
-                LoadBaseItemData(filter);
-                DisplayBaseItemData();
-                DisplayItemButtons(item);
-                break;
-            case CraftableComponentData data:
-                LoadConditions();
-                Type craftItemData = typeof(CraftableItemData);
-                Type[] compFilter = { craftItemData};
-                LoadBaseItemData(compFilter);
-                MergeListsAndDisplay();
-                DisplayCraftableComponentDataButtons(data);
-                break;
-            case CraftableItemData data:
-                LoadConditions();
-                DisplayConditions();
-                DisplayCraftableItemDataButtons(data);
-                break;
-            case BaseItemData itemData:
-                LoadItem();
-                DisplayItem();
-                DisplayItemDataButtons(itemData);
-                break;
-           
-            default:
-                break;
-        }       
+
+            Type type = selectedKey.Value.FieldType;
+
+            if (inspectorTarget is MonoBehaviour mono)
+            {
+                prefabFolderPath = $"Assets/PuzzleSystem/PrefabDump";
+                prefabPath = $"{prefabFolderPath}/{mono.name}.prefab";
+                prefab = PrefabUtility.SaveAsPrefabAsset(mono.gameObject, prefabPath);
+
+                Debug.Log($"field type: {type.Name}");
+                Debug.Log($"prefab component type: {prefab.GetType().Name}");
+                if (typeof(IList).IsAssignableFrom(type))
+                {
+                    IList list = (IList)selectedKey.Value.GetValue(selectedKey.Key);
+                    if (list != null)
+                    {
+                        list.Add(prefab.gameObject.GetComponent(type.GetGenericArguments()[0]));
+                        EditorUtility.SetDirty(selectedKey.Key);
+                    }
+                }
+                else
+                {
+                    selectedKey.Value.SetValue(selectedKey.Key, prefab.gameObject.GetComponent(type));
+                    EditorUtility.SetDirty(selectedKey.Key);
+                }
+            }
+            if(inspectorTarget is ScriptableObject scriptable)
+            {
+                if (typeof(IList).IsAssignableFrom(type))
+                {
+                    IList list = (IList)selectedKey.Value.GetValue(selectedKey.Key);
+                    if (list != null)
+                    {
+                        list.Add(scriptable);
+                        EditorUtility.SetDirty(selectedKey.Key);
+                    }
+                }
+                else
+                {
+                    selectedKey.Value.SetValue(selectedKey.Key, scriptable);
+                    EditorUtility.SetDirty(selectedKey.Key);
+                }
+            }
+             Close();
+        }
+        if (GUILayout.Button("Cancel"))
+        {
+            Close();
+        }
+        GUILayout.EndHorizontal();
         AssetDatabase.SaveAssets();
     }
+    /// <summary>
+    /// Used to appropriatly load any class/object if it is derived from monobehaviour.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    static private void LoadAllMonoOfType<T>() where T : MonoBehaviour
+    {
+        List<T> foundObjects = new List<T>();
 
-  
-
-    private void LoadItem()
-    {
-        itemObjs = new List<Item>(Resources.FindObjectsOfTypeAll<Item>());
-    }
-    private void LoadDirectors()
-    {
-        directors = new List<Director>(Resources.FindObjectsOfTypeAll<Director>());
-    }
-    private void LoadCases()
-    {
-        cases = new List<Case>(Resources.FindObjectsOfTypeAll<Case>());
-    }
-    private void LoadDescriptionObjects()
-    {
-        var all = Resources.FindObjectsOfTypeAll<ScriptableObject>();
-        foreach (var item in all)
+        string[] prefabGuids = AssetDatabase.FindAssets("t:Prefab");
+        foreach (string guid in prefabGuids)
         {
-            Type itemType = item.GetType();
-            FieldInfo[] field = itemType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            foreach (var info in field)
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+            if (prefab != null)
             {
-                if (info.FieldType == typeof(Description))
+                T component = prefab.GetComponent<T>();
+                if (component != null)
                 {
-                    fields.Add(item, info);
+                    Debug.Log($"Found {typeof(T).Name} in prefab: {prefab.name} at {path}");
+                    classScripts.Add(component);
+                }
+
+                T[] componentsInChildren = prefab.GetComponentsInChildren<T>(true);
+                if (componentsInChildren.Length > 0)
+                {
+                    Debug.Log($"Found {componentsInChildren.Length} {typeof(T).Name}(s) in children of prefab: {prefab.name} at {path}");
+                    classScripts.AddRange(componentsInChildren);
+                }
+            }
+        }
+
+        T[] sceneObjects = Resources.FindObjectsOfTypeAll<T>();
+        foreach (T obj in sceneObjects)
+        {
+            GameObject objGameObject = obj.gameObject;
+            if (objGameObject.scene.name != null)
+            {
+                Debug.Log($"Found {typeof(T).Name} in scene object: {objGameObject.name} (Scene: {objGameObject.scene.name})");
+                classScripts.Add(obj);
+            }
+        }
+
+        Debug.Log($"Total {typeof(T).Name} objects found: {classScripts.Count}");
+    }
+    /// <summary>
+    /// Used to appropriatly load any class/object if it is derived from scriptable object.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    static private void LoadAllSOOfType<T>() where T : ScriptableObject
+    {
+        string[] assetGuids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
+        if (assetGuids.Length <= 0) return;
+        foreach(string guid in assetGuids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            T asset = AssetDatabase.LoadAssetAtPath<T>(path);
+            if(asset != null)
+            {
+                classScripts.Add(asset);
+                Debug.Log($"Added ScriptableObject of type: {asset.GetType().Name} from path: {path}");
+            }
+        }
+        T[] resourceAssets = Resources.FindObjectsOfTypeAll<T>();
+        foreach (T asset in resourceAssets)
+        {
+            if (!classScripts.Contains(asset))
+            {
+                classScripts.Add(asset);
+                Debug.Log($"Added MonoBehaviour of type: {asset.GetType().Name}");
+            }
+        }
+    }
+    /// <summary>
+    /// Used to filter the loaded classes by which class contains the specific fields that the selected item can be placed on
+    /// </summary>
+    private void Filter()
+    {
+        if (classScripts == null || classScripts.Count <= 0) return;
+
+     
+        Type targetType = inspectorTarget.GetType();
+
+        foreach (var item in classScripts)
+        {
+            
+            Type itemType = item.GetType();
+
+            
+            FieldInfo[] fields = itemType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            foreach (var field in fields)
+            {
+              
+                if (field.FieldType == targetType || field.FieldType.IsSubclassOf(targetType))
+                {
+                    if (!filteredScripts.ContainsKey(item))
+                    {
+                        filteredScripts.Add(item, field);
+                        Debug.Log($"Added field '{field.Name}' of type: {field.FieldType.Name} to Filter from {itemType.Name}");
+                    }
+                }
+              
+                else if (typeof(IList).IsAssignableFrom(field.FieldType) && field.FieldType.IsGenericType)
+                {
+                    Type listElementType = field.FieldType.GetGenericArguments()[0];
+                    if (listElementType == targetType || listElementType.IsSubclassOf(targetType))
+                    {
+                        if (!filteredScripts.ContainsKey(item))
+                        {
+                            filteredScripts.Add(item, field);
+                            Debug.Log($"Added list field '{field.Name}' containing {listElementType.Name} to Filter from {itemType.Name}");
+                        }
+                    }
                 }
             }
         }
     }
-    private void LoadConditions()
-    {
-        conditions = new List<Condition>(Resources.FindObjectsOfTypeAll<Condition>());
-    }
-    private void LoadBaseItemData(Type[] filter = null)
-    {
-        if(filter != null && filter.Length > 0) {
-            foreach (var type in filter)
-            {
-                itemDatas.AddRange(Resources.FindObjectsOfTypeAll(type));
-            }
-        }
-    }
-
-
-
-    private void DisplayItem()
+    /// <summary>
+    /// Used to display the filtered scripts by name in a dropdown list. 
+    /// </summary>
+    private void Display()
     {
         GUILayout.Label("Select a item for the data", EditorStyles.boldLabel);
 
-        if (itemObjs != null && itemObjs.Count > 0)
+        if (filteredScripts != null && filteredScripts.Count > 0)
         {
-            string[] names = new string[itemObjs.Count];
-            for (int i = 0; i < itemObjs.Count; i++)
+            string[] names = new string[filteredScripts.Count];
+            for (int i = 0; i < filteredScripts.Count; i++)
             {
-                names[i] = itemObjs[i].name;
+                names[i] = filteredScripts.Keys.ElementAt(i).name;
             }
-            Array.Sort(names);
-            int selectedIndex = itemObjs.IndexOf(selectedItem);
-            selectedIndex = EditorGUILayout.Popup("Select Item", selectedIndex, names);
+            List<UnityEngine.Object> keysList = filteredScripts.Keys.ToList();
+            int selectedIndex = keysList.IndexOf(selectedKey.Key);
+            selectedIndex = EditorGUILayout.Popup("Select option", selectedIndex, names);
 
-            if (selectedIndex >= 0 && selectedIndex < itemObjs.Count)
+            if (selectedIndex >= 0 && selectedIndex < filteredScripts.Count)
             {
-                selectedItem = itemObjs[selectedIndex];
+                UnityEngine.Object obj = keysList[selectedIndex];
+                selectedKey = new KeyValuePair<UnityEngine.Object, FieldInfo>(obj, filteredScripts[obj]);
             }
 
         }
@@ -191,423 +266,5 @@ public class FinalizePopup : EditorWindow
         {
             EditorGUILayout.HelpBox("No Items found. Create an item first.", MessageType.Info);
         }
-    }
-    private void DisplayDirectors()
-    {
-        GUILayout.Label("Select a Director for the data", EditorStyles.boldLabel);
-
-        if (directors != null && directors.Count > 0)
-        {
-            string[] names = new string[directors.Count];
-            for (int i = 0; i < directors.Count; i++)
-            {
-                names[i] = directors[i].name;
-            }
-            Array.Sort(names);
-            int selectedIndex = directors.IndexOf(selectedDirector);
-            selectedIndex = EditorGUILayout.Popup("Select Director", selectedIndex, names);
-
-            if (selectedIndex >= 0 && selectedIndex < directors.Count)
-            {
-                selectedDirector = directors[selectedIndex];
-            }
-
-        }
-        else
-        {
-            EditorGUILayout.HelpBox("No Directors found. Create a Director first.", MessageType.Info);
-        }
-    }
-    private void DisplayConditions()
-    {
-        GUILayout.Label("Select a condition for the config", EditorStyles.boldLabel);
-
-        if (conditions != null && conditions.Count > 0)
-        {
-            string[] names = new string[conditions.Count];
-            for (int i = 0; i < conditions.Count; i++)
-            {
-                names[i] = conditions[i].name;
-            }
-            Array.Sort(names);
-            int selectedIndex = conditions.IndexOf(selectedCondition);
-            selectedIndex = EditorGUILayout.Popup("Select Condition", selectedIndex, names);
-
-            if (selectedIndex >= 0 && selectedIndex < conditions.Count)
-            {
-                selectedCondition = conditions[selectedIndex];
-            }
-
-        }
-        else
-        {
-            EditorGUILayout.HelpBox("No conditions found. Create a condition first.", MessageType.Info);
-        }
-    }
-    private void DisplayCases()
-    {
-        GUILayout.Label("Select a case for the puzzle or lore", EditorStyles.boldLabel);
-
-        if ( cases != null && cases.Count > 0)
-        {
-            string[] names = new string[cases.Count];
-            for (int i = 0; i < cases.Count; i++)
-            {
-                names[i] = cases[i].name;
-            }
-            Array.Sort(names);
-            int selectedIndex = cases.IndexOf(selectedCase);
-            selectedIndex = EditorGUILayout.Popup("Select Case", selectedIndex, names);
-
-            if (selectedIndex >= 0 && selectedIndex < cases.Count)
-            {
-                selectedCase = cases[selectedIndex];
-            }
-
-        }
-        else
-        {
-            EditorGUILayout.HelpBox("No cases found. Create a case first.", MessageType.Info);
-        }
-    }
-    private void DisplayDescriptions()
-    {
-        GUILayout.Label("Select a file for the description", EditorStyles.boldLabel);
-
-        if(fields != null && fields.Count > 0)
-        {
-            string[] options = new string[fields.Count];
-            for(int i = 0;i < fields.Count; i++)
-            {
-                options[i] = fields.Keys.ElementAt(i).name;
-            }
-            Array.Sort(options);
-            int selectedIndex = fields.Keys.ToList().IndexOf(selectedData);
-            selectedIndex = EditorGUILayout.Popup(selectedIndex, options);
-
-            selectedData = fields.Keys.ElementAt(selectedIndex);
-        }
-    }
-    private void DisplayBaseItemData()
-    {
-        GUILayout.Label("Select an data file for the item", EditorStyles.boldLabel);
-
-        if (itemDatas != null && itemDatas.Count > 0)
-        {
-            string[] names = new string[itemDatas.Count];
-            for (int i = 0; i < itemDatas.Count; i++)
-            {
-                names[i] = itemDatas[i].name;
-            }
-            Array.Sort(names);
-            int selectedIndex = itemDatas.IndexOf(selectedItemData);
-            selectedIndex = EditorGUILayout.Popup("Select Data", selectedIndex, names);
-
-            if (selectedIndex >= 0 && selectedIndex < itemDatas.Count)
-            {
-                selectedItemData = itemDatas[selectedIndex];
-            }
-
-        }
-        else
-        {
-            EditorGUILayout.HelpBox("No Data found. Create a scriptable object that can hold an item first.", MessageType.Info);
-        }
-    }
-    private void MergeListsAndDisplay()
-    {
-        mergedList.AddRange(conditions);
-        mergedList.AddRange(itemDatas);
-        GUILayout.Label("Select an object for the item", EditorStyles.boldLabel);
-
-        if (mergedList != null && mergedList.Count > 0)
-        {
-            string[] names = new string[mergedList.Count];
-            for (int i = 0; i < mergedList.Count; i++)
-            {
-                names[i] = mergedList[i].name;
-            }
-            Array.Sort(names);
-            int selectedIndex = mergedList.IndexOf(selectedObj);
-            selectedIndex = EditorGUILayout.Popup("Select Object", selectedIndex, names);
-
-            if (selectedIndex >= 0 && selectedIndex < mergedList.Count)
-            {
-                selectedObj = mergedList[selectedIndex];
-            }
-
-        }
-        else
-        {
-            EditorGUILayout.HelpBox("No Object found. Create a Object that can hold an item first.", MessageType.Info);
-        }
-    }
-
-
-    private void DisplayItemButtons(Item item)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && mergedList.Count > 0)
-        {
-            ConstructItem(item);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayConditionConfigButtons(ConditionConfig config)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && conditions.Count > 0)
-        {
-            ConstructConditionConfig(config);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayPuzzleButtons(Puzzle puzzle)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && cases.Count > 0)
-        {
-            ConstructPuzzle(puzzle);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayLoreButtons(Lore lore)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && cases.Count > 0)
-        {
-            ConstructLore(lore);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayDescriptionButtons(Description description)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && fields.Count > 0)
-        {
-            ConstructDescription(description);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayCaseButtons(Case caseObj)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && directors.Count > 0)
-        {
-            ConstructCase(caseObj);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayMurderMotiveButtons(MurderMotive motive)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && directors.Count > 0)
-        {
-            ConstructMurderMotive(motive);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayMurderWeaponButtons(MurderWeapon weapon)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && directors.Count > 0)
-        {
-            ConstructMurderWeapon(weapon);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayMurderRoomButtons(MurderRoom room)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && directors.Count > 0)
-        {
-            ConstructMurderRoom(room);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayItemDataButtons(BaseItemData itemData)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && itemObjs.Count > 0)
-        {
-            ConstructItemData(itemData);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayCraftableComponentDataButtons(CraftableComponentData data)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && itemObjs.Count > 0)
-        {
-            ConstructCraftableComponentData(data);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-    private void DisplayCraftableItemDataButtons(CraftableItemData data)
-    {
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply") && itemObjs.Count > 0)
-        {
-            ConstructCraftableItemData(data);
-            Close();
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            Close();
-        }
-        GUILayout.EndHorizontal();
-    }
-
-  
-
-    private void ConstructPuzzle(Puzzle puzzle)
-    {
-        prefabFolderPath = "Assets/PuzzleSystem/PrefabDump/Puzzles";
-        prefabPath = $"{prefabFolderPath}/{puzzle.name}.prefab";
-        prefab = PrefabUtility.SaveAsPrefabAsset(puzzle.gameObject, prefabPath);
-        Puzzle savedPrefab = prefab.GetComponent<Puzzle>();
-        selectedCase.Puzzles.Add(savedPrefab);
-        EditorUtility.SetDirty(selectedCase);
-    }
-    private void ConstructLore(Lore lore)
-    {
-        prefabFolderPath = "Assets/PuzzleSystem/PrefabDump/Lore";
-        prefabPath = $"{prefabFolderPath}/{lore.name}.prefab";
-        prefab = PrefabUtility.SaveAsPrefabAsset(lore.gameObject, prefabPath);
-        Lore savedPrefab = prefab.GetComponent<Lore>();
-        selectedCase.Lore.Add(savedPrefab);
-        EditorUtility.SetDirty(selectedCase);
-    }
-    private void ConstructConditionConfig(ConditionConfig config)
-    {
-        FieldInfo[] fields = selectedCondition.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        FieldInfo info = fields.FirstOrDefault(field => field.FieldType == typeof(ConditionConfig));
-        info.SetValue(selectedCondition, config);
-        EditorUtility.SetDirty(selectedCondition);
-    }
-    private void ConstructDescription(Description discription)
-    {
-        fields.TryGetValue(selectedData, out FieldInfo value);
-        if(value != null) 
-         value.SetValue(selectedData, discription);    
-    }
-    private void ConstructCase(Case caseObj)
-    {
-        selectedDirector.Cases.Append(caseObj);
-        EditorUtility.SetDirty(selectedDirector);
-    }
-    private void ConstructMurderRoom(MurderRoom room)
-    {
-        selectedDirector.Rooms.Append(room);
-        EditorUtility.SetDirty(selectedDirector);
-    }
-    private void ConstructMurderWeapon(MurderWeapon weapon)
-    {
-        selectedDirector.Weapons.Append(weapon);
-        EditorUtility.SetDirty(selectedDirector);
-    }
-    private void ConstructMurderMotive(MurderMotive motive)
-    {
-        selectedDirector.Motives.Append(motive);
-        EditorUtility.SetDirty(selectedDirector);
-    }
-    private void ConstructItem(Item item)
-    {
-        prefabFolderPath = "Assets/PuzzleSystem/PrefabDump/Item";
-        prefabPath = $"{prefabFolderPath}/{item.name}.prefab";
-        prefab = PrefabUtility.SaveAsPrefabAsset(item.gameObject, prefabPath);
-        Item savedPrefab = prefab.GetComponent<Item>();
-        FieldInfo[] fields = selectedItemData.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        FieldInfo info = fields.FirstOrDefault(field => field.FieldType == typeof(Item));
-        info.SetValue(selectedItemData, savedPrefab);
-        EditorUtility.SetDirty(selectedItemData);
-    }
-    private void ConstructItemData(BaseItemData itemData)
-    {
-        FieldInfo[] fields = selectedItem.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        FieldInfo info = fields.FirstOrDefault(field => field.FieldType == typeof(BaseItemData));
-        info.SetValue(selectedItem, itemData);
-        EditorUtility.SetDirty(selectedItem);
-    }
-    private void ConstructCraftableComponentData(CraftableComponentData data)
-    {
-        FieldInfo[] fields = selectedItem.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        FieldInfo info = fields.FirstOrDefault(field => field.FieldType == typeof(CraftableComponentData));
-        info.SetValue(selectedItem, data);
-        EditorUtility.SetDirty(selectedItem);
-    }
-    private void ConstructCraftableItemData(CraftableItemData data)
-    {
-        FieldInfo[] fields = selectedItem.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        FieldInfo info = fields.FirstOrDefault(field => field.FieldType == typeof(CraftableItemData));
-        info.SetValue(selectedItem, data);
-        EditorUtility.SetDirty(selectedItem);
     }
 }
