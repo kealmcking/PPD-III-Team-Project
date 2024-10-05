@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
-
+/// <summary>
+/// Represents the abstract class for all data that is a potential physical/interactable item. 
+/// </summary>
 public abstract class BaseItemData : ScriptableObject, ICustomizableComponent
 {
     [SerializeField] protected string itemName;

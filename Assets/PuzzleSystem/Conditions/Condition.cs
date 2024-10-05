@@ -1,5 +1,9 @@
 using System;
 using UnityEngine;
+/// <summary>
+/// Represents an interface between the puzzle and the expected condition
+/// for meeting one of many possible conditions the puzzle has to be considered complete..
+/// </summary>
 [RequireComponent(typeof(Collider))]
 public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
 {
