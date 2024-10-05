@@ -1,3 +1,4 @@
+using Input;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateTimer(_time);
-        if (Input.GetButtonDown("Cancel"))
+        if (InputManager.instance.getIsPause())
         {
             if (menuActive == null)
             {
