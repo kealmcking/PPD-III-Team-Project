@@ -5,6 +5,11 @@ using UnityEngine;
 //make editor script for a button when finalize puzzle is pressed a window will pop-up that asks which case/motive should be a list of all the Motive class scriptable objects select one you want to add it to then press ok.
 //This will create a prefab of this puzzle and add the prefab to this folder 'Assets\PuzzleSystem\PrefabDump\Puzzles'. and then add the prefab to the selected Motives list of puzzles if no scriptable object motive is made then create one this newly created motive will be placed in Assets\PuzzleSystem\Motives\SO
 //then here add the prefab to the newly created motives list of puzzles
+/// <summary>
+/// Represents the physical puzzle in the game. contains conditions which need to be met to win the puzzle. 
+/// Additionally, it contains the reward(typically a clue), and the potential for components used to build 
+/// the required item to complete the puzzle.
+/// </summary>
 public class Puzzle : MonoBehaviour, ICustomizableComponent
 {
     [SerializeField] List<Condition> conditions = new List<Condition>();

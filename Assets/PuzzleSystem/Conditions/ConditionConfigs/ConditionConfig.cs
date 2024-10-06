@@ -1,5 +1,8 @@
 using UnityEngine;
-
+/// <summary>
+/// Represents the abstract base class of all condition configurations
+/// Used to determine what needss to be done for the associated condition to be completed.
+/// </summary>
 public abstract class ConditionConfig : ScriptableObject, ICustomizableComponent
 {
     public abstract void EnterSetup(Condition conditionObject);

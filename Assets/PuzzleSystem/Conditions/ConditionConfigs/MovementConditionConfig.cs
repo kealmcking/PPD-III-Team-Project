@@ -1,4 +1,7 @@
 using UnityEngine;
+/// <summary>
+/// A general condition for objects that need to be moved a specific distance in order for a condition to be met.
+/// </summary>
 [CreateAssetMenu(fileName = "MovementDistanceConfig", menuName = "PuzzleSystem/ConditionConfig/MovementDistance")]
 public class MovementConditionConfig : ConditionConfig
 {

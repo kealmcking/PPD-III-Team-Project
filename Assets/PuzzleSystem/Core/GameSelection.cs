@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEngine;
-
+/// <summary>
+/// Represents the randomly selected choices for each global objective. 
+/// </summary>
 public class GameSelection
 {
     private Suspect killer;

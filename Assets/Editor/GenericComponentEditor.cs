@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEditor;
+/// <summary>
+/// Sets all items that are marked with the ICustomInterfaceComponent to use this button and its coinciding functionality.
+/// </summary>
 [CustomEditor(typeof(Object),true)]
 public class GenericComponentEditor : Editor
 {
@@ -20,7 +23,7 @@ public class GenericComponentEditor : Editor
     }
     private void ConstructCondition(Condition condition)
     {
-        string prefabFolderPath = "Assets/PuzzleSystem/PrefabDump/Conditions";
+        string prefabFolderPath = "Assets/PuzzleSystem/PrefabDump";
         string prefabPath = $"{prefabFolderPath}/{condition.name}.prefab";
         GameObject prefab = PrefabUtility.SaveAsPrefabAsset(condition.gameObject, prefabPath);
     }
