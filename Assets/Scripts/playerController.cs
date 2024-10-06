@@ -58,8 +58,6 @@ public class playerController : MonoBehaviour
         toggleFlashlight();
         updateFlashlightDirection();
     }
-
-
     void movement()
 {
         _moveDir = InputManager.instance.getMoveAmount().x * transform.right 
