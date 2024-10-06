@@ -13,20 +13,26 @@ using UnityEngine;
 /// </summary>
 public class FinalizePopup : EditorWindow
 {
-    ICustomizableComponent inspectorTarget;
-    KeyValuePair<UnityEngine.Object, FieldInfo> selectedKey = new KeyValuePair<UnityEngine.Object, FieldInfo>();
+    static ICustomizableComponent inspectorTarget;
+    static KeyValuePair<UnityEngine.Object, FieldInfo> selectedKey = new KeyValuePair<UnityEngine.Object, FieldInfo>();
     static List<UnityEngine.Object> classScripts = new List<UnityEngine.Object>();
-    Dictionary<UnityEngine.Object,FieldInfo> filteredScripts = new Dictionary<UnityEngine.Object, FieldInfo>();
-    public bool isLoaded = false;
+    static Dictionary<UnityEngine.Object,FieldInfo> filteredScripts = new Dictionary<UnityEngine.Object, FieldInfo>();
+   // public bool isLoaded = false;
     string prefabFolderPath;
     string prefabPath;
     GameObject prefab;
     /// <summary>
-    /// Initializes the classes used in the puzzle system. 
+    /// Initializes the classes used in the puzzle system. This also resets statics to their default states. 
     /// </summary>
     [InitializeOnLoadMethod]
     static void InitializeList()
     {
+        inspectorTarget = null;
+        selectedKey = new KeyValuePair<UnityEngine.Object, FieldInfo>();
+        classScripts = new List<UnityEngine.Object>();
+        filteredScripts = new Dictionary<UnityEngine.Object, FieldInfo>();
+
+
         LoadAllSOOfType<Case>();
         LoadAllSOOfType<BaseItemData>();
         LoadAllSOOfType<ConditionConfig>();
@@ -38,7 +44,7 @@ public class FinalizePopup : EditorWindow
         LoadAllMonoOfType<Director>();
         LoadAllMonoOfType<Puzzle>();
         LoadAllMonoOfType<Condition>();
-
+       
     }
     /// <summary>
     /// Used statically from the generic component button script to set specific parameters pertaining to the selected script
@@ -47,9 +53,11 @@ public class FinalizePopup : EditorWindow
     public static void ShowPopup(ICustomizableComponent target)
     {     
         var window = GetWindow<FinalizePopup>("Finalize");
-        window.inspectorTarget = target;
+        
         window.position = new Rect(Screen.width / 2, Screen.height / 2, 400, 200);
-        window.isLoaded = false;
+        InitializeList();
+        inspectorTarget = target;
+      
     }
     /// <summary>
     /// Contains two buttons. Cancel button closes the window. Apply button will determine if the object is derived from monobehaviour 
@@ -74,22 +82,29 @@ public class FinalizePopup : EditorWindow
                 prefabFolderPath = $"Assets/PuzzleSystem/PrefabDump";
                 prefabPath = $"{prefabFolderPath}/{mono.name}.prefab";
                 prefab = PrefabUtility.SaveAsPrefabAsset(mono.gameObject, prefabPath);
-            
+
+
+                GameObject prefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, mono.gameObject.scene);
+
                 if (typeof(IList).IsAssignableFrom(type))
                 {
                     IList list = (IList)selectedKey.Value.GetValue(selectedKey.Key);
                     if (list != null)
                     {
                         list.Add(prefab.gameObject.GetComponent(type.GetGenericArguments()[0]));
-                        EditorUtility.SetDirty(selectedKey.Key);
+                       
                     }
                 }
                 else
                 {
                     selectedKey.Value.SetValue(selectedKey.Key, prefab.gameObject.GetComponent(type));
-                    EditorUtility.SetDirty(selectedKey.Key);
+
                 }
+                DestroyImmediate(mono.gameObject);
+                EditorUtility.SetDirty(selectedKey.Key);
+
             }
+               
             if(inspectorTarget is ScriptableObject scriptable)
             {
                 if (typeof(IList).IsAssignableFrom(type))
@@ -98,23 +113,49 @@ public class FinalizePopup : EditorWindow
                     if (list != null)
                     {
                         list.Add(scriptable);
-                        EditorUtility.SetDirty(selectedKey.Key);
                     }
                 }
                 else
                 {
-                    selectedKey.Value.SetValue(selectedKey.Key, scriptable);
-                    EditorUtility.SetDirty(selectedKey.Key);
+                    selectedKey.Value.SetValue(selectedKey.Key, scriptable);          
+                }
+
+                EditorUtility.SetDirty(selectedKey.Key);
+
+                if(selectedKey.Key is GameObject prefab)
+                {
+                    GameObject[] all = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                    foreach(var obj in all)
+                    {
+                        if(PrefabUtility.GetPrefabAssetType(obj) == PrefabAssetType.Regular && PrefabUtility.GetCorrespondingObjectFromSource(obj)==prefab)
+                        {
+                            if (typeof(IList).IsAssignableFrom(type))
+                            {
+                                IList list = (IList)selectedKey.Value.GetValue(obj);
+                                if (list != null)
+                                {
+                                    list.Add(scriptable);
+                                }
+                            }
+                            else
+                            {
+                                selectedKey.Value.SetValue(obj, scriptable);
+                            }
+                            PrefabUtility.ApplyPrefabInstance(obj, InteractionMode.UserAction);
+                            EditorUtility.SetDirty(obj);
+                        }
+                    }
                 }
             }
-             Close();
+            AssetDatabase.SaveAssets();
+            Close();
         }
         if (GUILayout.Button("Cancel"))
         {
             Close();
         }
         GUILayout.EndHorizontal();
-        AssetDatabase.SaveAssets();
+        
     }
     /// <summary>
     /// Used to appropriatly load any class/object if it is derived from monobehaviour.
@@ -170,8 +211,7 @@ public class FinalizePopup : EditorWindow
             T asset = AssetDatabase.LoadAssetAtPath<T>(path);
             if(asset != null)
             {
-                classScripts.Add(asset);
-               
+                classScripts.Add(asset);              
             }
         }
         T[] resourceAssets = Resources.FindObjectsOfTypeAll<T>();
@@ -186,25 +226,24 @@ public class FinalizePopup : EditorWindow
     /// <summary>
     /// Used to filter the loaded classes by which class contains the specific fields that the selected item can be placed on
     /// </summary>
-    private void Filter()
+    static private void Filter()
     {
         if (classScripts == null || classScripts.Count <= 0) return;
 
      
         Type targetType = inspectorTarget.GetType();
-
+        
         foreach (var item in classScripts)
         {
             
             Type itemType = item.GetType();
-
             
             FieldInfo[] fields = itemType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             foreach (var field in fields)
             {
               
-                if (field.FieldType == targetType || field.FieldType.IsSubclassOf(targetType))
+                if (field.FieldType == targetType || field.FieldType.IsSubclassOf(targetType)|| field.FieldType == targetType.BaseType)
                 {
                     if (!filteredScripts.ContainsKey(item))
                     {
@@ -231,7 +270,7 @@ public class FinalizePopup : EditorWindow
     /// <summary>
     /// Used to display the filtered scripts by name in a dropdown list. 
     /// </summary>
-    private void Display()
+    static private void Display()
     {
         GUILayout.Label("Select a item for the data", EditorStyles.boldLabel);
 

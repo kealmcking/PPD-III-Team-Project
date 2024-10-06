@@ -23,7 +23,7 @@ public class GenericComponentEditor : Editor
     }
     private void ConstructCondition(Condition condition)
     {
-        string prefabFolderPath = "Assets/PuzzleSystem/PrefabDump/Conditions";
+        string prefabFolderPath = "Assets/PuzzleSystem/PrefabDump";
         string prefabPath = $"{prefabFolderPath}/{condition.name}.prefab";
         GameObject prefab = PrefabUtility.SaveAsPrefabAsset(condition.gameObject, prefabPath);
     }
