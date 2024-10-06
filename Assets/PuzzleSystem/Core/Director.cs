@@ -31,7 +31,7 @@ public class Director : MonoBehaviour
     [SerializeField, Tooltip("This contains the list of the motives. " +
       "It is also used to update the UI for instance when guessing the motive which was used for the murder")] List<MurderMotive> motives;
     [SerializeField,Tooltip("This represents all the possible cases available for this level")] List<Case> cases;
-    private Puzzle[] scenePuzzles;
+    [SerializeField] Puzzle[] scenePuzzles;
     private Lore[] sceneLore;
     private List<Suspect> suspects;
     private GameSelection gameSelection;
@@ -53,7 +53,7 @@ public class Director : MonoBehaviour
         cController = new ClueController();
         List<Puzzle> activeP = new List<Puzzle>();
         List<Lore> activeL = new List<Lore>();
-        if(scenePuzzles.Length > 0 && sceneLore.Length > 0)
+        if (scenePuzzles.Length > 0)
         {
             foreach (Puzzle puzzle in gameSelection.GetCase().Puzzles)
             {
@@ -64,6 +64,9 @@ public class Director : MonoBehaviour
                     activeP.Add(sPuzzle);
                 }
             }
+        }
+        if (sceneLore.Length > 0)
+        {
             foreach (Lore lore in gameSelection.GetCase().Lore)
             {
                 Lore sLore = sceneLore.FirstOrDefault(sp => sp.Equals(lore));
@@ -76,13 +79,15 @@ public class Director : MonoBehaviour
             pController = new PuzzleController(activeP);
             lController = new LoreController(activeL);
         }
-        if(suspects.Count() > 0)
+          
+        
+        
 
-        SendMurderMotives.Invoke(motives);
+        /*SendMurderMotives.Invoke(motives);
         SendMurderRooms.Invoke(rooms);
         SendMurderWeapons.Invoke(weapons);
-        SendSuspects.Invoke(suspects);
-        SendGameSelection.Invoke(gameSelection);
+        SendSuspects.Invoke(suspects);*/
+        //SendGameSelection.Invoke(gameSelection);
     }
   
     
@@ -93,7 +98,7 @@ public class Director : MonoBehaviour
         public PuzzleController(List<Puzzle> puzzles)
         {
             activePuzzles = puzzles;
-            SendPuzzles.Invoke(activePuzzles);
+            //SendPuzzles.Invoke(activePuzzles);
         }
     }
     private class LoreController
@@ -103,7 +108,7 @@ public class Director : MonoBehaviour
         public LoreController(List<Lore> lores)
         {
             activeLore = lores;
-            SendLore.Invoke(activeLore);
+            //SendLore.Invoke(activeLore);
         }
     }
     private class ClueController
