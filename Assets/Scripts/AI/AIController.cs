@@ -6,36 +6,58 @@ using UnityEngine.AI;
 public class AIController : MonoBehaviour
 {
     private Vector3 playerDir;
+    private Vector3 playerPos;
     public Vector3 PlayerDirection => playerDir;
     [SerializeField] NavMeshAgent agent;
     Vector3 startingPos;
     float stoppingDistanceOrig;
     bool isRoaming;
     bool playerInRange;
+    bool isEnemyChasing = false;
     Coroutine someCo;
     [SerializeField] int roamDist = 15;
     [SerializeField] int roamTimer = 1;
     [SerializeField] int faceTargetSpeed = 1 ;
+    [SerializeField] Suspect suspect;
 
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        suspect ??= GetComponent<Suspect>();
+    }
     void Start()
     {
         stoppingDistanceOrig = agent.stoppingDistance;
         startingPos = transform.position;
     }
 
+
     // Update is called once per frame
     void Update()
     {
-        //agent.SetDestination(
-        playerDir = GameObject.FindWithTag("Player").transform.position - transform.position;
+        playerPos = GameObject.FindWithTag("Player").transform.position;
+        playerDir = playerPos - transform.position;
         if (playerInRange)
         {
             faceTarget();
         }
-        if (!playerInRange && !isRoaming && agent.remainingDistance < 0.05f && someCo == null)
+        if (!playerInRange && !isRoaming && agent.remainingDistance < 0.05f && someCo == null && !isEnemyChasing)
             someCo = StartCoroutine(roam());
+        chasePlayer();
+
     }
+
+    private void chasePlayer()
+    {
+        if(suspect.IsKiller && GameManager.instance.Day == 7)
+        {
+            isEnemyChasing = true;
+            agent.SetDestination(playerPos);
+        }
+        
+    }
+
 
     IEnumerator roam()
     {

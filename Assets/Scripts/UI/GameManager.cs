@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     public bool isTimeToSleep;
     public bool wentToSleep;
     public bool isPaused;
+    public int Day => _day;
 
     float timeScaleOG;
 
