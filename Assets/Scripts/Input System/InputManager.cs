@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +8,8 @@ namespace Input
     {
         #region Variables
         public static InputManager instance;
+
+        public static Action<EnableInteractUI> IHavePressedInteractButton;
 
         [Header("Input Actions")]
         public InputAction moveAction;
@@ -28,6 +30,12 @@ namespace Input
         [SerializeField] private bool isCrouch;
         [SerializeField] private bool isFlashLight;
         [SerializeField] private bool isInMenu;
+        
+        private bool isInInteractableArea = false;
+
+        private EnableInteractUI currentInteractable;
+        
+        
 
         #endregion
         
@@ -66,11 +74,6 @@ namespace Input
             return isPause;
         }
 
-        public void SetIsPause(bool pause)
-        {
-            isPause = pause;
-        }
-
         public bool getIsCrouch()
         {
             return isCrouch;
@@ -97,7 +100,7 @@ namespace Input
         }
         
         #endregion
-
+        
         // Update is called once per frame
         void Update()
         {
@@ -111,27 +114,26 @@ namespace Input
         // Controls interaction input
         public void OnInteract(InputAction.CallbackContext context)
         {
-            // Do Interaction stuff here
+            if (!isInInteractableArea) return;
+            Debug.Log("Interact Sent From Input Manager");
+            IHavePressedInteractButton.Invoke(currentInteractable);
+            
         }
 
         // Controls Pausing input
         public void OnPause(InputAction.CallbackContext context)
         {
             isPause = !isPause;
-
             
-
             if (isPause)
             {
                 DisableCharacterInputs();
-                cancelAction.Disable();
-                GameManager.instance.PauseGame();
+                cancelAction.Disable(); 
             }
             else
             {
                 cancelAction.Enable(); 
                 Debug.Log("!isPause");
-                GameManager.instance.UnpauseGame();
             }
 
             if (!isInMenu && !isPause)
@@ -185,7 +187,6 @@ namespace Input
             isInMenu = false;
             EnableCharacterInputs();
             Debug.Log("Cancel Button Pressed");
-            
         }
 
         // Disables all inputs the player can use in general gameplay
@@ -211,6 +212,13 @@ namespace Input
             inventoryAction.Enable();
             cancelAction.Disable();
         }
+
+        private void SetInteractable(bool context, EnableInteractUI enableInteractUI)
+        {
+            isInInteractableArea = context;
+            currentInteractable = enableInteractUI;
+
+        }
         
         public void OnEnable()
         {
@@ -222,6 +230,7 @@ namespace Input
             sprintAction.Enable();
             flashLightAction.Enable();
             inventoryAction.Enable();
+            EnableInteractUI.ImInInteractionZone += SetInteractable;
         }
 
         public void OnDisable()
@@ -234,6 +243,7 @@ namespace Input
             sprintAction.Disable();
             flashLightAction.Disable();
             inventoryAction.Disable();
+            EnableInteractUI.ImInInteractionZone -= SetInteractable;
         }
         
         #endregion

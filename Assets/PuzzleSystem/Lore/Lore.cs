@@ -5,12 +5,11 @@ using UnityEngine;
 /// </summary>
 public class Lore : MonoBehaviour,IInteractable, ICustomizableComponent
 {
-    public static Action<IInteractable> SendLore;
     [SerializeField, Tooltip("Place a description explaining the lore here")] Description description;
     [SerializeField, Tooltip("represents icon image")] protected Sprite icon;
     public void Interact()
     {
-        SendLore.Invoke(this);
+        
     }
 
     public Payload GetPayload()

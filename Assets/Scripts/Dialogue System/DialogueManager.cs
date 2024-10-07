@@ -1,16 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Input;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace DialogueSystem
 {
-    public class DialogueManager : MonoBehaviour
+    public class DialogueManager : MonoBehaviour, IInteractable
     {
         public static DialogueManager instance;
+
+        private List<Suspect> suspects;
+        private int currentDay;
 
         [Header("Dialogue/Dialogue Trees")] 
         [SerializeField] private NPC currentNPC;
@@ -25,6 +28,8 @@ namespace DialogueSystem
         [SerializeField] private TMP_Text speakerText;
         [SerializeField] private Image speakerImage;
         public DialogueButton lastClickedDialogueButton;
+
+        public static Action<bool> DialogueMenuActive;
 
         [Header("Other")] 
         [SerializeField] private float timeBetweenLetters;
@@ -114,12 +119,13 @@ namespace DialogueSystem
         
 
         // For enabling the overall dialogue UI
-        public void enableDialogueUI(NPC npc, DialogueTree tree)
+        public void enableDialogueUI(Suspect suspect)
         {
-            currentNPC = npc;
-            currentTree = tree;
+            currentNPC = suspect.Npc;
+            currentTree = suspect.Npc.trees[currentDay];
             speakerImage.sprite = currentNPC.characterSprite_base;
             dialogueContainer.SetActive(true);
+            DialogueMenuActive.Invoke(true);
             buttonInitialization();
         }
 
@@ -130,6 +136,7 @@ namespace DialogueSystem
             toggleDialogueButtons(false);
             resetDialogueData();
             currentTree = null;
+            DialogueMenuActive.Invoke(false);
         }
 
         IEnumerator typeLine(string line)
@@ -142,6 +149,54 @@ namespace DialogueSystem
                 yield return new WaitForSeconds(timeBetweenLetters);
             }
         }
+        
+        public void Interact()
+        { 
+            // Get this information later
+            // enableDialogueUI(currentNPC, currentNPC.trees[0]);
+           InputManager.instance.DisableCharacterInputs();
+        }
+
+        public Payload GetPayload()
+        {
+            return new Payload { isEmpty = true };
+        }
+
+        public Suspect SuspectBeingInteractedWith()
+        {
+            foreach (Suspect suspect in suspects)
+            {
+                if (suspect.IsBeingInteractedWith)
+                {
+                    return suspect;
+                }
+            }
+
+            return null;
+        }
+
+        private void OnEnable()
+        {
+            Director.SendSuspects += AddSuspectsToList;
+            GameManager.TodaysDayIndexIsThis += SetDay;
+        }
+
+        private void OnDisable()
+        { 
+            Director.SendSuspects -= AddSuspectsToList;
+            GameManager.TodaysDayIndexIsThis -= SetDay;
+        }
+
+        private void AddSuspectsToList(List<Suspect> context)
+        {
+            suspects = context;
+        }
+
+        private void SetDay(int day)
+        {
+            currentDay = day;
+        }
+        
     }
     
 }

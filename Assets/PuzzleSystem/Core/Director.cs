@@ -13,7 +13,13 @@ public class Director : MonoBehaviour
 
     public static Action<List<Puzzle>> SendPuzzles;
     public static Action<List<Lore>> SendLore;
-    public static Action<List<BaseClueData>> SendFoundClues;
+    public static Action<BaseClueData> SendFoundClue;
+
+    public static Action<List<MurderRoom>> SendMurderRooms;
+    public static Action<List<MurderWeapon>> SendMurderWeapons;
+    public static Action<List<MurderMotive>> SendMurderMotives;
+    public static Action<List<Suspect>> SendSuspects;
+
     public static Action<GameSelection> SendGameSelection;
  
 

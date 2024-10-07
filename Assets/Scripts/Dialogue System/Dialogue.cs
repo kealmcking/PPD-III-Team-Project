@@ -11,4 +11,7 @@ public class Dialogue : ScriptableObject
 
     //public Clue requiredClue;
     public Dialogue newDialogue;
+
+
+
 }

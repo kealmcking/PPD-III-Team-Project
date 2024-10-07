@@ -8,10 +8,8 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
 {
     [SerializeField] protected BaseItemData data;
     public BaseItemData Data => data;
-    public static Action<IInteractable> SendItem;  
     public virtual void Interact()
     {
-        SendItem.Invoke(this);
         Destroy(gameObject, .5f);
     }
     public Payload GetPayload()
