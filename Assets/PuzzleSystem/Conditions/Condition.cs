@@ -14,6 +14,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] ConditionEndPoint goal;
     [SerializeField] bool isPickUp;
     [SerializeField] bool isConditionMet;
+    [SerializeField] private bool hasBeenPickedUp = false;
     public ConditionConfig Config => config;
     public bool IsConditionMet
     {
@@ -67,5 +68,15 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     public bool CanPickup()
     {
         return isPickUp;
+    }
+
+    public bool HasBeenPickedUp()
+    {
+        return hasBeenPickedUp;
+    }
+
+    public void SetHasBeenPickedUp(bool set)
+    {
+        hasBeenPickedUp = set;
     }
 }

@@ -10,6 +10,7 @@ public class playerController : MonoBehaviour
 {
     [SerializeField] CharacterController charController;
     [SerializeField] LayerMask ignoreMask;
+    [SerializeField] private Animator _animator;
 
     public static Action INeedToTurnOffTheInteractUI;
 
@@ -53,6 +54,8 @@ public class playerController : MonoBehaviour
     Vector3 _playerVel;
     private float _curVel;
 
+    private float targetVertValue;
+
     bool _isFlashlightOn;
     bool _isCrouching;
     bool _isClimbing;
@@ -85,11 +88,11 @@ public class playerController : MonoBehaviour
     {
         movement();
         crouch();
-        sprint();
+        
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    private void LateUpdate()
     {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * interactDistance, Color.red);
         rotateTowardCamera();
@@ -100,29 +103,46 @@ public class playerController : MonoBehaviour
     {
         float moveX = InputManager.instance.getMoveAmount().x;
         float moveY = InputManager.instance.getMoveAmount().y;
+
+        horizInput = moveX;
+        vertInput = moveY;
         Vector3 targetMoveDirection = moveX * transform.right + moveY * transform.forward;
 
+        // Base speed
+        float targetSpeed = _origSpeed;
+
+        // Check if walking backward
         if (moveY < 0)
         {
-            _currentSpeed = Mathf.Lerp(_currentSpeed,_origSpeed * _walkBackwardMod, Time.deltaTime * moveSmoothSpeed);
+            targetSpeed *= _walkBackwardMod;
         }
-        else
+
+        // Check if crouching
+        if (_isCrouching)
         {
-            if (_isCrouching)
-            {
-                _currentSpeed = Mathf.Lerp(_currentSpeed,_origSpeed * _crouchMod, Time.deltaTime * moveSmoothSpeed);
-            } else if (_isSprinting)
-            {
-                _currentSpeed = Mathf.Lerp(_currentSpeed,_origSpeed * _sprintMod, Time.deltaTime * moveSmoothSpeed);
-            }
-            else
-            {
-                _currentSpeed = Mathf.Lerp(_currentSpeed, _origSpeed, Time.deltaTime * moveSmoothSpeed);
-            }
+            targetSpeed *= _crouchMod;
         }
-        
+        // Check if sprinting
+        else if (_isSprinting)
+        {
+            targetSpeed *= _sprintMod;
+        }
+
+        // Smoothly transition to the target speed
+        _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, Time.deltaTime * moveSmoothSpeed);
+
+        // Apply movement
         _moveDir = Vector3.Lerp(_moveDir, targetMoveDirection, 0.1f);
         charController.Move(_moveDir * _currentSpeed * Time.deltaTime);
+        
+        sprint();
+
+        float currentVertValue = _animator.GetFloat("vert");
+        float newVertValue = Mathf.Lerp(currentVertValue, targetVertValue, Time.deltaTime * moveSmoothSpeed);
+
+        // Update animator parameters
+        _animator.SetFloat("horiz", moveX);
+        _animator.SetFloat("vert", newVertValue);
     }
 
     void rotateTowardCamera()
@@ -140,13 +160,15 @@ public class playerController : MonoBehaviour
 
     void sprint()
     {
-        if (InputManager.instance.getSprintHeld())
+        if (InputManager.instance.getSprintHeld() && vertInput > 0)
         {
             _isSprinting = true;
+            targetVertValue = 2f;
         }
         else
         {
             _isSprinting = false;
+            targetVertValue = Mathf.Clamp(vertInput, -1f, 1f);
         }
     }
 
@@ -185,7 +207,7 @@ public class playerController : MonoBehaviour
             flashlight.transform.rotation = Camera.main.transform.rotation;
         }
     }
-    
+
     private void Interact(EnableInteractUI interactUI)
     {
         
@@ -216,13 +238,15 @@ public class playerController : MonoBehaviour
                     dialogue.enableDialogueUI(dialogue.SuspectBeingInteractedWith());
                     break;
                 case Condition condition:
-                    if (condition.CanPickup())
+                    if (condition.CanPickup() && !condition.HasBeenPickedUp())
                     {
                         currentCondition = condition;
                         condition.gameObject.transform.SetParent(handPos);
                         condition.transform.localPosition = Vector3.zero;
                         condition.transform.localRotation = Quaternion.identity * itemHandOffset;
                         interactUI.ToggleCanvas();
+                        _animator.SetTrigger("activate");
+                        condition.SetHasBeenPickedUp(true);
                     }
                     break;
             }
