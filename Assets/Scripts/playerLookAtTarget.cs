@@ -8,7 +8,7 @@ public class playerLookAtTarget : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private Transform headBone;
-    [SerializeField] private Transform headTarget;
+    public Transform headTarget;
     [SerializeField] private float lookSpeed = 5.0f;
 
     private bool shouldLookAtObject = false;
@@ -54,7 +54,7 @@ public class playerLookAtTarget : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Interactable"))
+        if (other.gameObject.TryGetComponent(out IInteractable interactable))
         {
             Transform targetTransform = GetTargetTransform(other.gameObject);
 
@@ -68,7 +68,7 @@ public class playerLookAtTarget : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Interactable"))
+        if (other.gameObject.TryGetComponent(out IInteractable interactable))
         {
             shouldLookAtObject = false;
             headTarget = null;;

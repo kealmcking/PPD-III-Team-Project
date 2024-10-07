@@ -11,6 +11,7 @@ public class playerController : MonoBehaviour
     [SerializeField] CharacterController charController;
     [SerializeField] LayerMask ignoreMask;
     [SerializeField] private Animator _animator;
+    [SerializeField] private playerLookAtTarget playerLookAtTarget;
 
     public static Action INeedToTurnOffTheInteractUI;
 
@@ -49,6 +50,9 @@ public class playerController : MonoBehaviour
     private Condition currentCondition;
 
     [SerializeField] private Transform handPos;
+
+    private bool hasTurned;
+    private bool startTurning;
 
     Vector3 _moveDir;
     Vector3 _playerVel;
@@ -95,6 +99,7 @@ public class playerController : MonoBehaviour
     private void LateUpdate()
     {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * interactDistance, Color.red);
+        
         rotateTowardCamera();
         //toggleFlashlight();
         //updateFlashlightDirection();
@@ -112,9 +117,10 @@ public class playerController : MonoBehaviour
         float targetSpeed = _origSpeed;
 
         // Check if walking backward
-        if (moveY < 0)
+        if (moveY <= -0.1f)
         {
             targetSpeed *= _walkBackwardMod;
+            
         }
 
         // Check if crouching
@@ -181,6 +187,7 @@ public class playerController : MonoBehaviour
                 _newHeight = _crouchHeight;
                 _newCenter = _crouchCenter;
                 _isCrouching = true;
+                
             }
         }
         else
@@ -192,6 +199,8 @@ public class playerController : MonoBehaviour
                 _isCrouching = false;
             }
         }
+        
+        _animator.SetBool("isCrouched", _isCrouching);
         charController.height = Mathf.Lerp(charController.height, _newHeight, Time.deltaTime / _crouchTime);
         charController.center = Vector3.Lerp(charController.center, _newCenter, Time.deltaTime / _crouchTime);
     }
@@ -247,12 +256,11 @@ public class playerController : MonoBehaviour
                         interactUI.ToggleCanvas();
                         _animator.SetTrigger("activate");
                         condition.SetHasBeenPickedUp(true);
+                        playerLookAtTarget.headTarget = null;
                     }
                     break;
             }
         }
-        
-        
     }
 
     private void ThrowObject()
