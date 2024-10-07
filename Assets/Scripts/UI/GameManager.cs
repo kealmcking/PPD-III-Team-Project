@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -119,23 +120,23 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Director.SendMurderRooms += UpdateMurderRoom;
-        Director.SendMurderWeapons += UpdateMurderWeapons;
-        Director.SendSuspects += UpdateSuspects;
-        Director.SendMurderMotives += UpdateMotives;
-        Director.SendGameSelection += UpdateGameSelection;
-        Director.SendFoundClue += UpdateToggles;
+        //Director.SendMurderRooms += UpdateMurderRoom;
+        //Director.SendMurderWeapons += UpdateMurderWeapons;
+        //Director.SendSuspects += UpdateSuspects;
+        //Director.SendMurderMotives += UpdateMotives;
+        //Director.SendGameSelection += UpdateGameSelection;
+        //Director.SendFoundClue += UpdateToggles;
        //StartTimer();
     }
 
     private void OnDisable()
     {
-        Director.SendMurderRooms -= UpdateMurderRoom;
-        Director.SendMurderWeapons -= UpdateMurderWeapons;
-        Director.SendSuspects -= UpdateSuspects;
-        Director.SendMurderMotives -= UpdateMotives;
-        Director.SendGameSelection -= UpdateGameSelection;
-        Director.SendFoundClue -= UpdateToggles;
+        //Director.SendMurderRooms -= UpdateMurderRoom;
+        //Director.SendMurderWeapons -= UpdateMurderWeapons;
+        //Director.SendSuspects -= UpdateSuspects;
+        //Director.SendMurderMotives -= UpdateMotives;
+        //Director.SendGameSelection -= UpdateGameSelection;
+        //Director.SendFoundClue -= UpdateToggles;
     }
 
     // Update is called once per frame

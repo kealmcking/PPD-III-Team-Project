@@ -112,7 +112,7 @@ public class Director : MonoBehaviour
         public void AddClue(BaseClueData clue)
         { 
             foundClues.Add(clue);
-            SendFoundClue.Invoke(clue);
+           // SendFoundClue.Invoke(clue);
         }       
     }
 }
