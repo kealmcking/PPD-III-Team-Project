@@ -31,8 +31,8 @@ public class Director : MonoBehaviour
     [SerializeField, Tooltip("This contains the list of the motives. " +
       "It is also used to update the UI for instance when guessing the motive which was used for the murder")] List<MurderMotive> motives;
     [SerializeField,Tooltip("This represents all the possible cases available for this level")] List<Case> cases;
-    [SerializeField] Puzzle[] scenePuzzles;
-    private Lore[] sceneLore;
+    [SerializeField] List<Puzzle> scenePuzzles;
+    private List<Lore> sceneLore;
     private List<Suspect> suspects;
     private GameSelection gameSelection;
     private ClueController cController;
@@ -47,32 +47,32 @@ public class Director : MonoBehaviour
     public void Start()
     {       
         suspects = FindObjectsByType<Suspect>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
-        scenePuzzles = FindObjectsByType<Puzzle>(FindObjectsInactive.Include,FindObjectsSortMode.None);
-        sceneLore = FindObjectsByType<Lore>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        scenePuzzles = FindObjectsByType<Puzzle>(FindObjectsInactive.Include,FindObjectsSortMode.None).ToList();
+        sceneLore = FindObjectsByType<Lore>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
         gameSelection = new GameSelection(suspects,rooms,weapons,cases,motives);
         cController = new ClueController();
         List<Puzzle> activeP = new List<Puzzle>();
         List<Lore> activeL = new List<Lore>();
-        if (scenePuzzles.Length > 0)
+        if (scenePuzzles.Count > 0)
         {
             foreach (Puzzle puzzle in gameSelection.GetCase().Puzzles)
             {
                 Puzzle sPuzzle = scenePuzzles.FirstOrDefault(sp => sp.Equals(puzzle));
                 if (sPuzzle != null)
                 {
-                    puzzle.gameObject.SetActive(true);
+                    sPuzzle.gameObject.SetActive(true);
                     activeP.Add(sPuzzle);
                 }
             }
         }
-        if (sceneLore.Length > 0)
+        if (sceneLore.Count > 0)
         {
             foreach (Lore lore in gameSelection.GetCase().Lore)
             {
                 Lore sLore = sceneLore.FirstOrDefault(sp => sp.Equals(lore));
                 if (sLore != null)
                 {
-                    lore.gameObject.SetActive(true);
+                    sLore.gameObject.SetActive(true);
                     activeL.Add(sLore);
                 }
             }
