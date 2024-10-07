@@ -14,17 +14,5 @@ public class Speaker : MonoBehaviour
     private void Start()
     {
         currentTree = npc.trees[0];
-        isKiller = npc.isKiller;
-        isGhost = npc.isGhost;
     }
-
-    private void OnMouseDown()
-    {
-        StartDialogue();
-    }
-
-    public void StartDialogue()
-    {
-        DialogueManager.instance.enableDialogueUI(npc, currentTree);    
-    } 
 }

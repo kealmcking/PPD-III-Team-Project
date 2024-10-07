@@ -27,8 +27,8 @@ public class CustomCameraController : MonoBehaviour
     {
         // Initialize the horizontal rotation to match the player's initial facing direction
         horizontalRotation = player.eulerAngles.y;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
     void FixedUpdate()

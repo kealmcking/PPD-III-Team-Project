@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DialogueSystem;
 using UnityEngine;
 using Input;
 using Unity.Mathematics;
@@ -9,6 +10,8 @@ public class playerController : MonoBehaviour
 {
     [SerializeField] CharacterController charController;
     [SerializeField] LayerMask ignoreMask;
+
+    public static Action INeedToTurnOffTheInteractUI;
 
     private Camera _mainCam;
 
@@ -40,6 +43,11 @@ public class playerController : MonoBehaviour
     [Header("Player Stats - Misc")]
     [SerializeField] float interactDistance;
     [SerializeField] private Light flashlight;
+    [SerializeField] private Quaternion itemHandOffset;
+
+    private Condition currentCondition;
+
+    [SerializeField] private Transform handPos;
 
     Vector3 _moveDir;
     Vector3 _playerVel;
@@ -50,6 +58,16 @@ public class playerController : MonoBehaviour
     bool _isClimbing;
     bool _isFleeing;
     bool _isSprinting;
+    
+    private void OnEnable()
+    {
+        InputManager.IHavePressedInteractButton += Interact;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.IHavePressedInteractButton -= Interact;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -75,8 +93,8 @@ public class playerController : MonoBehaviour
     {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * interactDistance, Color.red);
         rotateTowardCamera();
-        toggleFlashlight();
-        updateFlashlightDirection();
+        //toggleFlashlight();
+        //updateFlashlightDirection();
     }
     void movement()
     {
@@ -166,5 +184,60 @@ public class playerController : MonoBehaviour
         {
             flashlight.transform.rotation = Camera.main.transform.rotation;
         }
+    }
+    
+    private void Interact(EnableInteractUI interactUI)
+    {
+        
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
+
+        
+        foreach (var collider in colliders)
+        {
+            IInteractable interactable;
+            collider.gameObject.TryGetComponent(out interactable);
+            
+            if (interactable == null) continue;
+            Payload payload = interactable.GetPayload();
+            interactable.Interact();
+            
+            
+            switch (interactable)
+            {
+                case Item item:
+                    // Do item stuff
+                    // - Send to inventory
+                    break;
+                case Lore lore:
+                    lore.Interact();
+                    break;
+                case DialogueManager dialogue:
+                    // - Send to dialogue UI
+                    dialogue.enableDialogueUI(dialogue.SuspectBeingInteractedWith());
+                    break;
+                case Condition condition:
+                    if (condition.CanPickup())
+                    {
+                        currentCondition = condition;
+                        condition.gameObject.transform.SetParent(handPos);
+                        condition.transform.localPosition = Vector3.zero;
+                        condition.transform.localRotation = Quaternion.identity * itemHandOffset;
+                        interactUI.ToggleCanvas();
+                    }
+                    break;
+            }
+        }
+        
+        
+    }
+
+    private void ThrowObject()
+    {
+        if (currentCondition == null) return;
+        
+        currentCondition.gameObject.transform.parent = null;
+
+
+        // Throw object at target
     }
 }

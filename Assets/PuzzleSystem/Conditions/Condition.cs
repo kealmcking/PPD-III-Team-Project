@@ -8,7 +8,6 @@ using UnityEngine;
 public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
 {
     public Action ConditionStatus;
-    public static Action<Transform> ConditionPickUp;
     [SerializeField] ConditionConfig config;
     [SerializeField] Collider col;
     [SerializeField] CraftableItemData requiredItem;
@@ -54,15 +53,19 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Interact()
     {
-        if (isPickUp)
-            ConditionPickUp.Invoke(transform);
-        if (config is InteractConditionConfig iConfig)
-        iConfig.Interact(this);
+        // if (isPickUp)
+        // if (config is InteractConditionConfig iConfig)
+        // iConfig.Interact(this);
     }
     public Payload GetPayload() {
         if (isPickUp)
             return new Payload { isEmpty = true };
         else
             return new Payload { isEmpty = true };
+    }
+
+    public bool CanPickup()
+    {
+        return isPickUp;
     }
 }

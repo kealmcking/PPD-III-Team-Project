@@ -1,4 +1,5 @@
 using Input;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,6 +8,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    public static Action<int> TodaysDayIndexIsThis;
 
     [Header("Text Fields")]
     [SerializeField] private TextMeshProUGUI objectivesText;
@@ -152,6 +155,7 @@ public class GameManager : MonoBehaviour
         if(isTimeToSleep && wentToSleep)
         {
             _day++;
+            TodaysDayIndexIsThis.Invoke(_day);
             UpdateDayText(_day);
             StartCoroutine(Sleeping());
         }
