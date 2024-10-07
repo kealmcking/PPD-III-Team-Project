@@ -9,7 +9,7 @@ public class MovementConditionConfig : ConditionConfig
     private Vector3 initialPosition;
     public override void EnterSetup(Condition conditionObject)
     {
-        initialPosition = conditionObject.transform.position;
+        initialPosition = conditionObject.transform.position;      
     }
     public override bool ConditionStatus(Condition conditionObject)
     {

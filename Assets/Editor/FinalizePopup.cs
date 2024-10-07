@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI.Extensions.EasingCore;
 
 
 /// <summary>
@@ -39,6 +40,7 @@ public class FinalizePopup : EditorWindow
         LoadAllSOOfType<MurderMotive>();
         LoadAllSOOfType<MurderRoom>();
         LoadAllSOOfType<MurderWeapon>();
+        LoadAllSOOfType<BaseClueData>();
         LoadAllMonoOfType<Lore>();
         LoadAllMonoOfType<Item>();
         LoadAllMonoOfType<Director>();
