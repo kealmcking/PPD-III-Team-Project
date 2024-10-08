@@ -1,5 +1,7 @@
 using System;
+using DialogueSystem;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Input
@@ -29,7 +31,7 @@ namespace Input
         [SerializeField] private bool isSprint;
         [SerializeField] private bool isCrouch;
         [SerializeField] private bool isFlashLight;
-        [SerializeField] private bool isInMenu;
+        public bool isInMenu;
         
         private bool isInInteractableArea = false;
 
@@ -115,8 +117,34 @@ namespace Input
         public void OnInteract(InputAction.CallbackContext context)
         {
             if (!isInInteractableArea) return;
-            Debug.Log("Interact Sent From Input Manager");
-            IHavePressedInteractButton.Invoke(currentInteractable);
+
+            if (!isInMenu)
+            {
+                IHavePressedInteractButton.Invoke(currentInteractable);
+            }
+            else
+            {
+                if (DialogueManager.instance.GetIsActive())
+                {
+                    if (DialogueManager.instance.GetIsInDialogue())
+                    {
+                        DialogueManager.instance.advanceToNextDialogueLine();
+                    }
+                    else
+                    {
+                        GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
+                        
+                        if (selectedObject == null)
+                        {
+                            EventSystem.current.SetSelectedGameObject(DialogueManager.instance.dialogueButtons[0].gameObject);
+                            selectedObject = EventSystem.current.currentSelectedGameObject;
+                            
+                        }
+                        
+                        selectedObject.GetComponent<DialogueButton>().PressButton();
+                    }
+                }
+            }
             
         }
 
@@ -133,7 +161,6 @@ namespace Input
             else
             {
                 cancelAction.Enable(); 
-                Debug.Log("!isPause");
             }
 
             if (!isInMenu && !isPause)
@@ -184,9 +211,8 @@ namespace Input
         // Controls canceling out of menus input
         public void OnCancelled(InputAction.CallbackContext context)
         {
-            isInMenu = false;
             EnableCharacterInputs();
-            Debug.Log("Cancel Button Pressed");
+            DialogueManager.instance.disableDialogueUI();
         }
 
         // Disables all inputs the player can use in general gameplay
@@ -199,11 +225,15 @@ namespace Input
             flashLightAction.Disable();
             inventoryAction.Disable();
             cancelAction.Enable();
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
 
         // Enables all inputs the player can use in general gameplay
         public void EnableCharacterInputs()
         {
+            isInMenu = false;
+            
             moveAction.Enable();
             aimAction.Enable();
             crouchAction.Enable();
@@ -211,13 +241,15 @@ namespace Input
             flashLightAction.Enable();
             inventoryAction.Enable();
             cancelAction.Disable();
+            
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void SetInteractable(bool context, EnableInteractUI enableInteractUI)
         {
             isInInteractableArea = context;
             currentInteractable = enableInteractUI;
-
         }
         
         public void OnEnable()

@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Input;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace DialogueSystem
@@ -12,7 +14,8 @@ namespace DialogueSystem
     {
         public static DialogueManager instance;
 
-        private List<Suspect> suspects;
+        [SerializeField] private List<Suspect> suspects = new List<Suspect>();
+        private Suspect currentSuspect;
         private int currentDay;
 
         [Header("Dialogue/Dialogue Trees")] 
@@ -23,13 +26,18 @@ namespace DialogueSystem
 
         [Header("UI Elements")] 
         [SerializeField] private GameObject dialogueContainer;
-        [SerializeField] private DialogueButton[] dialogueButtons;
+        [SerializeField] public DialogueButton[] dialogueButtons;
         [SerializeField] private GameObject speakerTextContainer;
         [SerializeField] private TMP_Text speakerText;
         [SerializeField] private Image speakerImage;
         public DialogueButton lastClickedDialogueButton;
 
+        private bool isActive;
+        private bool isInDialogue;
+
         public static Action<bool> DialogueMenuActive;
+
+        private Coroutine typingCoroutine;
 
         [Header("Other")] 
         [SerializeField] private float timeBetweenLetters;
@@ -55,19 +63,44 @@ namespace DialogueSystem
             speakerImage.sprite = currentNPC.characterSprite_base;
         }
 
+        public bool GetIsActive()
+        {
+            return isActive;
+        }
+
+        public bool GetIsInDialogue()
+        {
+            return isInDialogue;
+        }
+        
         // We can send the currently selected dialogue option here
         public void selectDialogueLine(Dialogue newLine)
         {
             currentDialogueLine = newLine;
             readDialogueLine();
+            isInDialogue = true;
         }
         
         // We can read said dialogue option
         private void readDialogueLine(int dialogueIndex = 0) {
             toggleDialogueButtons(false);
             toggleSpeakerUI(true);
-            speakerText.text = currentNPC.name + ": " + currentDialogueLine.response[dialogueIndex];
-            StartCoroutine(typeLine(currentDialogueLine.response[dialogueIndex]));
+
+            if (currentDialogueLine.animationString != "")
+            {
+                SuspectBeingInteractedWith().GetComponentInChildren<Animator>().SetTrigger(currentDialogueLine.animationString);
+            }
+
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+            }
+
+            if (currentDialogueLine != null && currentDialogueLine.response.Length > dialogueIndex)
+            {
+                speakerText.text = currentNPC.name + ": " + currentDialogueLine.response[dialogueIndex];
+                typingCoroutine = StartCoroutine(typeLine(currentDialogueLine.response[dialogueIndex]));
+            }
         }
 
         // Used by a button to advance to the next line of dialogue
@@ -79,24 +112,61 @@ namespace DialogueSystem
                 currentDialogueIndex++;
                 readDialogueLine(currentDialogueIndex);
             }
-            else { exitSpeakerDialogue(); }
+            else
+            {
+                exitSpeakerDialogue();
+            }
         }
 
         // Exits the current dialogue and returns to the dialogue menu
         private void exitSpeakerDialogue()
         {
             toggleDialogueButtons(true);
+            
+            if (currentDialogueLine.shouldCloseWindow)
+            {
+                disableDialogueUI();
+                InputManager.instance.EnableCharacterInputs();
+            }
+
+            changeDialogueIfNeeded();
+            buttonInitialization();
+            
             resetDialogueData();
-            lastClickedDialogueButton.GetComponentInChildren<TMP_Text>().color = Color.gray;
+            currentTree = currentNPC.trees[currentDay];
+            isInDialogue = false;
+        }
+
+        private void changeDialogueIfNeeded()
+        {
+            if (currentTree == null) return;
+            if (currentTree.dialogues == null) return;
+            if (currentTree.dialogues.FindIndex(dialogue => dialogue == currentDialogueLine) == -1) return;
+            
+            int index = currentTree.dialogues.FindIndex(dialogue => dialogue == currentDialogueLine);
+            
+            if (index != -1 && currentDialogueLine.response != null)
+            {
+                currentTree.dialogues[index] = currentDialogueLine.newDialogue ? currentDialogueLine.newDialogue : currentDialogueLine;
+            }
         }
 
         // Just a method for easily resetting the dialogue when necessary
         private void buttonInitialization()
         {
+            if (currentTree == null) return;
             for (int i = 0; i < dialogueButtons.Length; i++)
             {
-                dialogueButtons[i].dialogue = currentTree.dialogues[i];
-                dialogueButtons[i].text.text = dialogueButtons[i].dialogue.dialogue;
+                if (i < currentTree.dialogues.Count)
+                {
+                    dialogueButtons[i].dialogue = currentTree.dialogues[i];
+                    dialogueButtons[i].text.text = dialogueButtons[i].dialogue.dialogue;
+
+                    if (!dialogueButtons[i].dialogue.hasBeenRead && dialogueButtons[i].dialogue != null)
+                    {
+                        dialogueButtons[i].text.color = Color.black;
+                    }
+                } 
             }
             
             toggleDialogueButtons(true);
@@ -109,6 +179,14 @@ namespace DialogueSystem
             {
                 button.gameObject.SetActive(set);
             }
+            
+            if (!isActive && !isInDialogue)
+            {
+                EventSystem.current.firstSelectedGameObject = dialogueButtons[0].gameObject;
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+            }
+            
+            isActive = true;
         }
 
         // For enabling/disabling the speaker ui element when necessary
@@ -121,22 +199,36 @@ namespace DialogueSystem
         // For enabling the overall dialogue UI
         public void enableDialogueUI(Suspect suspect)
         {
-            currentNPC = suspect.Npc;
-            currentTree = suspect.Npc.trees[currentDay];
+            currentSuspect = suspect;
+            currentNPC = currentSuspect.Npc;
+            currentTree = currentNPC.trees[currentDay];
             speakerImage.sprite = currentNPC.characterSprite_base;
             dialogueContainer.SetActive(true);
             DialogueMenuActive.Invoke(true);
+            InputManager.instance.DisableCharacterInputs();
+            InputManager.instance.isInMenu = true;
+            
+            
+            resetDialogueData(); // Reset at the beginning
             buttonInitialization();
+            isActive = true;
         }
 
         // For disabling the overall dialogue UI
         public void disableDialogueUI()
         {
+            InputManager.instance.isInMenu = true;
+            EventSystem.current.SetSelectedGameObject(null);
             dialogueContainer.SetActive(false);
             toggleDialogueButtons(false);
             resetDialogueData();
             currentTree = null;
+            currentSuspect.IsBeingInteractedWith = false;
+            currentSuspect = null;
             DialogueMenuActive.Invoke(false);
+            InputManager.instance.EnableCharacterInputs();
+            isActive = false;
+            isInDialogue = false;
         }
 
         IEnumerator typeLine(string line)
@@ -148,6 +240,7 @@ namespace DialogueSystem
                 speakerText.text += letter;
                 yield return new WaitForSeconds(timeBetweenLetters);
             }
+            
         }
         
         public void Interact()
@@ -185,6 +278,23 @@ namespace DialogueSystem
         { 
             Director.SendSuspects -= AddSuspectsToList;
             GameManager.TodaysDayIndexIsThis -= SetDay;
+
+            foreach (var suspect in suspects)
+            {
+                foreach (var tree in suspect.Npc.trees)
+                {
+                    foreach (var dialogue in tree.dialogues)
+                    {
+                        dialogue.ResetData();
+                    }
+                }
+            }
+
+            currentNPC = null;
+            currentTree = null;
+            currentDialogueLine = null;
+            currentDialogueIndex = 0;
+            dialogueContainer.SetActive(false);
         }
 
         private void AddSuspectsToList(List<Suspect> context)
@@ -195,6 +305,11 @@ namespace DialogueSystem
         private void SetDay(int day)
         {
             currentDay = day;
+        }
+
+        public void AddSuspect(Suspect sus)
+        {
+            suspects.Add(sus);
         }
         
     }

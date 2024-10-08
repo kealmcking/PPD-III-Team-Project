@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4dee4252602d5442896bac1ad1c3a68, type: 3}
   m_Name: TestDialogue02
   m_EditorClassIdentifier: 
-  dialogue: Pow Pow Pow
+  dialogue: How do I find clues?
   hasBeenRead: 0
+  shouldCloseWindow: 0
   response:
-  - AAAAAAH
-  - WAAAAAAAH
-  - BAAAAAAAAAH
+  - All you have to do is walk up to things and press the interact button.
+  - A button will appear above an object if it can be interacted with, most of the
+    time.
+  - Sometimes, you can only tell by a glow. (this is not working yet).
+  newDialogue: {fileID: 0}
