@@ -18,7 +18,7 @@ public class FinalizePopup : EditorWindow
     static KeyValuePair<UnityEngine.Object, FieldInfo> selectedKey = new KeyValuePair<UnityEngine.Object, FieldInfo>();
     static List<UnityEngine.Object> classScripts = new List<UnityEngine.Object>();
     static Dictionary<UnityEngine.Object,FieldInfo> filteredScripts = new Dictionary<UnityEngine.Object, FieldInfo>();
-   // public bool isLoaded = false;
+  
     string prefabFolderPath;
     string prefabPath;
     GameObject prefab;
@@ -40,7 +40,7 @@ public class FinalizePopup : EditorWindow
         LoadAllSOOfType<MurderMotive>();
         LoadAllSOOfType<MurderRoom>();
         LoadAllSOOfType<MurderWeapon>();
-        LoadAllSOOfType<BaseClueData>();
+        LoadAllSOOfType<BaseItemData>();
         LoadAllMonoOfType<Lore>();
         LoadAllMonoOfType<Item>();
         LoadAllMonoOfType<Director>();
@@ -245,7 +245,7 @@ public class FinalizePopup : EditorWindow
             foreach (var field in fields)
             {
               
-                if (field.FieldType == targetType || field.FieldType.IsSubclassOf(targetType)|| field.FieldType == targetType.BaseType)
+                if (field.FieldType.IsSubclassOf(targetType) || field.FieldType == targetType || field.FieldType == targetType.BaseType || field.FieldType == targetType.BaseType.BaseType)
                 {
                     if (!filteredScripts.ContainsKey(item))
                     {

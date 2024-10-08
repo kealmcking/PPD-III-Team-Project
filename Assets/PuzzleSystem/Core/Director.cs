@@ -13,7 +13,7 @@ public class Director : MonoBehaviour
 
     public static Action<List<Puzzle>> SendPuzzles;
     public static Action<List<Lore>> SendLore;
-    public static Action<BaseClueData> SendFoundClue;
+    public static Action<BaseItemData> SendFoundClue;
 
     public static Action<List<MurderRoom>> SendMurderRooms;
     public static Action<List<MurderWeapon>> SendMurderWeapons;
@@ -113,9 +113,9 @@ public class Director : MonoBehaviour
     }
     private class ClueController
     {
-        private List<BaseClueData> foundClues = new List<BaseClueData>();
+        private List<BaseItemData> foundClues = new List<BaseItemData>();
         public ClueController(){ }
-        public void AddClue(BaseClueData clue)
+        public void AddClue(BaseItemData clue)
         { 
             foundClues.Add(clue);
             SendFoundClue.Invoke(clue);

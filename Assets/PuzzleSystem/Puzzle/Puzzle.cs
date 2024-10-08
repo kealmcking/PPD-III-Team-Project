@@ -13,7 +13,7 @@ using UnityEngine;
 public class Puzzle : MonoBehaviour, ICustomizableComponent
 {
     [SerializeField] List<Condition> conditions = new List<Condition>();
-    [SerializeField] BaseClueData reward;
+    [SerializeField] BaseItemData reward;
     [SerializeField] AudioClip clip;
     [SerializeField] ParticleSystem vfx;
     [SerializeField, Tooltip("List of all the craftable components required to create the items to finish this puzzle")] List<CraftableComponentData> components = new List<CraftableComponentData>(3);
