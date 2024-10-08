@@ -1,7 +1,11 @@
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86;
+using static UnityEngine.Rendering.DebugUI;
 /// <summary>
 /// Manages the puzzle system and determines the initial game state.
 /// </summary>
@@ -32,7 +36,7 @@ public class Director : MonoBehaviour
       "It is also used to update the UI for instance when guessing the motive which was used for the murder")] List<MurderMotive> motives;
     [SerializeField,Tooltip("This represents all the possible cases available for this level")] List<Case> cases;
     [SerializeField] List<Puzzle> scenePuzzles;
-    private List<Lore> sceneLore;
+    [SerializeField] List<Lore> sceneLore;
     private List<Suspect> suspects;
     private GameSelection gameSelection;
     private ClueController cController;
@@ -53,35 +57,43 @@ public class Director : MonoBehaviour
         cController = new ClueController();
         List<Puzzle> activeP = new List<Puzzle>();
         List<Lore> activeL = new List<Lore>();
+
+
         if (scenePuzzles.Count > 0)
         {
             foreach (Puzzle puzzle in gameSelection.GetCase().Puzzles)
             {
-                Puzzle sPuzzle = scenePuzzles.FirstOrDefault(sp => sp.Equals(puzzle));
-                if (sPuzzle != null)
+                foreach(var sPuzzle in scenePuzzles)
                 {
-                    sPuzzle.gameObject.SetActive(true);
-                    activeP.Add(sPuzzle);
+                    if (puzzle.ID == sPuzzle.ID)
+                    {
+                        sPuzzle.GameObject().SetActive(true);
+                        activeP.Add(sPuzzle);
+                    }
                 }
+               
+               
             }
         }
         if (sceneLore.Count > 0)
         {
             foreach (Lore lore in gameSelection.GetCase().Lore)
             {
-                Lore sLore = sceneLore.FirstOrDefault(sp => sp.Equals(lore));
-                if (sLore != null)
+                foreach (var sLore in sceneLore)
                 {
-                    sLore.gameObject.SetActive(true);
-                    activeL.Add(sLore);
+                    if (lore.ID == sLore.ID)
+                    {
+                        sLore.GameObject().SetActive(true);
+                        activeL.Add(sLore);
+                    }
                 }
             }
-            pController = new PuzzleController(activeP);
-            lController = new LoreController(activeL);
+           
         }
-          
-        
-        
+        pController = new PuzzleController(activeP);
+        lController = new LoreController(activeL);
+
+
 
         /*SendMurderMotives.Invoke(motives);
         SendMurderRooms.Invoke(rooms);

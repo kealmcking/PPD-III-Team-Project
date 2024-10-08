@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
@@ -13,7 +14,7 @@ using UnityEngine;
 public class Puzzle : MonoBehaviour, ICustomizableComponent
 {
     [SerializeField] List<Condition> conditions = new List<Condition>();
-    [SerializeField] BaseItemData reward;
+    [SerializeField] BaseClueData reward;
     [SerializeField] AudioClip clip;
     [SerializeField] ParticleSystem vfx;
     [SerializeField, Tooltip("List of all the craftable components required to create the items to finish this puzzle")] List<CraftableComponentData> components = new List<CraftableComponentData>(3);
@@ -23,11 +24,10 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
     List<Transform> componentPositions = new List<Transform>();
 
     [SerializeField, Tooltip("Simply the position where the reward(clue) will be spawned. after completing the puzzle.")] Transform rewardSpawnPosition;
+    private Guid id = new Guid();
+    public Guid ID => id;
     public bool IsComplete{get; private set;}
-    private void Awake()
-    {
-        gameObject.SetActive(false);
-    }
+    
     private void OnEnable()
     {
         conditions.ForEach(c => c.ConditionStatus += UpdateCondition);

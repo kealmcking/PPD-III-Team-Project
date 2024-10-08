@@ -7,6 +7,8 @@ public class Lore : MonoBehaviour,IInteractable, ICustomizableComponent
 {
     [SerializeField, Tooltip("Place a description explaining the lore here")] Description description;
     [SerializeField, Tooltip("represents icon image")] protected Sprite icon;
+    private Guid id = new Guid();
+    public Guid ID => id;
     public void Interact()
     {
         

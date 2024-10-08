@@ -8,6 +8,8 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
 {
     [SerializeField] protected BaseItemData data;
     public BaseItemData Data => data;
+    private Guid id = new Guid();
+    public Guid ID => id;
     public virtual void Interact()
     {
         Destroy(gameObject, .5f);

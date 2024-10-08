@@ -40,7 +40,7 @@ public class FinalizePopup : EditorWindow
         LoadAllSOOfType<MurderMotive>();
         LoadAllSOOfType<MurderRoom>();
         LoadAllSOOfType<MurderWeapon>();
-        LoadAllSOOfType<BaseItemData>();
+        LoadAllSOOfType<BaseClueData>();
         LoadAllMonoOfType<Lore>();
         LoadAllMonoOfType<Item>();
         LoadAllMonoOfType<Director>();
@@ -245,7 +245,7 @@ public class FinalizePopup : EditorWindow
             foreach (var field in fields)
             {
               
-                if (field.FieldType.IsSubclassOf(targetType) || field.FieldType == targetType || field.FieldType == targetType.BaseType || field.FieldType == targetType.BaseType.BaseType)
+                if (field.FieldType.IsSubclassOf(targetType) || field.FieldType == targetType || field.FieldType == targetType.BaseType)
                 {
                     if (!filteredScripts.ContainsKey(item))
                     {
