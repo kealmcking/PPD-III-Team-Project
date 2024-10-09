@@ -10,7 +10,7 @@ public class Case : ScriptableObject, ICustomizableComponent
     [SerializeField] CaseDifficulty difficulty = CaseDifficulty.Easy;
     [SerializeField,Tooltip("This can be a unique name for the killers 'case' ")] string caseName;
     [SerializeField] List<Lore> lore = new List<Lore>();
-    [SerializeField] List<Puzzle> puzzles = new List<Puzzle>();
+    [SerializeField] List<Puzzle> puzzles = new List<Puzzle>(); 
     public List<Puzzle> Puzzles => puzzles;
     public List<Lore> Lore => lore;
     public string CaseName => caseName;

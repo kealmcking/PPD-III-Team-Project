@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI.Extensions.EasingCore;
 
 
 /// <summary>
@@ -41,12 +40,13 @@ public class FinalizePopup : EditorWindow
         LoadAllSOOfType<MurderRoom>();
         LoadAllSOOfType<MurderWeapon>();
         LoadAllSOOfType<BaseClueData>();
+        LoadAllSOOfType<SuspectData>();
         LoadAllMonoOfType<Lore>();
         LoadAllMonoOfType<Item>();
         LoadAllMonoOfType<Director>();
         LoadAllMonoOfType<Puzzle>();
         LoadAllMonoOfType<Condition>();
-       
+        LoadAllMonoOfType<Suspect>();
     }
     /// <summary>
     /// Used statically from the generic component button script to set specific parameters pertaining to the selected script

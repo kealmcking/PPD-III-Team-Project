@@ -32,7 +32,7 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
     {
         conditions.ForEach(c => c.ConditionStatus += UpdateCondition);
         if (components.Count > 0 && componentPositions.Count > 0) 
-        components.ForEach((c) => {Instantiate(c.Prefab).GameObject().transform.position = Randomizer.GetRandomizedObjectFromList(ref componentPositions).position;});
+        components.ForEach((c) => {Instantiate(c.Prefab).GameObject().transform.position = Randomizer.GetRandomizedObjectFromListAndRemove(ref componentPositions).position;});
     }
     private void OnDisable()
     {

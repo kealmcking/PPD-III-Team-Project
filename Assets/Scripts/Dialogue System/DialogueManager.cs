@@ -121,8 +121,8 @@ namespace DialogueSystem
         // For enabling the overall dialogue UI
         public void enableDialogueUI(Suspect suspect)
         {
-            currentNPC = suspect.Npc;
-            currentTree = suspect.Npc.trees[currentDay];
+            currentNPC = suspect.Data.Npc;
+            currentTree = suspect.Data.Npc.trees[currentDay];
             speakerImage.sprite = currentNPC.characterSprite_base;
             dialogueContainer.SetActive(true);
             DialogueMenuActive.Invoke(true);
@@ -177,14 +177,14 @@ namespace DialogueSystem
 
         private void OnEnable()
         {
-            Director.SendSuspects += AddSuspectsToList;
-            GameManager.TodaysDayIndexIsThis += SetDay;
+            EventSheet.SendSuspects += AddSuspectsToList;
+            EventSheet.TodaysDayIndexIsThis += SetDay;
         }
 
         private void OnDisable()
-        { 
-            Director.SendSuspects -= AddSuspectsToList;
-            GameManager.TodaysDayIndexIsThis -= SetDay;
+        {
+            EventSheet.SendSuspects -= AddSuspectsToList;
+            EventSheet.TodaysDayIndexIsThis -= SetDay;
         }
 
         private void AddSuspectsToList(List<Suspect> context)
