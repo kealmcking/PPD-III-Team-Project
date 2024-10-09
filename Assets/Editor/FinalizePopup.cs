@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI.Extensions.EasingCore;
 
 
 /// <summary>
@@ -18,7 +17,7 @@ public class FinalizePopup : EditorWindow
     static KeyValuePair<UnityEngine.Object, FieldInfo> selectedKey = new KeyValuePair<UnityEngine.Object, FieldInfo>();
     static List<UnityEngine.Object> classScripts = new List<UnityEngine.Object>();
     static Dictionary<UnityEngine.Object,FieldInfo> filteredScripts = new Dictionary<UnityEngine.Object, FieldInfo>();
-   // public bool isLoaded = false;
+  
     string prefabFolderPath;
     string prefabPath;
     GameObject prefab;
@@ -41,12 +40,13 @@ public class FinalizePopup : EditorWindow
         LoadAllSOOfType<MurderRoom>();
         LoadAllSOOfType<MurderWeapon>();
         LoadAllSOOfType<BaseClueData>();
+        LoadAllSOOfType<SuspectData>();
         LoadAllMonoOfType<Lore>();
         LoadAllMonoOfType<Item>();
         LoadAllMonoOfType<Director>();
         LoadAllMonoOfType<Puzzle>();
         LoadAllMonoOfType<Condition>();
-       
+        LoadAllMonoOfType<Suspect>();
     }
     /// <summary>
     /// Used statically from the generic component button script to set specific parameters pertaining to the selected script
@@ -245,7 +245,7 @@ public class FinalizePopup : EditorWindow
             foreach (var field in fields)
             {
               
-                if (field.FieldType == targetType || field.FieldType.IsSubclassOf(targetType)|| field.FieldType == targetType.BaseType)
+                if (field.FieldType.IsSubclassOf(targetType) || field.FieldType == targetType || field.FieldType == targetType.BaseType)
                 {
                     if (!filteredScripts.ContainsKey(item))
                     {

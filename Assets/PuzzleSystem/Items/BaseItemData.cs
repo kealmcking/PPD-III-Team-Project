@@ -5,10 +5,13 @@ using UnityEngine;
 /// </summary>
 public abstract class BaseItemData : ScriptableObject, ICustomizableComponent
 {
+
     [SerializeField] protected string itemName;
     [SerializeField] protected Description description;
     [SerializeField] protected Item itemPrefab;
-    [SerializeField, Tooltip("Only place either a texture or a sprite for the icon, not both!")] protected Sprite icon;
+    [SerializeField, Tooltip("represents the display icon")] protected Sprite icon;
+    private Guid id = new Guid();
+    public Guid ID => id;
     public Item Prefab => itemPrefab;
     public Sprite Icon => icon;
     public string Name => itemName;

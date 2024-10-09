@@ -6,19 +6,19 @@ using Input;
 
 public class CustomCameraController : MonoBehaviour
 {
-    public Transform player;              // Reference to the player's transform
-    public Vector3 offset = new Vector3(0.5f, 1.5f, -3f);  // Camera offset (with x for shoulder effect)
-    public float smoothSpeed = 0.125f;    // Smoothing speed for camera movement
-    public float sensitivity = 100f;      // Sensitivity for manual camera control
-    public LayerMask collisionLayers;     // Layers to check for camera collision
-    public float collisionBuffer = 0.2f;  // Buffer distance for collision
-    public Camera cameraComponent;        // Reference to the camera component
-    public float normalFOV = 60f;         // Normal field of view
-    public float sprintFOV = 75f;         // Field of view during sprint
-    public float fovSpeed = 2f;           // Speed for FOV transition
+    public Transform player;                                        // Reference to the player's transform
+    public Vector3 offset = new Vector3(0.5f, 1.5f, -3f);     // Camera offset (with x for shoulder effect)
+    public float smoothSpeed = 0.125f;                              // Smoothing speed for camera movement
+    public float sensitivity = 100f;                                // Sensitivity for manual camera control
+    public LayerMask collisionLayers;                               // Layers to check for camera collision
+    public float collisionBuffer = 0.2f;                            // Buffer distance for collision
+    public Camera cameraComponent;                                  // Reference to the camera component
+    public float normalFOV = 60f;                                   // Normal field of view
+    public float sprintFOV = 75f;                                   // Field of view during sprint
+    public float fovSpeed = 2f;                                     // Speed for FOV transition
 
-    private float verticalRotation = 0f;  // To track vertical (pitch) rotation
-    private float horizontalRotation = 0f;  // To track horizontal (yaw) rotation
+    private float verticalRotation = 0f;                            // To track vertical (pitch) rotation
+    private float horizontalRotation = 0f;                          // To track horizontal (yaw) rotation
 
     private Vector2 smoothedMouseDelta;
     private float mouseSmoothing = 0.1f;
@@ -27,8 +27,8 @@ public class CustomCameraController : MonoBehaviour
     {
         // Initialize the horizontal rotation to match the player's initial facing direction
         horizontalRotation = player.eulerAngles.y;
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void FixedUpdate()

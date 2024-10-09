@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
@@ -23,16 +24,15 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
     List<Transform> componentPositions = new List<Transform>();
 
     [SerializeField, Tooltip("Simply the position where the reward(clue) will be spawned. after completing the puzzle.")] Transform rewardSpawnPosition;
+    private Guid id = new Guid();
+    public Guid ID => id;
     public bool IsComplete{get; private set;}
-    private void Awake()
-    {
-        gameObject.SetActive(false);
-    }
+    
     private void OnEnable()
     {
         conditions.ForEach(c => c.ConditionStatus += UpdateCondition);
         if (components.Count > 0 && componentPositions.Count > 0) 
-        components.ForEach((c) => {Instantiate(c.Prefab).GameObject().transform.position = Randomizer.GetRandomizedObjectFromList(ref componentPositions).position;});
+        components.ForEach((c) => {Instantiate(c.Prefab).GameObject().transform.position = Randomizer.GetRandomizedObjectFromListAndRemove(ref componentPositions).position;});
     }
     private void OnDisable()
     {

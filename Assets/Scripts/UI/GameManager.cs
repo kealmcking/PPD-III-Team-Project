@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public static Action<int> TodaysDayIndexIsThis;
+  
 
     [Header("Text Fields")]
     [SerializeField] private TextMeshProUGUI objectivesText;
@@ -118,7 +118,10 @@ public class GameManager : MonoBehaviour
         optionsUI.SetActive(true);
         menuActive = optionsUI;
         pauseUI.SetActive(false);
+        ButtonFunctions.instance.LoadOptions();
     }
+
+    
 
     public void UpdateObjectiveText(string text)
     {
@@ -156,7 +159,7 @@ public class GameManager : MonoBehaviour
         if(isTimeToSleep && wentToSleep)
         {
             _day++;
-            TodaysDayIndexIsThis.Invoke(_day);
+            EventSheet.TodaysDayIndexIsThis.Invoke(_day);
             UpdateDayText(_day);
             StartCoroutine(Sleeping());
         }

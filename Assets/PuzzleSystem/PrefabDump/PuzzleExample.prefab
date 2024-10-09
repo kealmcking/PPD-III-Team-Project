@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1734174547144242715}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.498, y: 17.44, z: 10.91}
+  m_LocalPosition: {x: -2.498, y: 0, z: 10.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121,11 +121,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 2c2700bd38dd2d948979515baed7ff86, type: 2}
-  col: {fileID: 0}
+  col: {fileID: 5875596541420380005}
   requiredItem: {fileID: 0}
   goal: {fileID: 0}
   isPickUp: 0
   isConditionMet: 0
+  hasBeenPickedUp: 0
 --- !u!1 &1798045105244234074
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +155,7 @@ Transform:
   m_GameObject: {fileID: 1798045105244234074}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.1, y: 17.462, z: 10.87}
+  m_LocalPosition: {x: 9.1, y: 0, z: 10.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -249,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8727628530320921394
 Transform:
   m_ObjectHideFlags: 0
@@ -334,7 +335,7 @@ Transform:
   m_GameObject: {fileID: 3419085109837337105}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.9, y: 17.462, z: 4.56}
+  m_LocalPosition: {x: -5.9, y: 0, z: 4.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -441,7 +442,7 @@ Transform:
   m_GameObject: {fileID: 3644548960375116507}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.14, y: 17.42, z: 6.35}
+  m_LocalPosition: {x: 1.14, y: 0, z: 6.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -549,7 +550,7 @@ Transform:
   m_GameObject: {fileID: 4514203586822956085}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.979, y: 17.44, z: 13.247}
+  m_LocalPosition: {x: -2.979, y: 0, z: 13.247}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -641,11 +642,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 2c2700bd38dd2d948979515baed7ff86, type: 2}
-  col: {fileID: 0}
+  col: {fileID: 1275851299689575719}
   requiredItem: {fileID: 0}
   goal: {fileID: 0}
   isPickUp: 0
   isConditionMet: 0
+  hasBeenPickedUp: 0
 --- !u!1 &4832982735436000103
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,7 +676,7 @@ Transform:
   m_GameObject: {fileID: 4832982735436000103}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.13, y: 18.733, z: -5.554}
+  m_LocalPosition: {x: -3.13, y: 0, z: -5.554}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -781,7 +783,7 @@ Transform:
   m_GameObject: {fileID: 5263329900182280526}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.53, y: 17.462, z: 15.61}
+  m_LocalPosition: {x: 1.53, y: 0, z: 15.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -888,7 +890,7 @@ Transform:
   m_GameObject: {fileID: 5288352647416366876}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.291, y: 17.462, z: 11.426}
+  m_LocalPosition: {x: 0.291, y: 0, z: 11.426}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -995,7 +997,7 @@ Transform:
   m_GameObject: {fileID: 5520603502780213574}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 17.462, z: 2.28}
+  m_LocalPosition: {x: 13.9, y: 0, z: 2.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1103,7 +1105,7 @@ Transform:
   m_GameObject: {fileID: 5779875961159485636}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.335, y: 17.44, z: 12.946}
+  m_LocalPosition: {x: -1.335, y: 0, z: 12.946}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1195,11 +1197,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 2c2700bd38dd2d948979515baed7ff86, type: 2}
-  col: {fileID: 0}
+  col: {fileID: 5966527928111822943}
   requiredItem: {fileID: 0}
   goal: {fileID: 0}
   isPickUp: 0
   isConditionMet: 0
+  hasBeenPickedUp: 0
 --- !u!1 &6464940682941241281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,7 +1231,7 @@ Transform:
   m_GameObject: {fileID: 6464940682941241281}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.33, y: 17.462, z: 1.75}
+  m_LocalPosition: {x: -15.33, y: 0, z: 1.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
