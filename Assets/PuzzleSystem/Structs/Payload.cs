@@ -8,4 +8,6 @@ public struct Payload
     public Lore lore;
     public BaseItemData item;
     public Condition condition;
+    public Suspect suspect;
+    public Ghost ghost;
 }

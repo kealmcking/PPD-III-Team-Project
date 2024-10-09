@@ -7,6 +7,8 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
 {
+    private Guid id = new Guid();
+    public Guid ID => id;
     public Action ConditionStatus;
     [SerializeField] ConditionConfig config;
     [SerializeField] Collider col;

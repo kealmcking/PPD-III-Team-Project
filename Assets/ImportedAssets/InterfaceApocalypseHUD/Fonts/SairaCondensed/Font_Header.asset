@@ -1172,21 +1172,6 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-  - m_Index: 690
-    m_Metrics:
-      m_Width: 12.15625
-      m_Height: 81.359375
-      m_HorizontalBearingX: 4.765625
-      m_HorizontalBearingY: 66.875
-      m_HorizontalAdvance: 21.6875
-    m_GlyphRect:
-      m_X: 335
-      m_Y: 293
-      m_Width: 13
-      m_Height: 82
-    m_Scale: 1
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
   - m_Index: 683
     m_Metrics:
       m_Width: 45.171875
@@ -1202,6 +1187,21 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
+  - m_Index: 690
+    m_Metrics:
+      m_Width: 12.15625
+      m_Height: 81.359375
+      m_HorizontalBearingX: 4.765625
+      m_HorizontalBearingY: 66.875
+      m_HorizontalAdvance: 21.6875
+    m_GlyphRect:
+      m_X: 335
+      m_Y: 293
+      m_Width: 13
+      m_Height: 82
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   m_CharacterTable:
   - m_ElementType: 1
     m_Unicode: 32
@@ -1210,6 +1210,10 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 37
     m_GlyphIndex: 667
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 38
+    m_GlyphIndex: 683
     m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 40
@@ -1490,10 +1494,6 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 8230
     m_GlyphIndex: 586
-    m_Scale: 1
-  - m_ElementType: 1
-    m_Unicode: 38
-    m_GlyphIndex: 683
     m_Scale: 1
   m_AtlasTextures:
   - {fileID: -6736409068239584939}
@@ -2089,7 +2089,9 @@ Material:
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - GLOW_ON
+  - UNDERLAY_INNER
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -2110,8 +2112,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 86d1c97cb5afd0840b2ae3d579f38744, type: 3}
+        m_Scale: {x: 0.84, y: 0.69}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: -6736409068239584939}
@@ -2134,13 +2136,13 @@ Material:
     - _ColorMask: 15
     - _CullMode: 0
     - _Diffuse: 0.5
-    - _FaceDilate: 0
+    - _FaceDilate: -0.14
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
-    - _GlowInner: 0.05
-    - _GlowOffset: 0
-    - _GlowOuter: 0.05
-    - _GlowPower: 0.75
+    - _GlowInner: 0
+    - _GlowOffset: 1
+    - _GlowOuter: 0
+    - _GlowPower: 1
     - _GradientScale: 10
     - _LightAngle: 3.1416
     - _MaskSoftnessX: 0
@@ -2148,12 +2150,12 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0
+    - _OutlineWidth: 0.024
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9
-    - _ScaleRatioB: 0.73125
-    - _ScaleRatioC: 0.73125
+    - _ScaleRatioB: 0.85725003
+    - _ScaleRatioC: 0.85725003
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -2166,7 +2168,7 @@ Material:
     - _StencilWriteMask: 255
     - _TextureHeight: 1024
     - _TextureWidth: 1024
-    - _UnderlayDilate: 0
+    - _UnderlayDilate: -1
     - _UnderlayOffsetX: 0
     - _UnderlayOffsetY: 0
     - _UnderlaySoftness: 0
@@ -2177,13 +2179,13 @@ Material:
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
-    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
+    - _FaceColor: {r: 1, g: 0, b: 0, a: 1}
+    - _GlowColor: {r: 0, g: 0, b: 0, a: 0}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 8, g: 8, b: 8, a: 0}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
