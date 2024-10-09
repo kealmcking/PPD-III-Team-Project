@@ -8,6 +8,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    private audioManager audioManager;
 
   
 
@@ -86,6 +87,8 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         characterUI.SetActive(false);
+
+        audioManager.PlaySFX(audioManager.UIOpen, audioManager.UIVol);
     }
 
     public void UnpauseGame()
@@ -97,6 +100,8 @@ public class GameManager : MonoBehaviour
         menuActive.SetActive(isPaused);
         menuActive = null;
         characterUI.SetActive(true);
+
+        audioManager.PlaySFX(audioManager.UIClose, audioManager.UIVol);
     }
 
     public void WinGame()
@@ -104,6 +109,8 @@ public class GameManager : MonoBehaviour
         PauseGame();
         menuActive = winUI;
         menuActive.SetActive(true);
+
+        //audioManager.PlaySFX(audioManager.UIWin, audioManager.UIVol);
     }
 
     public void LoseGame()
@@ -111,6 +118,8 @@ public class GameManager : MonoBehaviour
         PauseGame();
         menuActive = loseUI;
         menuActive.SetActive(true);
+
+        //audioManager.PlaySFX(audioManager.UILose, audioManager.UIVol);
     }
 
     public void OptionsMenu()
@@ -119,9 +128,11 @@ public class GameManager : MonoBehaviour
         menuActive = optionsUI;
         pauseUI.SetActive(false);
         ButtonFunctions.instance.LoadOptions();
+
+        audioManager.PlaySFX(audioManager.UIOpen, audioManager.UIVol);
     }
 
-    
+
 
     public void UpdateObjectiveText(string text)
     {
