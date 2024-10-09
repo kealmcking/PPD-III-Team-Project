@@ -47,6 +47,9 @@ public class playerController : MonoBehaviour
     [SerializeField] private Light flashlight;
     [SerializeField] private Quaternion itemHandOffset;
 
+    [Header("Player Stats - Gravity")] 
+    [SerializeField] private float gravity = -9.81f;
+
     private Condition currentCondition;
 
     [SerializeField] private Transform handPos;
@@ -86,13 +89,14 @@ public class playerController : MonoBehaviour
 
         _newCenter = _origCenter;
         _newHeight = _origHeight;
+
+        _playerVel = Vector3.zero;
     }
 
     private void FixedUpdate()
     {
         movement();
         crouch();
-        
     }
 
     // Update is called once per frame
@@ -149,6 +153,22 @@ public class playerController : MonoBehaviour
         // Update animator parameters
         _animator.SetFloat("horiz", moveX);
         _animator.SetFloat("vert", newVertValue);
+        
+        ApplyGravity();
+    }
+
+    private void ApplyGravity()
+    {
+        if (charController.isGrounded)
+        {
+            _playerVel.y = 0;
+        }
+        else
+        {
+            _playerVel.y += gravity * Time.deltaTime;
+        }
+
+        charController.Move(_playerVel * Time.deltaTime);
     }
 
     void rotateTowardCamera()
@@ -242,9 +262,10 @@ public class playerController : MonoBehaviour
                 case Lore lore:
                     lore.Interact();
                     break;
-                case DialogueManager dialogue:
+                case Suspect suspect:
                     // - Send to dialogue UI
-                    dialogue.enableDialogueUI(dialogue.SuspectBeingInteractedWith());
+                    suspect.IsBeingInteractedWith = true;
+                    DialogueManager.instance.enableDialogueUI(DialogueManager.instance.SuspectBeingInteractedWith());
                     break;
                 case Condition condition:
                     if (condition.CanPickup() && !condition.HasBeenPickedUp())
