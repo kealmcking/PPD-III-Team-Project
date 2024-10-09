@@ -118,7 +118,10 @@ public class GameManager : MonoBehaviour
         optionsUI.SetActive(true);
         menuActive = optionsUI;
         pauseUI.SetActive(false);
+        ButtonFunctions.instance.LoadOptions();
     }
+
+    
 
     public void UpdateObjectiveText(string text)
     {
