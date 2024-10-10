@@ -270,14 +270,14 @@ namespace DialogueSystem
 
         private void OnEnable()
         {
-            Director.SendSuspects += AddSuspectsToList;
-            GameManager.TodaysDayIndexIsThis += SetDay;
+            //Director.SendSuspects += AddSuspectsToList;
+            //GameManager.TodaysDayIndexIsThis += SetDay;
         }
 
         private void OnDisable()
         { 
-            Director.SendSuspects -= AddSuspectsToList;
-            GameManager.TodaysDayIndexIsThis -= SetDay;
+            //Director.SendSuspects -= AddSuspectsToList;
+            //GameManager.TodaysDayIndexIsThis -= SetDay;
 
             foreach (var suspect in suspects)
             {
