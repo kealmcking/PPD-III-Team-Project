@@ -10,6 +10,8 @@ public class AIController : MonoBehaviour
     public Vector3 PlayerDirection => playerDir;
     [SerializeField] NavMeshAgent agent;
     Vector3 startingPos;
+    [SerializeField] Animator anim;
+    [SerializeField] int animSpeedTrans;
     float stoppingDistanceOrig;
     bool isRoaming;
     bool playerInRange;
@@ -36,6 +38,11 @@ public class AIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        anim.SetFloat("Blend", agent.velocity.normalized.magnitude);
+       // float agentSpeed = agent.velocity.normalized.magnitude;
+        //float animSpeed = anim.GetFloat("Blend");
+        
+
         playerPos = GameObject.FindWithTag("Player").transform.position;
         playerDir = playerPos - transform.position;
         if (playerInRange)
