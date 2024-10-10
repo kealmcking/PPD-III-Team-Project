@@ -1,3 +1,4 @@
+using DialogueSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,11 +11,17 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] SuspectData data;
     [SerializeField] GameObject mask;
     [SerializeField] bool isBeingInteractedWith;
-
+    [SerializeField] NPC npc;
+    
     Guid id = new Guid();
+    public NPC Npc => npc;
     public SuspectData Data => data;
     public bool IsKiller { get; set; } = false;
-    public bool IsBeingInteractedWith => isBeingInteractedWith;
+    public bool IsBeingInteractedWith
+    {
+        get => isBeingInteractedWith;
+        set => isBeingInteractedWith = value;
+    }
     public Guid ID => id;
     public GameObject Mask => mask;
     public void Awake()
@@ -24,6 +31,10 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
         {
             Debug.LogError("You do not have a mask component on this suspect: " +name+", add a mask before continuing");
         }
+    }
+    public void Start()
+    {
+        DialogueManager.instance.AddSuspect(this);
     }
     public void ActivateMask()
     {
