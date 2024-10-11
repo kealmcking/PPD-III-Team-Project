@@ -12,7 +12,8 @@ public class Suspect : MonoBehaviour, IInteractable
     [SerializeField] Sprite icon; 
     [SerializeField] NPC npc;
     [SerializeField] bool isBeingInteractedWith;
-    public bool IsKiller { get; set; } = false;
+    [SerializeField] SuspectData data;
+    [SerializeField] GameObject mask;
     public string Name => suspectName;  
     public Sprite Icon => icon;
     public NPC Npc => npc;
@@ -35,6 +36,27 @@ public class Suspect : MonoBehaviour, IInteractable
     public void Interact()
     {
         // Do interaction stuff here
+    }
+
+    Guid id = new Guid();
+    public SuspectData Data => data;
+    public bool IsKiller { get; set; } = false;
+    public Guid ID => id;
+    public GameObject Mask => mask;
+    public void Awake()
+    {
+        //mask = transform.Find("Mask").gameObject;
+        if (mask == null)
+        {
+            Debug.LogError("You do not have a mask component on this suspect: " + name + ", add a mask before continuing");
+        }
+    }
+    public void ActivateMask()
+    {
+        if (mask != null)
+        {
+            mask.SetActive(true);
+        }
     }
 
 
