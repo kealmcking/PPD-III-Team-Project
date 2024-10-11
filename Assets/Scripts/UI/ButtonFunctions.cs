@@ -19,6 +19,8 @@ public class ButtonFunctions : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        
         LoadOptions();
     }
 
@@ -80,4 +82,5 @@ public class ButtonFunctions : MonoBehaviour
         musicVolume.value = PlayerPrefs.GetFloat("MusicVolume");
         sfxVolume.value = PlayerPrefs.GetFloat("SFXVolume");
     }
+    
 }

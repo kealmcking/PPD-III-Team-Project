@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private audioManager audioManager;
 
-  
+    [SerializeField] GameObject player;
+    [SerializeField] SkinnedMeshRenderer playerSkinnedMeshRenderer;
 
     [Header("Text Fields")]
     [SerializeField] private TextMeshProUGUI objectivesText;
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour
 
     float timeScaleOG;
 
+    private int selectedCharacter;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -48,6 +51,8 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
         else return;
+
+        DontDestroyOnLoad(this);
 
         objectivesText.text = "";
         daySystemText.text = "Day " + _day;
@@ -59,6 +64,10 @@ public class GameManager : MonoBehaviour
         isPaused = false;
 
         timeScaleOG = Time.timeScale;
+        player = GameObject.FindWithTag("Player");
+        playerSkinnedMeshRenderer = player.GetComponentInChildren<SkinnedMeshRenderer>();
+
+        selectedCharacter = PlayerPrefs.GetInt("SelectedCharacter", CharacterSelectionManager.instance.characterIndex);
     }
 
     // Update is called once per frame
@@ -181,5 +190,10 @@ public class GameManager : MonoBehaviour
         sleepUI.SetActive(true);
         yield return new WaitForSeconds(1f);
         sleepUI.SetActive(false);
+    }
+
+    public void UpdatePlayerCharacter(SkinnedMeshRenderer renderer)
+    {
+        playerSkinnedMeshRenderer.sharedMaterial = renderer.sharedMaterial;
     }
 }
