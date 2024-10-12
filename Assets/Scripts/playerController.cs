@@ -20,6 +20,11 @@ public class playerController : MonoBehaviour
     private float horizInput;
     private float vertInput;
 
+    [Header("Player Settings - Selected Character")]
+    [SerializeField] private CharacterDB characterDB;
+    [SerializeField] public Character _character;
+    private GameObject _currentCharacterModel;
+
     [Header("Player Stats - Movement Mods")]
     private float _currentSpeed;
     [Range(0.0f, 10.0f)][SerializeField] private float _origSpeed;
@@ -68,7 +73,8 @@ public class playerController : MonoBehaviour
     bool _isClimbing;
     bool _isFleeing;
     bool _isSprinting;
-    
+   
+
     private void OnEnable()
     {
         InputManager.IHavePressedInteractButton += Interact;
@@ -82,6 +88,7 @@ public class playerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        int selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
         _currentSpeed = _walkSpeed;
         _origSpeed = _currentSpeed;
         charController = GetComponent<CharacterController>();
@@ -92,7 +99,10 @@ public class playerController : MonoBehaviour
 
         _playerVel = Vector3.zero;
     }
-
+      public void SetCharacterModel(GameObject characterModel)
+    {
+        _currentCharacterModel = characterModel;
+    }
     private void FixedUpdate()
     {
         movement();

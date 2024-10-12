@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cffdc07ac4507a144ae99aed52b65018, type: 3}
+  m_Name: Character DB
+  m_EditorClassIdentifier: 
+  character:
+  - characterModel: {fileID: 7058200114144239472, guid: 9ae9dc8c015aac64b9594e182ea586ad,
+      type: 3}
+    characterName: Billy
+    characterDisplayUI: {fileID: 8400000, guid: f2e3d621adf41e24fb7a71698ff37dd4,
+      type: 2}
+    isUnlocked: 1
+  - characterModel: {fileID: 7058200114144239472, guid: ce21bef587644c44fb675edc6ff09fda,
+      type: 3}
+    characterName: Terra
+    characterDisplayUI: {fileID: 8400000, guid: f2e3d621adf41e24fb7a71698ff37dd4,
+      type: 2}
+    isUnlocked: 1

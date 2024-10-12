@@ -16,6 +16,7 @@ public class AIController : MonoBehaviour
     bool isRoaming;
     bool playerInRange;
     bool isEnemyChasing = false;
+    [SerializeField] float attackDist = .5f;
     Coroutine someCo;
     [SerializeField] int roamDist = 15;
     [SerializeField] int roamTimer = 1;
@@ -45,13 +46,13 @@ public class AIController : MonoBehaviour
 
         playerPos = GameObject.FindWithTag("Player").transform.position;
         playerDir = playerPos - transform.position;
+        chasePlayer();
         if (playerInRange)
         {
             faceTarget();
         }
         if (!playerInRange && !isRoaming && agent.remainingDistance < 0.05f && someCo == null && !isEnemyChasing)
             someCo = StartCoroutine(roam());
-        chasePlayer();
 
     }
 
@@ -61,9 +62,15 @@ public class AIController : MonoBehaviour
         {
             isEnemyChasing = true;
             agent.SetDestination(playerPos);
+            if(Vector3.Distance(transform.position, playerPos) <= attackDist)
+            {
+                anim.SetTrigger("Attack");
+            }
         }
         
+        
     }
+
 
 
     IEnumerator roam()
