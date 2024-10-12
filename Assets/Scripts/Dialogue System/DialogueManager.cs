@@ -275,7 +275,7 @@ namespace DialogueSystem
         }
 
         private void OnDisable()
-        { 
+        {
             EventSheet.SendSuspects -= AddSuspectsToList;
             EventSheet.TodaysDayIndexIsThis -= SetDay;
 

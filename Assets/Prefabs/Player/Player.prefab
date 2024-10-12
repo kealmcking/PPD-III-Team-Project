@@ -319,6 +319,7 @@ Transform:
   - {fileID: 6908532677366430174}
   - {fileID: 1543792644929876662}
   - {fileID: 705329005801792659}
+  - {fileID: 2050995071153545504}
   m_Father: {fileID: 1818197746741694480}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &907340602238515530
@@ -2375,6 +2376,7 @@ Transform:
   - {fileID: 1535401560955202027}
   - {fileID: 4647919557424371272}
   - {fileID: 7354090015516374345}
+  - {fileID: 4757530264636566480}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2509493557501858797
@@ -2394,6 +2396,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _animator: {fileID: 216322780724254400}
+  playerLookAtTarget: {fileID: 0}
+  characterDB: {fileID: 0}
+  _character:
+    characterModel: {fileID: 0}
+    characterName: 
+    characterDisplayUI: {fileID: 0}
+    isUnlocked: 0
   _origSpeed: 1
   _walkSpeed: 2
   _crouchMod: 0.5
@@ -2412,6 +2421,7 @@ MonoBehaviour:
   interactDistance: 2
   flashlight: {fileID: 0}
   itemHandOffset: {x: 0.70710677, y: 0.70710677, z: -0.00000003090862, w: -0.00000003090862}
+  gravity: -9.81
   handPos: {fileID: 705329005801792659}
 --- !u!95 &216322780724254400
 Animator:
