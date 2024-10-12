@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SFX: {fileID: 6320660720648113664}
+  Music: {fileID: 2046236655223995155}
   footStepWood:
   - {fileID: 8300000, guid: 4d11813f5983ce047873c94858e6a6c1, type: 3}
   - {fileID: 8300000, guid: 6154d2d90f91ac743a30a16a58f9fa32, type: 3}
@@ -279,6 +280,7 @@ MonoBehaviour:
   sleeping: {fileID: 0}
   sleepVol: 0
   errorAudio: {fileID: 0}
+  Fadetime: 1
 --- !u!82 &2046236655223995155
 AudioSource:
   m_ObjectHideFlags: 0

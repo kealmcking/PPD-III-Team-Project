@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class audioManager : MonoBehaviour
 {
+
+    #region Variables/Audio
     public static audioManager instance;
-    private bool musicPaused;
+    private bool menuPaused;
     private float origMusicVol;
     public enum floorType { Wood, Dirt, Stone }
     private floorType currentFloor;
 
     [Header("------------------------- Audio Sources")]
     [SerializeField] AudioSource SFX;
+    [SerializeField] AudioSource Music;
 
     [Header("------------------------- Movement SFX")]
     [SerializeField] public AudioClip[] footStepWood;
@@ -91,10 +94,12 @@ public class audioManager : MonoBehaviour
     [Range(0, 1)] public float interactVol;
     [SerializeField] public AudioClip sleeping;
     [Range(0, 1)] public float sleepVol;
-
     [SerializeField] public AudioClip errorAudio;
 
+    [Header("------------------------- Misc Variables")]
+    [Range(0, 3)] public float Fadetime;
 
+    #endregion
 
     private void Awake()
     {
@@ -106,10 +111,14 @@ public class audioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        origMusicVol = Music.volume;
+        menuPaused = false;
     }
 
     public void PlaySFX(AudioClip clip, float vol = 0.5f)
     {
+        //Play SFX passed in
         if (clip == null)
         {
             SFX.PlayOneShot(errorAudio, vol);
@@ -119,13 +128,27 @@ public class audioManager : MonoBehaviour
         }
     }
 
-    public void MusicFade()
+    public void PauseSounds()
     {
-        //Turn Music down
-        //Pause Music
-        //Turn musicPaused to opposite
+        if (menuPaused) //If true unpause all sounds
+        {
+            //Unpause game sounds
+            Music.UnPause();
+            SFX.UnPause();
+
+            menuPaused = false;
+        }
+        else   //If false pause all sounds
+        {
+            //Pause game sounds
+            if (Music.isPlaying) { Music.Pause(); }
+            if (SFX.isPlaying) { SFX.Pause(); }
+
+            menuPaused = true;
+        }
     }
 
+    #region FloorTypes
     public floorType GetFloorType()
     {
         return currentFloor;
@@ -134,4 +157,5 @@ public class audioManager : MonoBehaviour
     {
         currentFloor = curfloor;
     }
+    #endregion
 }

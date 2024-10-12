@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
         characterUI.SetActive(false);
 
         audioManager.PlaySFX(audioManager.UIOpen, audioManager.UIVol);
+        audioManager.PauseSounds();
     }
 
     public void UnpauseGame()
@@ -102,6 +103,7 @@ public class GameManager : MonoBehaviour
         characterUI.SetActive(true);
 
         audioManager.PlaySFX(audioManager.UIClose, audioManager.UIVol);
+        audioManager.PauseSounds();
     }
 
     public void WinGame()
