@@ -17817,10 +17817,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab33245d7cf74b54781c02b61f0b50d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  suspectName: Test
-  icon: {fileID: 0}
-  npc: {fileID: 11400000, guid: f7b2f66b710e0b04d8a65db922e3f49d, type: 2}
-  isBeingInteractedWith: 0
 --- !u!114 &1216841732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17834,6 +17830,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 1216841726}
+  anim: {fileID: 0}
+  animSpeedTrans: 0
+  attackDist: 0.5
   roamDist: 0
   roamTimer: 5
   faceTargetSpeed: 5
@@ -21097,10 +21096,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab33245d7cf74b54781c02b61f0b50d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  suspectName: Test
-  icon: {fileID: 0}
-  npc: {fileID: 11400000, guid: 3cdee7cd0c8bfc645a24e69e82b40865, type: 2}
-  isBeingInteractedWith: 0
 --- !u!114 &2114663549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21114,6 +21109,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 2114663550}
+  anim: {fileID: 0}
+  animSpeedTrans: 0
+  attackDist: 0.5
   roamDist: 2
   roamTimer: 5
   faceTargetSpeed: 5

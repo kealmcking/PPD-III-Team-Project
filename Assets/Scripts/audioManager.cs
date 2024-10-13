@@ -21,7 +21,9 @@ public class audioManager : MonoBehaviour
     [SerializeField] public AudioClip[] footStepWood;
     [SerializeField] public AudioClip[] footStepDirt;
     [SerializeField] public AudioClip[] footStepStone;
-    [Range(0, 1)] public float footStepVol;
+    [Range(0, 1)] public float footStepWalkVol;
+    [Range(0, 1)] public float footStepRunVol;
+    [Range(0, 1)] public float footStepCrouchVol;
 
     [SerializeField] public AudioClip[] jump;
     [Range(0, 1)] public float jumpVol;
