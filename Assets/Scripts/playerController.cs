@@ -16,6 +16,7 @@ public class playerController : MonoBehaviour
     public static Action INeedToTurnOffTheInteractUI;
 
     private Camera _mainCam;
+    private audioManager audioManager;
 
     private float horizInput;
     private float vertInput;
@@ -83,6 +84,11 @@ public class playerController : MonoBehaviour
     private void OnDisable()
     {
         InputManager.IHavePressedInteractButton -= Interact;
+    }
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
     }
 
     // Start is called before the first frame update
