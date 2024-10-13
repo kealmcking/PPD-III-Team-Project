@@ -44,11 +44,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6310292306c38464dbb6e8e2cb4c78c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  globalWinConditions: []
-  rooms: []
-  weapons: []
+  rooms:
+  - {fileID: 11400000, guid: be7f8b121f612a94b8ce283d73791bdc, type: 2}
+  - {fileID: 11400000, guid: 893ebb96177887b4489f30f2b25d439f, type: 2}
+  - {fileID: 11400000, guid: c5f0d027d91e76f41ab569117fd9b125, type: 2}
+  - {fileID: 11400000, guid: d8c440e7b54e2cb49999e191638b9c4b, type: 2}
+  - {fileID: 11400000, guid: 4c37cb03f6d177f47b2024a705953c1a, type: 2}
+  - {fileID: 11400000, guid: cbb000787c5863b42ba9316fea6a4827, type: 2}
+  - {fileID: 11400000, guid: 4c8c482681dc6e245918b575e1e22726, type: 2}
+  - {fileID: 11400000, guid: 15ba850d6786158468913e9d17ff303a, type: 2}
+  - {fileID: 11400000, guid: 0d3f3ebe25e674c4989e9c773a90ec38, type: 2}
+  - {fileID: 11400000, guid: b21042b248ff63a48b2c4df1ae9b284a, type: 2}
+  - {fileID: 11400000, guid: af4c9ed53f30321419532224aa7a8375, type: 2}
+  - {fileID: 11400000, guid: acb2b83e2d33d044b88d77b5f11d3ba8, type: 2}
+  - {fileID: 11400000, guid: 4244f74286c322745b4ffaf5033f163e, type: 2}
+  weapons:
+  - {fileID: 11400000, guid: e0deb2dd33d14864da2502a11ddebeb0, type: 2}
+  - {fileID: 11400000, guid: d8149f1608e99564fae0260f2eae6acd, type: 2}
+  - {fileID: 11400000, guid: 11f3151ded19c124e8e17983fad04df3, type: 2}
+  - {fileID: 11400000, guid: 80499f8dfde7bd24bb14f37048b9e2b7, type: 2}
+  - {fileID: 11400000, guid: ae561176af7598043ac70d84cab4d6a2, type: 2}
+  - {fileID: 11400000, guid: ddef89f30362b6f46b64c179fdb6ee29, type: 2}
   motives: []
+  suspectPool:
+  - {fileID: 11400000, guid: 2e2a8a219c155134997b3317ae129785, type: 2}
+  - {fileID: 11400000, guid: 6bd135cbb8e9e114c9b3df9974f5562b, type: 2}
+  - {fileID: 11400000, guid: a62ebcf8b1961354ea307ba7ad9d0744, type: 2}
+  - {fileID: 11400000, guid: cfaf380ff7fde3f4dad120354da264af, type: 2}
+  - {fileID: 11400000, guid: 1069c8004e90b484bba056ccc65e4ae6, type: 2}
+  - {fileID: 11400000, guid: ac0cf74776e5ad64aa011340562cabc9, type: 2}
+  - {fileID: 11400000, guid: 6b3f6cd3e0fc09e4090cc2eeda323ef5, type: 2}
+  - {fileID: 11400000, guid: 66805b5526ac4564b89b43478dcdcf61, type: 2}
   cases:
   - {fileID: 11400000, guid: f0943565884454f4c909e32217e02242, type: 2}
-  suspectPool: []
   suspectCount: 7
+  ghost: {fileID: 11400000, guid: d3bf54112b533f046ae7a1b71f2333f9, type: 2}

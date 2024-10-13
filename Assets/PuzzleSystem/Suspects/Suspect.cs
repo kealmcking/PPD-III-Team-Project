@@ -12,8 +12,9 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] GameObject mask;
     [SerializeField] bool isBeingInteractedWith;
     [SerializeField] NPC npc;
-    
+    //add weapon as well to activate when revealing the killer
     Guid id = new Guid();
+    public Guid ID => id;
     public NPC Npc => npc;
     public SuspectData Data => data;
     public bool IsKiller { get; set; } = false;
@@ -22,15 +23,15 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
         get => isBeingInteractedWith;
         set => isBeingInteractedWith = value;
     }
-    public Guid ID => id;
+   
     public GameObject Mask => mask;
     public void Awake()
     {
-        mask = transform.Find("Mask").gameObject;
+       /* mask = transform.Find("Mask").gameObject;
         if(mask == null)
         {
             Debug.LogError("You do not have a mask component on this suspect: " +name+", add a mask before continuing");
-        }
+        }*/
     }
     public void Start()
     {

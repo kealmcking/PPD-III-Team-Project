@@ -40,8 +40,8 @@ public class AIController : MonoBehaviour
     void Update()
     {
         anim.SetFloat("Blend", agent.velocity.normalized.magnitude);
-       // float agentSpeed = agent.velocity.normalized.magnitude;
-        //float animSpeed = anim.GetFloat("Blend");
+        float agentSpeed = agent.velocity.normalized.magnitude;
+        float animSpeed = anim.GetFloat("Blend");
         
 
         playerPos = GameObject.FindWithTag("Player").transform.position;

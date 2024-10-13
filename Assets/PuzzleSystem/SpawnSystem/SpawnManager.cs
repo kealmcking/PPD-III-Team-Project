@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.VFX;
 
 
 public class SpawnManager : MonoBehaviour 
@@ -16,12 +17,14 @@ public class SpawnManager : MonoBehaviour
         EventSheet.InitializeSuspectsToScene += SpawnGroupByMono;
         EventSheet.SpawnGhost += SpawnGhost;
         EventSheet.SpawnKiller += SpawnKiller;
+        EventSheet.SpawnExcessClues += SpawnClues;
     }
     private void OnDisable()
     {
         EventSheet.InitializeSuspectsToScene -= SpawnGroupByMono;
         EventSheet.SpawnGhost -= SpawnGhost;
-        EventSheet.SpawnKiller += SpawnKiller;
+        EventSheet.SpawnKiller -= SpawnKiller;
+        EventSheet.SpawnExcessClues -= SpawnClues;
     }
     private void SpawnGhost(GhostData ghost, SpawnPointType type, bool randomize = false, SpawnPoint spawnPoint = null) 
     {
@@ -135,6 +138,32 @@ public class SpawnManager : MonoBehaviour
             killer.ActivateMask();
             killer.gameObject.transform.position = spawn.transform.position;
             EventSheet.SendKiller?.Invoke(killer);
+        }
+    }
+    private void SpawnClues(List<BaseClueData> clues, SpawnPointType type, bool randomize = false)
+    {
+        if (randomize)
+        {
+            List<SpawnPoint> filteredSpawns = spawnPoints
+                .Where(s => s.Type == type)
+                .ToList();
+            foreach (var item in clues)
+            {
+                SpawnPoint spawn = Randomizer.GetRandomizedObjectFromListAndRemove(ref filteredSpawns);
+                Instantiate(item.Prefab).gameObject.transform.position = spawn.transform.position;
+            }
+        }
+        else
+        {
+            List<SpawnPoint> filteredSpawns = spawnPoints
+                .Where(s => s.Type == type)
+                .ToList();
+
+            for (int i = 0; i < clues.Count; i++)
+            {
+                SpawnPoint spawn = filteredSpawns.ElementAt(i);
+                Instantiate(clues.ElementAt(i).Prefab).gameObject.transform.position = spawn.transform.position;
+            }
         }
     }
 }

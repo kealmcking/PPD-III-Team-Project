@@ -36,9 +36,6 @@ public class FinalizePopup : EditorWindow
         LoadAllSOOfType<Case>();
         LoadAllSOOfType<BaseItemData>();
         LoadAllSOOfType<ConditionConfig>();
-        LoadAllSOOfType<MurderMotive>();
-        LoadAllSOOfType<MurderRoom>();
-        LoadAllSOOfType<MurderWeapon>();
         LoadAllSOOfType<BaseClueData>();
         LoadAllSOOfType<SuspectData>();
         LoadAllMonoOfType<Lore>();

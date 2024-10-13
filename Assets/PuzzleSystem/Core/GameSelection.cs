@@ -5,11 +5,11 @@ using System.Collections.Generic;
 public class GameSelection
 {
     private SuspectData killer;
-    private MurderRoom room;
-    private MurderWeapon weapon;
-    private MurderMotive motive;
+    private RoomClueData room;
+    private WeaponClueData weapon;
+    private MotiveClueData motive;
     private Case caseFile;
-    public GameSelection(List<SuspectData> suspects, List<MurderRoom> rooms, List<MurderWeapon> weapons, List<Case> cases, List<MurderMotive> motives)
+    public GameSelection(List<SuspectData> suspects, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<Case> cases, List<MotiveClueData> motives)
     {
         if (suspects.Count > 0)
         {
@@ -26,8 +26,8 @@ public class GameSelection
         caseFile = Randomizer.GetRandomizedObjectFromList(cases);
     }
     public SuspectData GetKiller() { return killer; }
-    public MurderRoom GetRoom() { return room; }
-    public MurderWeapon GetWeapon() { return weapon; }
-    public MurderMotive GetMotive() { return motive; }
+    public RoomClueData GetRoom() { return room; }
+    public WeaponClueData GetWeapon() { return weapon; }
+    public MotiveClueData GetMotive() { return motive; }
     public Case GetCase() { return caseFile; }
 }

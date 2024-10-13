@@ -13,8 +13,7 @@ using UnityEngine;
 /// </summary>
 public class Puzzle : MonoBehaviour, ICustomizableComponent
 {
-    [SerializeField] List<Condition> conditions = new List<Condition>();
-    [SerializeField] BaseClueData reward;
+    [SerializeField] List<Condition> conditions = new List<Condition>();   
     [SerializeField] AudioClip clip;
     [SerializeField] ParticleSystem vfx;
     [SerializeField, Tooltip("List of all the craftable components required to create the items to finish this puzzle")] List<CraftableComponentData> components = new List<CraftableComponentData>(3);
@@ -25,6 +24,7 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
 
     [SerializeField, Tooltip("Simply the position where the reward(clue) will be spawned. after completing the puzzle.")] Transform rewardSpawnPosition;
     private Guid id = new Guid();
+    public BaseClueData Reward { get; set; }
     public Guid ID => id;
     public bool IsComplete{get; private set;}
     
@@ -55,7 +55,7 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
         vfx.Play();
         if (clip != null) { }
           //playclip here  clip.
-        Instantiate(reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
+        Instantiate(Reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
         IsComplete = true;
     }
 }
