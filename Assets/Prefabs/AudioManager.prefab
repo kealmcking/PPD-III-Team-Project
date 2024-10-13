@@ -41,7 +41,8 @@ AudioSource:
   m_GameObject: {fileID: 5866272024970365515}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 3194154667401045323, guid: 1bc6e4d3426d54948ac7c9073b2564bd,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -176,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SFX: {fileID: 6320660720648113664}
+  Music: {fileID: 2046236655223995155}
   footStepWood:
   - {fileID: 8300000, guid: 4d11813f5983ce047873c94858e6a6c1, type: 3}
   - {fileID: 8300000, guid: 6154d2d90f91ac743a30a16a58f9fa32, type: 3}
@@ -273,6 +275,12 @@ MonoBehaviour:
   killerVol: 0.5
   clueFound: {fileID: 0}
   clueVol: 0.5
+  interactSFX: {fileID: 0}
+  interactVol: 0
+  sleeping: {fileID: 0}
+  sleepVol: 0
+  errorAudio: {fileID: 0}
+  Fadetime: 1
 --- !u!82 &2046236655223995155
 AudioSource:
   m_ObjectHideFlags: 0
@@ -282,7 +290,8 @@ AudioSource:
   m_GameObject: {fileID: 6449574802537637669}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -9162182657597008354, guid: 1bc6e4d3426d54948ac7c9073b2564bd,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 37fa3dac4083f6d48b8959fe11d12f85, type: 3}
   m_Resource: {fileID: 8300000, guid: 37fa3dac4083f6d48b8959fe11d12f85, type: 3}
   m_PlayOnAwake: 1
