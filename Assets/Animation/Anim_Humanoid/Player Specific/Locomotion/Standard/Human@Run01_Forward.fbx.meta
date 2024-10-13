@@ -2,6 +2,13 @@ fileFormatVersion: 2
 guid: 5b9f2116e8d5baa44800f37488936054
 labels:
 - Animation
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157744
+  packageName: Basic Motions
+  packageVersion: 2.1
+  assetPath: Assets/Kevin Iglesias/Basic Motions/Animations/Movement/Run/Human@Run01_Forward.fbx
+  uploadId: 698105
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -18,8 +25,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: Rig/B-root
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -58,7 +63,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.07692307
+        functionName: footStep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.55203617
+        functionName: footStep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -885,10 +904,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 157744
-  packageName: Basic Motions
-  packageVersion: 2.1
-  assetPath: Assets/Kevin Iglesias/Basic Motions/Animations/Movement/Run/Human@Run01_Forward.fbx
-  uploadId: 698105

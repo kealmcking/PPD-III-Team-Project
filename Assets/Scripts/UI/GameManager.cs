@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
         }
         else return;
 
+        audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
+
         objectivesText.text = "";
         daySystemText.text = "Day " + _day;
         timerText.text = _time.ToString();

@@ -15,12 +15,15 @@ public class audioManager : MonoBehaviour
     [Header("------------------------- Audio Sources")]
     [SerializeField] AudioSource SFX;
     [SerializeField] AudioSource Music;
+    [SerializeField] AudioSource Menu;
 
     [Header("------------------------- Movement SFX")]
     [SerializeField] public AudioClip[] footStepWood;
     [SerializeField] public AudioClip[] footStepDirt;
     [SerializeField] public AudioClip[] footStepStone;
-    [Range(0, 1)] public float footStepVol;
+    [Range(0, 1)] public float footStepWalkVol;
+    [Range(0, 1)] public float footStepRunVol;
+    [Range(0, 1)] public float footStepCrouchVol;
 
     [SerializeField] public AudioClip[] jump;
     [Range(0, 1)] public float jumpVol;
@@ -132,6 +135,9 @@ public class audioManager : MonoBehaviour
     {
         if (menuPaused) //If true unpause all sounds
         {
+            //Stop Menu Music
+            Menu.Stop();
+
             //Unpause game sounds
             Music.UnPause();
             SFX.UnPause();
@@ -145,6 +151,9 @@ public class audioManager : MonoBehaviour
             if (SFX.isPlaying) { SFX.Pause(); }
 
             menuPaused = true;
+
+            //Play Menu Music
+            Menu.Play();
         }
     }
 

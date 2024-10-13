@@ -16,6 +16,7 @@ public class playerController : MonoBehaviour
     public static Action INeedToTurnOffTheInteractUI;
 
     private Camera _mainCam;
+    private audioManager audioManager;
 
     private float horizInput;
     private float vertInput;
@@ -83,6 +84,11 @@ public class playerController : MonoBehaviour
     private void OnDisable()
     {
         InputManager.IHavePressedInteractButton -= Interact;
+    }
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
     }
 
     // Start is called before the first frame update
@@ -167,6 +173,20 @@ public class playerController : MonoBehaviour
         ApplyGravity();
     }
 
+    private void footStep()
+    {
+        if(!_isCrouching && !_isSprinting)          //Walking
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
+        } else if (!_isCrouching && _isSprinting)   //Sprinting
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepRunVol);
+        } else if (!_isSprinting && _isCrouching)   //Crouching
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepCrouchVol);
+        }
+    }
+
     private void ApplyGravity()
     {
         if (charController.isGrounded)
@@ -217,7 +237,8 @@ public class playerController : MonoBehaviour
                 _newHeight = _crouchHeight;
                 _newCenter = _crouchCenter;
                 _isCrouching = true;
-                
+
+                audioManager.PlaySFX(audioManager.crouchDown[UnityEngine.Random.Range(0, audioManager.crouchDown.Length)], audioManager.crouchVol);
             }
         }
         else
@@ -227,6 +248,8 @@ public class playerController : MonoBehaviour
                 _newHeight = _origHeight;
                 _newCenter = _origCenter;
                 _isCrouching = false;
+
+                audioManager.PlaySFX(audioManager.crouchUp[UnityEngine.Random.Range(0, audioManager.crouchUp.Length)], audioManager.crouchVol);
             }
         }
         
