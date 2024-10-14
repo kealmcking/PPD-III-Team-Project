@@ -17,9 +17,15 @@ public class playerController : MonoBehaviour
     public static Action INeedToTurnOffTheInteractUI;
 
     private Camera _mainCam;
+    private audioManager audioManager;
 
     private float horizInput;
     private float vertInput;
+
+    [Header("Player Settings - Selected Character")]
+    [SerializeField] private CharacterDB characterDB;
+    [SerializeField] public Character _character;
+    private GameObject _currentCharacterModel;
 
     [Header("Player Stats - Movement Mods")]
     private float _currentSpeed;
@@ -69,7 +75,8 @@ public class playerController : MonoBehaviour
     bool _isClimbing;
     bool _isFleeing;
     bool _isSprinting;
-    
+   
+
     private void OnEnable()
     {
         InputManager.IHavePressedInteractButton += Interact;
@@ -80,9 +87,15 @@ public class playerController : MonoBehaviour
         InputManager.IHavePressedInteractButton -= Interact;
     }
 
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        int selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
         _currentSpeed = _walkSpeed;
         _origSpeed = _currentSpeed;
         charController = GetComponent<CharacterController>();
@@ -93,7 +106,10 @@ public class playerController : MonoBehaviour
 
         _playerVel = Vector3.zero;
     }
-
+      public void SetCharacterModel(GameObject characterModel)
+    {
+        _currentCharacterModel = characterModel;
+    }
     private void FixedUpdate()
     {
         movement();
@@ -158,6 +174,20 @@ public class playerController : MonoBehaviour
         ApplyGravity();
     }
 
+    private void footStep()
+    {
+        if(!_isCrouching && !_isSprinting)          //Walking
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
+        } else if (!_isCrouching && _isSprinting)   //Sprinting
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepRunVol);
+        } else if (!_isSprinting && _isCrouching)   //Crouching
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepCrouchVol);
+        }
+    }
+
     private void ApplyGravity()
     {
         if (charController.isGrounded)
@@ -208,7 +238,8 @@ public class playerController : MonoBehaviour
                 _newHeight = _crouchHeight;
                 _newCenter = _crouchCenter;
                 _isCrouching = true;
-                
+
+                audioManager.PlaySFX(audioManager.crouchDown[UnityEngine.Random.Range(0, audioManager.crouchDown.Length)], audioManager.crouchVol);
             }
         }
         else
@@ -218,6 +249,8 @@ public class playerController : MonoBehaviour
                 _newHeight = _origHeight;
                 _newCenter = _origCenter;
                 _isCrouching = false;
+
+                audioManager.PlaySFX(audioManager.crouchUp[UnityEngine.Random.Range(0, audioManager.crouchUp.Length)], audioManager.crouchVol);
             }
         }
         

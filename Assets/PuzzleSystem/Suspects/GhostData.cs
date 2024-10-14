@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class GhostData : MonoBehaviour, ICustomizableComponent
+[CreateAssetMenu(fileName = "Ghost", menuName = "PuzzleSystem/SuspectData/Ghost")]
+public class GhostData : ScriptableObject, ICustomizableComponent
 {
     [SerializeField] Ghost ghostPrefab;
     [SerializeField] Sprite icon;

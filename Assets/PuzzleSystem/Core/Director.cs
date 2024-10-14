@@ -11,13 +11,14 @@ public class Director : MonoBehaviour
 {
 
     [SerializeField,Tooltip("This contains the list of where the murder can take place. " +
-        "It is also used to update the UI for instance when guessing the room in which the murder takes place")] List<MurderRoom> rooms;
+        "It is also used to update the UI for instance when guessing the room in which the murder takes place")] List<RoomClueData> rooms;
     [SerializeField,Tooltip("This contains the list of the murder weapons. " +
-        "It is also used to update the UI for instance when guessing the weapon which was used for the murder")] List<MurderWeapon> weapons;
+        "It is also used to update the UI for instance when guessing the weapon which was used for the murder")] List<WeaponClueData> weapons;
     [SerializeField, Tooltip("This contains the list of the motives. " +
-      "It is also used to update the UI for instance when guessing the motive which was used for the murder")] List<MurderMotive> motives;
-    [SerializeField,Tooltip("This represents all the possible cases available for this level")] List<Case> cases;
+      "It is also used to update the UI for instance when guessing the motive which was used for the murder")] List<MotiveClueData> motives;
     [SerializeField, Tooltip("Add all potential suspects here")] List<SuspectData> suspectPool;
+    [SerializeField,Tooltip("This represents all the possible cases available for this level")] List<Case> cases;
+    
     [SerializeField, Tooltip("Represents the number of suspects that will be spawned for the game")] int suspectCount = 7;
     [SerializeField,Tooltip("Will be used as the ghost when a suspect dies")] GhostData ghost;
     List<SuspectData> suspects;
@@ -30,9 +31,9 @@ public class Director : MonoBehaviour
     private LoreController lController;
     
     public List<Case> Cases { get { return cases; } private set { cases = value; } }
-    public List<MurderRoom> Rooms { get { return rooms; } private set { rooms = value; } }
-    public List<MurderWeapon> Weapons { get { return weapons; } private set { weapons = value; } }
-    public List<MurderMotive> Motives { get { return motives; } private set { motives = value; } }
+    public List<RoomClueData> Rooms { get { return rooms; } private set { rooms = value; } }
+    public List<WeaponClueData> Weapons { get { return weapons; } private set { weapons = value; } }
+    public List<MotiveClueData> Motives { get { return motives; } private set { motives = value; } }
     public GameSelection GameSelection => gameSelection;
     public void OnEnable()
     {
@@ -47,7 +48,7 @@ public class Director : MonoBehaviour
         suspects = Randomizer.GetRandomizedGroupFromList(suspectPool, suspectCount);
         scenePuzzles = FindObjectsByType<Puzzle>(FindObjectsInactive.Include,FindObjectsSortMode.None).ToList();
         sceneLore = FindObjectsByType<Lore>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
-        gameSelection = new GameSelection(suspects,rooms,weapons,cases,motives);
+        gameSelection = new GameSelection(suspects,rooms,weapons,cases,motives);        
         cController = new ClueController();
         List<Puzzle> activeP = new List<Puzzle>();
         List<Lore> activeL = new List<Lore>();
@@ -84,6 +85,12 @@ public class Director : MonoBehaviour
             }
            
         }
+        ClueInitializer clueInit = new ClueInitializer(suspects, rooms, weapons, motives);
+        List<BaseClueData>clues = clueInit.Initialize(gameSelection);
+        if (clues.Count > 0)
+        {
+                EventSheet.SpawnExcessClues?.Invoke(clues,SpawnPointType.Clue,true);
+        }
         pController = new PuzzleController(activeP);
         lController = new LoreController(activeL);
 
@@ -96,11 +103,11 @@ public class Director : MonoBehaviour
             EventSheet.SendSuspects?.Invoke(newSuspects);
         }
         if(motives.Count > 0)
-            EventSheet.SendMurderMotives?.Invoke(motives);
+            EventSheet.SendMotives?.Invoke(motives);
         if (rooms.Count > 0)
-            EventSheet.SendMurderRooms?.Invoke(rooms);
+            EventSheet.SendRooms?.Invoke(rooms);
         if (weapons.Count > 0)
-            EventSheet.SendMurderWeapons?.Invoke(weapons);
+            EventSheet.SendWeapons?.Invoke(weapons);
         if (gameSelection != null)
             EventSheet.SendGameSelection?.Invoke(gameSelection);
     }
@@ -118,11 +125,7 @@ public class Director : MonoBehaviour
         }
         else
         {
-            List<Suspect> newSuspects = suspects
-              .Select(s => s.SuspectPrefab)
-              .ToList();
-            Suspect suspect = Randomizer.GetConditionalRandomizedSuspectFromListAndRemove(ref newSuspects);
-            EventSheet.SpawnKiller?.Invoke(suspect,SpawnPointType.Killer,true);
+            EventSheet.SpawnKiller?.Invoke(gameSelection.GetKiller().SuspectPrefab,SpawnPointType.Killer,true);
         }
     }
     private class PuzzleController
