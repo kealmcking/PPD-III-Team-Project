@@ -4,13 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    private audioManager audioManager;
+   // private audioManager audioManager;
 
-  
+    
+    
+
+    [SerializeField] GameObject player;
+    // [SerializeField] SkinnedMeshRenderer playerSkinnedMeshRenderer;
+    public playerController playerController;
 
     [Header("Text Fields")]
     [SerializeField] private TextMeshProUGUI objectivesText;
@@ -24,7 +31,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject winUI;
     [SerializeField] private GameObject optionsUI;
     [SerializeField] private GameObject characterUI;
-    [SerializeField] private GameObject menuActive;
+    [SerializeField] public GameObject menuActive;
+    
+    
+
+    
 
     [Header("Day System")]
     [SerializeField] int _day;
@@ -40,6 +51,8 @@ public class GameManager : MonoBehaviour
 
     float timeScaleOG;
 
+    public int characterIndex;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -48,6 +61,14 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
         else return;
+
+        //DontDestroyOnLoad(this);
+
+
+        menuActive = null;
+        
+        
+        
 
         objectivesText.text = "";
         daySystemText.text = "Day " + _day;
@@ -59,26 +80,48 @@ public class GameManager : MonoBehaviour
         isPaused = false;
 
         timeScaleOG = Time.timeScale;
+        player = GameObject.FindWithTag("Player");
+        //playerSkinnedMeshRenderer = player.GetComponentInChildren<SkinnedMeshRenderer>();
+        playerController = player.GetComponent<playerController>();
+
+        characterIndex = PlayerPrefs.GetInt("SelectedCharacter");
+        playerController.UpdatePlayerCharacter(characterIndex);
     }
+
+    public void DisplayCharacterUI()
+    {
+        if (menuActive != null)
+        {
+            menuActive.SetActive(false);
+            menuActive = characterUI;
+            menuActive.SetActive(true);
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
     {
-        UpdateTimer(_time);
-        if (InputManager.instance.getIsPause())
+        if (menuActive == characterUI) 
         {
-            if (menuActive == null)
+            UpdateTimer(_time);
+            if (InputManager.instance.getIsPause())
             {
-                PauseGame();
-                menuActive = pauseUI;
-                menuActive.SetActive(isPaused);
-            }
-            else if(menuActive == pauseUI)
-            {
-                UnpauseGame();
+                if (menuActive == characterUI)
+                {
+                    PauseGame();
+                    
+                }
+                else if (menuActive == pauseUI)
+                {
+                    UnpauseGame();
+                }
             }
         }
+        
     }
+
+    
 
     public void PauseGame()
     {
@@ -87,8 +130,9 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         characterUI.SetActive(false);
-
-        audioManager.PlaySFX(audioManager.UIOpen, audioManager.UIVol);
+        menuActive = pauseUI;
+        menuActive.SetActive(isPaused);
+        //audioManager.PlaySFX(audioManager.UIOpen, audioManager.UIVol);
     }
 
     public void UnpauseGame()
@@ -98,10 +142,11 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(isPaused);
-        menuActive = null;
-        characterUI.SetActive(true);
+        menuActive = characterUI;
+        menuActive.SetActive(true);
+        
 
-        audioManager.PlaySFX(audioManager.UIClose, audioManager.UIVol);
+       // audioManager.PlaySFX(audioManager.UIClose, audioManager.UIVol);
     }
 
     public void WinGame()
@@ -129,9 +174,12 @@ public class GameManager : MonoBehaviour
         pauseUI.SetActive(false);
         ButtonFunctions.instance.LoadOptions();
 
-        audioManager.PlaySFX(audioManager.UIOpen, audioManager.UIVol);
+        //audioManager.PlaySFX(audioManager.UIOpen, audioManager.UIVol);
     }
 
+
+
+   
 
 
     public void UpdateObjectiveText(string text)
@@ -178,8 +226,10 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Sleeping()
     {
-        sleepUI.SetActive(true);
+        menuActive = sleepUI;
         yield return new WaitForSeconds(1f);
-        sleepUI.SetActive(false);
+        menuActive = characterUI;
     }
+
+    
 }

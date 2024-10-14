@@ -157,10 +157,12 @@ namespace Input
             {
                 DisableCharacterInputs();
                 cancelAction.Disable(); 
+                GameManager.instance.PauseGame();
             }
             else
             {
                 cancelAction.Enable(); 
+                GameManager.instance.UnpauseGame();
             }
 
             if (!isInMenu && !isPause)
