@@ -583,37 +583,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1004104745}
   m_CullTransparentMesh: 1
---- !u!1 &1158182834
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1158182835}
-  m_Layer: 3
-  m_Name: playerModel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1158182835
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158182834}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6458022329976190163}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1285274250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1428,7 +1397,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1b909cd68584b4d9e8fc53c2c8d726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioMixer: {fileID: 0}
   masterVolume: {fileID: 1042473582700608244}
   musicVolume: {fileID: 1551515481825496597}
   sfxVolume: {fileID: 6980029044709178842}
@@ -3608,10 +3576,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7704668433865346600, guid: 54306050581aca3499a7bb984cbe08ca,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1158182835}
-    - targetCorrespondingSourceObject: {fileID: 7704668433865346600, guid: 54306050581aca3499a7bb984cbe08ca,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5823413668370293971}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 9045248892961747890, guid: 54306050581aca3499a7bb984cbe08ca,
@@ -4539,6 +4503,7 @@ MonoBehaviour:
     m_Bits: 0
   _animator: {fileID: 7332254405656972835}
   playerLookAtTarget: {fileID: 0}
+  playerModels: []
   characterDB: {fileID: 11400000, guid: 9624d4bf029e8e44b8976293f9850f04, type: 2}
   _character:
     characterModel: {fileID: 0}
@@ -5930,10 +5895,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68302393a74bab946863ed865de6cf62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionsMenu: {fileID: 7061163298678327078}
-  menuActive: {fileID: 0}
+  optionsMainMenu: {fileID: 0}
   contents: {fileID: 3103212580409996450}
   masterVolume: {fileID: 1445074367646576792}
+  mainMenu: {fileID: 0}
+  menuActive: {fileID: 0}
   playButton: {fileID: 8165727261755418019}
 --- !u!95 &7332254405656972835
 Animator:
@@ -6264,7 +6230,7 @@ MonoBehaviour:
   nameText: {fileID: 1319080794}
   characterOption: {fileID: 1004104747}
   lockedCharacter: {fileID: 2800000, guid: f03655fd9199df644ba92830d7084702, type: 3}
-  characterPositionUI: {fileID: 1158182834}
+  characterPositionUI: {fileID: 0}
 --- !u!4 &7906419568776049764
 Transform:
   m_ObjectHideFlags: 0
