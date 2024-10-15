@@ -262,5 +262,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         menuActive = characterUI;
     }
-  
+
+    internal void ActivateDetectiveUI()
+    {
+        throw new NotImplementedException();
+    }
 }

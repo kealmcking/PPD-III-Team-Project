@@ -14,9 +14,9 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] invItem itemPrefab;
     [SerializeField] RectTransform mainCanvas;
     [SerializeField] RectTransform nestedRect;
-    public invItem draggedItem;
-    public invSlot lastItemSlot;
-    public invSlot clickedSlot;
+    invItem draggedItem;
+    invSlot lastItemSlot;
+    invSlot clickedSlot;
 
     // Start is called before the first frame update
     void Start()
