@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnvironmentInteractable : MonoBehaviour,IInteractable
+public abstract class EnvironmentInteractable : MonoBehaviour,IInteractable
 {
     [SerializeField] protected EnableInteractUI interactUI;
     [SerializeField] Collider col;

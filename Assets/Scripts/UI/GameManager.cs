@@ -273,5 +273,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         DeactivateSleepMenu();
     }
-  
+
+    internal void ActivateDetectiveUI()
+    {
+        throw new NotImplementedException();
+    }
 }
