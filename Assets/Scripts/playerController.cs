@@ -275,30 +275,49 @@ public class playerController : MonoBehaviour
 
     private void Interact()
     {
-
         Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
 
+        float closestDistanceSqr = float.MaxValue; // Store the closest object's squared distance
+        Collider closestCollider = null;
 
         foreach (var collider in colliders)
         {
-       
-            Vector3 direction = collider.transform.position - transform.position;
-            float angle = Vector3.Angle(transform.forward, direction);
+            // Calculate the squared distance to avoid unnecessary square root operations
+            float distSqr = (collider.transform.position - transform.position).sqrMagnitude;
 
-            if (!collider.gameObject.TryGetComponent(out IInteractable interactable) || angle >90f) continue;
-           
-            _animator.SetTrigger("activate");
-            interactable.Interact();
-            
-            if (interactable != null && interactable is Condition condition)
+            // Find the nearest object
+            if (distSqr < closestDistanceSqr)
             {
-                if (condition.CanPickup() && !condition.HasBeenPickedUp())
+                // Check the angle to ensure it's within 45 degrees
+                Vector3 direction = collider.transform.position - transform.position;
+                float angle = Vector3.Angle(transform.forward, direction);
+
+                if (angle > 45f) continue;
+
+                // Check if nothing is blocking the object using a Raycast
+                if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, Mathf.Sqrt(distSqr)))
                 {
-                    AddObjectToRightHand(condition);
-                    playerLookAtTarget.headTarget = null;
+                    // Ensure the hit object is the same as the collider
+                    if (hit.collider == collider)
+                    {
+                        closestDistanceSqr = distSqr;
+                        closestCollider = collider;
+                    }
                 }
             }
-            break;
+        }
+
+        // Interact with the closest valid object
+        if (closestCollider != null && closestCollider.TryGetComponent(out IInteractable interactable))
+        {
+            _animator.SetTrigger("activate");
+            interactable.Interact();
+
+            if (interactable is Condition condition && condition.CanPickup() && !condition.HasBeenPickedUp())
+            {
+                AddObjectToRightHand(condition);
+                playerLookAtTarget.headTarget = null;
+            }
         }
     }
 
