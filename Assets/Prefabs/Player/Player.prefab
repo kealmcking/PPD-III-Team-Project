@@ -5893,8 +5893,6 @@ GameObject:
   - component: {fileID: 8903992667986733635}
   - component: {fileID: 6372273568534646299}
   - component: {fileID: 6510601294367202811}
-  - component: {fileID: 807190201310386878}
-  - component: {fileID: 5189801970184605773}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -5938,7 +5936,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _animator: {fileID: 56899943519693591}
-  playerLookAtTarget: {fileID: 5189801970184605773}
+  playerLookAtTarget: {fileID: 6372273568534646299}
   playerModels:
   - {fileID: 5252778422959493162}
   - {fileID: 1801476101899557818}
@@ -6058,44 +6056,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &807190201310386878
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7058200114144239472}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5189801970184605773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7058200114144239472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa4948b6ebdcffa4eb8a3c271a126a72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  headBone: {fileID: 0}
-  headTarget: {fileID: 0}
-  lookSpeed: 5
 --- !u!1 &7112729148637736323
 GameObject:
   m_ObjectHideFlags: 0
