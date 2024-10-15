@@ -13,6 +13,7 @@ public class playerController : MonoBehaviour
     [SerializeField] LayerMask ignoreMask;
     [SerializeField] private Animator _animator;
     [SerializeField] private playerLookAtTarget playerLookAtTarget;
+    public List<SkinnedMeshRenderer> playerModels = new List<SkinnedMeshRenderer>();
 
     public static Action INeedToTurnOffTheInteractUI;
 
@@ -319,5 +320,10 @@ public class playerController : MonoBehaviour
         {
             item.ItemPulse(transform.forward);
         }        
+    }
+
+    public void UpdatePlayerCharacter(int index)
+    {
+        playerModels[index].enabled = true;
     }
 }

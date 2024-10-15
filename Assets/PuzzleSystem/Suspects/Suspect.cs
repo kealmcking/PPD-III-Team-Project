@@ -40,7 +40,7 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
 
     public void ActivateMask()
     {
-        if(mask != null)
+        if (mask != null)
         {
             mask.SetActive(true);
         }
@@ -56,5 +56,3 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
     }
 
 }
-
-

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ButtonFunctions : MonoBehaviour
 {
     public static ButtonFunctions instance;
-    public AudioMixer audioMixer;
+    //public AudioMixer audioMixer;
 
     public Slider masterVolume;
     public Slider musicVolume;
@@ -19,6 +20,8 @@ public class ButtonFunctions : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        
         LoadOptions();
     }
 
@@ -45,25 +48,25 @@ public class ButtonFunctions : MonoBehaviour
 
     public void SetMasterVolume(float volume)
     {
-        audioMixer.SetFloat("MasterVolume", volume);
+        //audioMixer.SetFloat("MasterVolume", volume);
     }
     public void SetMusicVolume(float volume)
     {
-        audioMixer.SetFloat("MusicVolume", volume);
+        //audioMixer.SetFloat("MusicVolume", volume);
     }
     public void SetSfxVolume(float volume)
     {
-        audioMixer.SetFloat("SFXVolume", volume);
+        //audioMixer.SetFloat("SFXVolume", volume);
     }
 
     public void PlayGame()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     public void MainMenuOptions()
     {
-        MainMenuManager.instance.OptionsMenu();
+        MainMenuManager.instance.OptionsMainMenu();
     }
 
     public void SaveOptions()
@@ -80,5 +83,35 @@ public class ButtonFunctions : MonoBehaviour
         masterVolume.value = PlayerPrefs.GetFloat("MasterVolume");
         musicVolume.value = PlayerPrefs.GetFloat("MusicVolume");
         sfxVolume.value = PlayerPrefs.GetFloat("SFXVolume");
+    }
+
+    public void StartCharacterSelect()
+    {
+        // CharacterSelectionManager.instance.DisplayCharacterSelect();
+        SceneManager.LoadScene(1);
+        
+    }
+
+    public void SaveSelectedCharacter()
+    {
+        PlayerPrefs.SetInt("SelectedCharacter", CharacterSelectionManager.instance.characterIndex);
+        //GameManager.instance.DisplayCharacterUI();
+        //GameManager.instance.playerController.UpdatePlayerCharacter(CharacterSelectionManager.instance.characterIndex);
+    }
+
+    public void UpdateCharacter(int index)
+    {
+        if (index < 0 
+            || index > CharacterSelectionManager.instance.charactermodels.Count 
+            || index == CharacterSelectionManager.instance.characterIndex) 
+            return;
+
+        Debug.Log("Character" + index + "selected");
+        CharacterSelectionManager.instance.charactermodels[CharacterSelectionManager.instance.characterIndex].enabled = false;
+        CharacterSelectionManager.instance.toggleList[CharacterSelectionManager.instance.characterIndex].isOn = false;
+
+        CharacterSelectionManager.instance.characterIndex = index;
+        CharacterSelectionManager.instance.charactermodels[CharacterSelectionManager.instance.characterIndex].enabled = true;
+        CharacterSelectionManager.instance.toggleList[CharacterSelectionManager.instance.characterIndex].isOn = true;
     }
 }

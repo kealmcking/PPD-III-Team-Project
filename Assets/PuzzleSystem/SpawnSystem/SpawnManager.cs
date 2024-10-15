@@ -122,7 +122,7 @@ public class SpawnManager : MonoBehaviour
                 .Where(s => s.Type == type)
                 .ToList();
             SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
-            killer.ActivateMask();
+           // killer.ActivateMask();
             killer.gameObject.transform.position = spawn.transform.position;
             EventSheet.SendKiller?.Invoke(killer);
 
@@ -135,7 +135,7 @@ public class SpawnManager : MonoBehaviour
 
 
             SpawnPoint spawn = filteredSpawns.FirstOrDefault();
-            killer.ActivateMask();
+           //killer.ActivateMask();
             killer.gameObject.transform.position = spawn.transform.position;
             EventSheet.SendKiller?.Invoke(killer);
         }

@@ -120,7 +120,7 @@ public class Director : MonoBehaviour
                 .ToList();
             Suspect suspect = Randomizer.GetConditionalRandomizedSuspectFromListAndRemove(ref newSuspects);
             EventSheet.SuspectDied?.Invoke(suspect);
-            ghost.Prefab.SuspectData = suspect.Data;
+            //ghost.Prefab.SuspectData = suspect.Data;
             EventSheet.SpawnGhost?.Invoke(ghost, SpawnPointType.Ghost, true, null);
         }
         else
