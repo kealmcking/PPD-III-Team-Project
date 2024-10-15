@@ -15,6 +15,14 @@ public class RotateUIElementTowardsPlayer : MonoBehaviour
     
     void LateUpdate()
     {
-        transform.LookAt(camera.transform);
+        Vector3 direction = camera.transform.position - transform.position;
+
+        direction.y = 0;
+
+        if (direction.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = targetRotation;
+        }
     }
 }
