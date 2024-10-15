@@ -4,20 +4,26 @@ using UnityEngine;
 /// <summary>
 /// Represents the interactable lore around the map. It is case dependent so that every case has a unique lore to it. 
 /// </summary>
-public class Lore : MonoBehaviour,IInteractable, ICustomizableComponent
+[RequireComponent(typeof(SphereCollider), typeof(EnableInteractUI))]
+public class Lore : MonoBehaviour, IInteractable, ICustomizableComponent
 {
-    [SerializeField, Tooltip("Place a title for the lore here")] string titleText;
-    [SerializeField, Tooltip("Place a description explaining the lore here")] Description description;
-    [SerializeField, Tooltip("represents icon image")] protected Sprite icon;
+    [SerializeField] LoreData data;
     [SerializeField] Canvas canvas;
     [SerializeField] TextMeshProUGUI title;
     [SerializeField] TextMeshProUGUI body;
+    [SerializeField] EnableInteractUI interactUI;
+    [SerializeField] Collider col;
+
     private Guid id = new Guid();
     public Guid ID => id;
     void Awake()
     {
-        title.text = titleText;
-        body.text = description.Text;
+        col ??= GetComponent<SphereCollider>();
+        col.isTrigger = true;
+        interactUI ??= GetComponent<EnableInteractUI>();
+        title.text = data.Name;
+        body.text = data.Description.Text;
+        canvas.gameObject.SetActive(false);
     }
     public void Interact()
     {
@@ -25,10 +31,14 @@ public class Lore : MonoBehaviour,IInteractable, ICustomizableComponent
     }
     public void DisplayText()
     {
+        if(!canvas.gameObject.activeSelf)
         canvas.gameObject.SetActive(true);
+        else
+            canvas.gameObject.SetActive(false);
     }
-    public Payload GetPayload()
+
+    public GameObject GetObject()
     {
-        return new Payload { isEmpty = false, lore = this };
+        return gameObject;
     }
 }

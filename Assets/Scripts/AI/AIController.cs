@@ -46,7 +46,7 @@ public class AIController : MonoBehaviour
 
         playerPos = GameObject.FindWithTag("Player").transform.position;
         playerDir = playerPos - transform.position;
-        chasePlayer();
+       // chasePlayer();
         if (playerInRange)
         {
             faceTarget();

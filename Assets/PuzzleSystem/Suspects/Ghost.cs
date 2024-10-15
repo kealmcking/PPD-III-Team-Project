@@ -12,9 +12,9 @@ public class Ghost : MonoBehaviour, IInteractable, ICustomizableComponent
     {
 
     }
-    public Payload GetPayload()
+    public GameObject GetObject()
     {
-        return new Payload { isEmpty = false, ghost = this };
+        return gameObject;
     }
 
 }

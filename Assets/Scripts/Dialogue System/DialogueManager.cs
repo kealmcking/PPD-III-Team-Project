@@ -10,11 +10,9 @@ using UnityEngine.UI;
 
 namespace DialogueSystem
 {
-    public class DialogueManager : MonoBehaviour, IInteractable
+    public class DialogueManager : MonoBehaviour
     {
         public static DialogueManager instance;
-
-        [SerializeField] private List<Suspect> suspects = new List<Suspect>();
         private Suspect currentSuspect;
         private int currentDay;
 
@@ -33,6 +31,7 @@ namespace DialogueSystem
         public DialogueButton lastClickedDialogueButton;
 
         private bool isActive;
+        public bool IsActive => isActive;
         private bool isInDialogue;
 
         public static Action<bool> DialogueMenuActive;
@@ -88,7 +87,7 @@ namespace DialogueSystem
 
             if (currentDialogueLine.animationString != "")
             {
-                SuspectBeingInteractedWith().GetComponentInChildren<Animator>().SetTrigger(currentDialogueLine.animationString);
+                currentSuspect.Anim.SetTrigger(currentDialogueLine.animationString);
             }
 
             if (typingCoroutine != null)
@@ -205,10 +204,7 @@ namespace DialogueSystem
             speakerImage.sprite = currentNPC.characterSprite_base;
             dialogueContainer.SetActive(true);
             DialogueMenuActive.Invoke(true);
-            InputManager.instance.DisableCharacterInputs();
-            InputManager.instance.isInMenu = true;
-            
-            
+            InputManager.instance.DisableCharacterInputs();           
             resetDialogueData(); // Reset at the beginning
             buttonInitialization();
             isActive = true;
@@ -217,18 +213,17 @@ namespace DialogueSystem
         // For disabling the overall dialogue UI
         public void disableDialogueUI()
         {
-            InputManager.instance.isInMenu = true;
+        
             EventSystem.current.SetSelectedGameObject(null);
             dialogueContainer.SetActive(false);
             toggleDialogueButtons(false);
             resetDialogueData();
             currentTree = null;
-            currentSuspect.IsBeingInteractedWith = false;
             currentSuspect = null;
             DialogueMenuActive.Invoke(false);
             InputManager.instance.EnableCharacterInputs();
             isActive = false;
-            isInDialogue = false;
+            //isInDialogue = false;
         }
 
         IEnumerator typeLine(string line)
@@ -243,53 +238,17 @@ namespace DialogueSystem
             
         }
         
-        public void Interact()
-        { 
-            // Get this information later
-            // enableDialogueUI(currentNPC, currentNPC.trees[0]);
-           InputManager.instance.DisableCharacterInputs();
-        }
-
-        public Payload GetPayload()
-        {
-            return new Payload { isEmpty = true };
-        }
-
-        public Suspect SuspectBeingInteractedWith()
-        {
-            foreach (Suspect suspect in suspects)
-            {
-                if (suspect.IsBeingInteractedWith)
-                {
-                    return suspect;
-                }
-            }
-
-            return null;
-        }
+   
 
         private void OnEnable()
         {
-            EventSheet.SendSuspects += AddSuspectsToList;
             EventSheet.TodaysDayIndexIsThis += SetDay;
         }
 
         private void OnDisable()
         {
-            EventSheet.SendSuspects -= AddSuspectsToList;
+         
             EventSheet.TodaysDayIndexIsThis -= SetDay;
-
-            foreach (var suspect in suspects)
-            {
-                foreach (var tree in suspect.Npc.trees)
-                {
-                    foreach (var dialogue in tree.dialogues)
-                    {
-                        dialogue.ResetData();
-                    }
-                }
-            }
-
             currentNPC = null;
             currentTree = null;
             currentDialogueLine = null;
@@ -297,20 +256,13 @@ namespace DialogueSystem
             dialogueContainer.SetActive(false);
         }
 
-        private void AddSuspectsToList(List<Suspect> context)
-        {
-            suspects = context;
-        }
-
+     
         private void SetDay(int day)
         {
             currentDay = day;
         }
 
-        public void AddSuspect(Suspect sus)
-        {
-            suspects.Add(sus);
-        }
+       
         
     }
     

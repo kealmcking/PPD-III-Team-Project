@@ -4,7 +4,7 @@ using UnityEngine;
 /// Represents an interface between the puzzle and the expected condition
 /// for meeting one of many possible conditions the puzzle has to be considered complete..
 /// </summary>
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(SphereCollider), typeof(EnableInteractUI))]
 public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
 {
     private Guid id = new Guid();
@@ -14,6 +14,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] Collider col;
     [SerializeField] CraftableItemData requiredItem;
     [SerializeField] ConditionEndPoint goal;
+    [SerializeField] EnableInteractUI interactUI;
     [SerializeField] bool isPickUp;
     [SerializeField] bool isConditionMet;
     [SerializeField] private bool hasBeenPickedUp = false;
@@ -31,7 +32,8 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Awake()
     {
-        col ??= GetComponent<Collider>();
+        interactUI ??= GetComponent<EnableInteractUI>();
+        col ??= GetComponent<SphereCollider>();
         col.isTrigger = true;
     }
     public void Start()
@@ -56,15 +58,18 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Interact()
     {
-        // if (isPickUp)
+         if (isPickUp && !hasBeenPickedUp)
+        {
+            interactUI.ToggleCanvas();
+            hasBeenPickedUp = true;
+        }
+           
         // if (config is InteractConditionConfig iConfig)
         // iConfig.Interact(this);
     }
-    public Payload GetPayload() {
-        if (isPickUp)
-            return new Payload { isEmpty = true };
-        else
-            return new Payload { isEmpty = true };
+    public GameObject GetObject()
+    {
+        return gameObject;
     }
 
     public bool CanPickup()

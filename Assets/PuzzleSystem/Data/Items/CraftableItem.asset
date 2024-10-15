@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab5fe73dc6563c49bfc0afcb173c574, type: 3}
   m_Name: CraftableItem
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: Axe
   description: {fileID: 0}
-  itemPrefab: {fileID: 5368646953622632315, guid: ed020f3e1228aac4aa6407c95dd50a07,
+  itemPrefab: {fileID: 513400353420523261, guid: 717a6aa42ee335443810c763d2c4ac08,
     type: 3}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: a984ca2b452416e40b643ed6d19d9e30, type: 3}
   craftableComponents:
+  - {fileID: 11400000, guid: afed87cc1b4bf544994a3d978bd976ef, type: 2}
+  - {fileID: 11400000, guid: afed87cc1b4bf544994a3d978bd976ef, type: 2}
   - {fileID: 11400000, guid: afed87cc1b4bf544994a3d978bd976ef, type: 2}

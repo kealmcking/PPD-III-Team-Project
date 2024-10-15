@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class invSlot : MonoBehaviour
 {
-    public GameObject curItem;
-    
-    public void setCurItem(GameObject item)
+    public invItem curItem;
+    [SerializeField] SlotValidationType type = SlotValidationType.None;
+    public SlotValidationType Type => type;
+    public void SetType(SlotValidationType type)
+    {
+        this.type = type;
+    }
+    public void setCurItem(invItem item)
     {
         curItem = item;
-        curItem.transform.position = transform.position;
+        item.transform.SetParent(transform);
+        item.transform.position = transform.position;
     }
 }

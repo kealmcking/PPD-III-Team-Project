@@ -1,4 +1,5 @@
 using DialogueSystem;
+using Input;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,37 +7,37 @@ using UnityEngine;
 /// <summary>
 /// Allows a simple way to track the suspects who are in the game and whether or not they are the killer. 
 /// </summary>
+[RequireComponent(typeof(SphereCollider), typeof(EnableInteractUI),typeof(Animator))]
 public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
 {
     [SerializeField] SuspectData data;
     [SerializeField] GameObject mask;
     [SerializeField] bool isBeingInteractedWith;
     [SerializeField] NPC npc;
+    [SerializeField] EnableInteractUI interactUI;
+    [SerializeField] Collider col;
+    [SerializeField] Animator anim;
     //add weapon as well to activate when revealing the killer
     Guid id = new Guid();
     public Guid ID => id;
     public NPC Npc => npc;
     public SuspectData Data => data;
+    public Animator Anim => anim;
     public bool IsKiller { get; set; } = false;
-    public bool IsBeingInteractedWith
-    {
-        get => isBeingInteractedWith;
-        set => isBeingInteractedWith = value;
-    }
+
    
     public GameObject Mask => mask;
     public void Awake()
     {
-       /* mask = transform.Find("Mask").gameObject;
-        if(mask == null)
-        {
-            Debug.LogError("You do not have a mask component on this suspect: " +name+", add a mask before continuing");
-        }*/
+        col ??= GetComponent<SphereCollider>();
+        col.isTrigger = true;
+        /* mask = transform.Find("Mask").gameObject;
+         if(mask == null)
+         {
+             Debug.LogError("You do not have a mask component on this suspect: " +name+", add a mask before continuing");
+         }*/
     }
-    public void Start()
-    {
-        DialogueManager.instance.AddSuspect(this);
-    }
+
     public void ActivateMask()
     {
         if(mask != null)
@@ -46,11 +47,12 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Interact()
     {
-
+        interactUI.ToggleCanvas();
+        DialogueManager.instance.enableDialogueUI(this);     
     }
-    public Payload GetPayload()
+    public GameObject GetObject()
     {
-        return new Payload{ isEmpty = false, suspect = this};
+        return gameObject;
     }
 
 }

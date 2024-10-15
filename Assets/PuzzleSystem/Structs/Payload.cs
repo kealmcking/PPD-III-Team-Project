@@ -2,7 +2,7 @@ using UnityEngine;
 /// <summary>
 /// Represents the payload that is used during an interactionwith any possible interactable. 
 /// </summary>
-public struct Payload
+/*public struct Payload
 {
     public bool isEmpty;
     public Lore lore;
@@ -10,4 +10,4 @@ public struct Payload
     public Condition condition;
     public Suspect suspect;
     public Ghost ghost;
-}
+}*/

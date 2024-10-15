@@ -5,12 +5,19 @@ using UnityEngine.UI;
 
 public class invItem : MonoBehaviour
 {
-    public itemScriptableObject itemScriptableObject;
-
+    [SerializeField] BaseItemData itemData;
+    [SerializeField] SlotValidationType type = SlotValidationType.None;
+    public SlotValidationType Type => type;
+    public BaseItemData ItemData { get { return itemData; } private set { itemData = value; } }
     [SerializeField] Image iconImage;
     // Update is called once per frame
-    void Update()
+    public void SetType(SlotValidationType type)
     {
-        iconImage.sprite = itemScriptableObject.icon; 
+        this.type = type;
+    }
+    public void SetItemData(BaseItemData itemData)
+    {
+        ItemData = itemData;
+        iconImage.sprite = itemData.Icon;
     }
 }

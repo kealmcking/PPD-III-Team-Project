@@ -5,6 +5,7 @@ using DialogueSystem;
 using UnityEngine;
 using Input;
 using Unity.Mathematics;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public class playerController : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class playerController : MonoBehaviour
     [Range(0.0f, 10.0f)][SerializeField] private float _walkBackwardMod;
     [SerializeField] private float moveSmoothSpeed;
 
-    [Header("Player Settings - Rotation Speed")] 
+    [Header("Player Settings - Rotation Speed")]
     [SerializeField] private float rotSpeed;
 
     [Header("Player Stats - Crouching")]
@@ -53,13 +54,12 @@ public class playerController : MonoBehaviour
     [SerializeField] private Light flashlight;
     [SerializeField] private Quaternion itemHandOffset;
 
-    [Header("Player Stats - Gravity")] 
+    [Header("Player Stats - Gravity")]
     [SerializeField] private float gravity = -9.81f;
 
-    private Condition currentCondition;
 
     [SerializeField] private Transform handPos;
-
+    private IInteractable objectInHand;
     private bool hasTurned;
     private bool startTurning;
 
@@ -74,21 +74,21 @@ public class playerController : MonoBehaviour
     bool _isClimbing;
     bool _isFleeing;
     bool _isSprinting;
-   
+
 
     private void OnEnable()
     {
-        InputManager.IHavePressedInteractButton += Interact;
+        EventSheet.IHavePressedInteractButton += Interact;
     }
 
     private void OnDisable()
     {
-        InputManager.IHavePressedInteractButton -= Interact;
+        EventSheet.IHavePressedInteractButton -= Interact;
     }
 
     private void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
+         audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
     }
 
     // Start is called before the first frame update
@@ -105,7 +105,7 @@ public class playerController : MonoBehaviour
 
         _playerVel = Vector3.zero;
     }
-      public void SetCharacterModel(GameObject characterModel)
+    public void SetCharacterModel(GameObject characterModel)
     {
         _currentCharacterModel = characterModel;
     }
@@ -119,7 +119,7 @@ public class playerController : MonoBehaviour
     private void LateUpdate()
     {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * interactDistance, Color.red);
-        
+
         rotateTowardCamera();
         //toggleFlashlight();
         //updateFlashlightDirection();
@@ -140,7 +140,7 @@ public class playerController : MonoBehaviour
         if (moveY <= -0.1f)
         {
             targetSpeed *= _walkBackwardMod;
-            
+
         }
 
         // Check if crouching
@@ -160,7 +160,7 @@ public class playerController : MonoBehaviour
         // Apply movement
         _moveDir = Vector3.Lerp(_moveDir, targetMoveDirection, 0.1f);
         charController.Move(_moveDir * _currentSpeed * Time.deltaTime);
-        
+
         sprint();
 
         float currentVertValue = _animator.GetFloat("vert");
@@ -169,19 +169,21 @@ public class playerController : MonoBehaviour
         // Update animator parameters
         _animator.SetFloat("horiz", moveX);
         _animator.SetFloat("vert", newVertValue);
-        
+
         ApplyGravity();
     }
 
     private void footStep()
     {
-        if(!_isCrouching && !_isSprinting)          //Walking
+        if (!_isCrouching && !_isSprinting)          //Walking
         {
             audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
-        } else if (!_isCrouching && _isSprinting)   //Sprinting
+        }
+        else if (!_isCrouching && _isSprinting)   //Sprinting
         {
             audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepRunVol);
-        } else if (!_isSprinting && _isCrouching)   //Crouching
+        }
+        else if (!_isSprinting && _isCrouching)   //Crouching
         {
             audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepCrouchVol);
         }
@@ -208,7 +210,7 @@ public class playerController : MonoBehaviour
             Vector3 cameraForward = _mainCam.transform.forward;
             cameraForward.y = 0;
             cameraForward.Normalize();
-            
+
             Quaternion targetRotation = Quaternion.LookRotation(cameraForward);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotSpeed);
         }
@@ -252,7 +254,7 @@ public class playerController : MonoBehaviour
                 audioManager.PlaySFX(audioManager.crouchUp[UnityEngine.Random.Range(0, audioManager.crouchUp.Length)], audioManager.crouchVol);
             }
         }
-        
+
         _animator.SetBool("isCrouched", _isCrouching);
         charController.height = Mathf.Lerp(charController.height, _newHeight, Time.deltaTime / _crouchTime);
         charController.center = Vector3.Lerp(charController.center, _newCenter, Time.deltaTime / _crouchTime);
@@ -270,60 +272,53 @@ public class playerController : MonoBehaviour
         }
     }
 
-    private void Interact(EnableInteractUI interactUI)
+    private void Interact()
     {
-        
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
 
-        
+
         foreach (var collider in colliders)
         {
-            IInteractable interactable;
-            collider.gameObject.TryGetComponent(out interactable);
-            
-            if (interactable == null) continue;
-            Payload payload = interactable.GetPayload();
+       
+            Vector3 direction = collider.transform.position - transform.position;
+            float angle = Vector3.Angle(transform.forward, direction);
+
+            if (!collider.gameObject.TryGetComponent(out IInteractable interactable) || angle >90f) continue;
+           
+            _animator.SetTrigger("activate");
             interactable.Interact();
             
-            
-            switch (interactable)
+            if (interactable != null && interactable is Condition condition)
             {
-                case Item item:
-                    // Do item stuff
-                    // - Send to inventory
-                    break;
-                case Lore lore:
-                    lore.Interact();
-                    break;
-                case Suspect suspect:
-                    // - Send to dialogue UI
-                    suspect.IsBeingInteractedWith = true;
-                    DialogueManager.instance.enableDialogueUI(DialogueManager.instance.SuspectBeingInteractedWith());
-                    break;
-                case Condition condition:
-                    if (condition.CanPickup() && !condition.HasBeenPickedUp())
-                    {
-                        currentCondition = condition;
-                        condition.gameObject.transform.SetParent(handPos);
-                        condition.transform.localPosition = Vector3.zero;
-                        condition.transform.localRotation = Quaternion.identity * itemHandOffset;
-                        interactUI.ToggleCanvas();
-                        _animator.SetTrigger("activate");
-                        condition.SetHasBeenPickedUp(true);
-                        playerLookAtTarget.headTarget = null;
-                    }
-                    break;
+                if (condition.CanPickup() && !condition.HasBeenPickedUp())
+                {
+                    AddObjectToRightHand(condition);
+                    playerLookAtTarget.headTarget = null;
+                }
             }
+            break;
         }
+    }
+
+    private void AddObjectToRightHand(IInteractable obj)
+    {
+        obj.GetObject().transform.SetParent(handPos);
+        obj.GetObject().transform.localPosition = Vector3.zero;
+        obj.GetObject().transform.localRotation = Quaternion.identity * itemHandOffset;
+        objectInHand = obj;
     }
 
     private void ThrowObject()
     {
-        if (currentCondition == null) return;
+        if (objectInHand == null) return;
+        objectInHand.GetObject().transform.SetParent(null);
+        _animator.SetTrigger("activate");
+        Item item = objectInHand.GetObject().GetComponent<Item>();
+        if (item != null)
+        {
+            item.ItemPulse(transform.forward);
+        }
         
-        currentCondition.gameObject.transform.parent = null;
-
-
-        // Throw object at target
     }
 }

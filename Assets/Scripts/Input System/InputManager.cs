@@ -11,7 +11,7 @@ namespace Input
         #region Variables
         public static InputManager instance;
 
-        public static Action<EnableInteractUI> IHavePressedInteractButton;
+        
 
         [Header("Input Actions")]
         public InputAction moveAction;
@@ -27,11 +27,11 @@ namespace Input
         [Header("VISIBLE FOR DEBUG PURPOSES")]
         [SerializeField] private Vector2 moveAmount;
         [SerializeField] private Vector2 aimAmount;
-        [SerializeField] private bool isPause;
+       // [SerializeField] private bool isPause;
         [SerializeField] private bool isSprint;
         [SerializeField] private bool isCrouch;
         [SerializeField] private bool isFlashLight;
-        public bool isInMenu;
+      
         
         private bool isInInteractableArea = false;
 
@@ -67,14 +67,9 @@ namespace Input
 
             inventoryAction.performed += ctx => { OnInventory(ctx); };
 
-            cancelAction.performed += ctx => { OnCancelled(ctx); };
         }
         
         #region Getters
-        public bool getIsPause()
-        {
-            return isPause;
-        }
 
         public bool getIsCrouch()
         {
@@ -108,6 +103,7 @@ namespace Input
         {
             // Read Value for action each frame
             moveAmount = moveAction.ReadValue<Vector2>();
+            if(!GameManager.instance.InventoryActive)
             aimAmount = aimAction.ReadValue<Vector2>().normalized;
         }
         
@@ -118,55 +114,68 @@ namespace Input
         {
             if (!isInInteractableArea) return;
 
-            if (!isInMenu)
+            if (DialogueManager.instance.GetIsActive())
             {
-                IHavePressedInteractButton.Invoke(currentInteractable);
-            }
-            else
-            {
-                if (DialogueManager.instance.GetIsActive())
+                if (DialogueManager.instance.GetIsInDialogue())
                 {
-                    if (DialogueManager.instance.GetIsInDialogue())
+                    DialogueManager.instance.advanceToNextDialogueLine();
+                }
+                else
+                {
+                    GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
+
+                    if (selectedObject == null)
                     {
-                        DialogueManager.instance.advanceToNextDialogueLine();
+                        EventSystem.current.SetSelectedGameObject(DialogueManager.instance.dialogueButtons[0].gameObject);
+                        selectedObject = EventSystem.current.currentSelectedGameObject;
+
                     }
-                    else
-                    {
-                        GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
-                        
-                        if (selectedObject == null)
-                        {
-                            EventSystem.current.SetSelectedGameObject(DialogueManager.instance.dialogueButtons[0].gameObject);
-                            selectedObject = EventSystem.current.currentSelectedGameObject;
-                            
-                        }
-                        
-                        selectedObject.GetComponent<DialogueButton>().PressButton();
-                    }
+
+                    selectedObject.GetComponent<DialogueButton>().PressButton();
                 }
             }
+            else 
+            {
+                EventSheet.IHavePressedInteractButton.Invoke();
+            }
+          
             
         }
 
         // Controls Pausing input
         public void OnPause(InputAction.CallbackContext context)
         {
-            isPause = !isPause;
+            if(GameManager.instance.InventoryActive && GameManager.instance.MenuActive != GameManager.instance.MenuInventory)
+            GameManager.instance.DeactivateInventoryUISecondary();
+            else if(GameManager.instance.InventoryActive)GameManager.instance.DeactivateInventoryUI();
             
-            if (isPause)
+            if(GameManager.instance.CraftTableActive) GameManager.instance.DeactivateCraftTableUI();
+            if (GameManager.instance.MenuActive == null && !DialogueManager.instance.IsActive)
             {
                 DisableCharacterInputs();
-                cancelAction.Disable(); 
+                GameManager.instance.PauseGame();
+                GameManager.instance.ActivatePauseMenu();
+                //open main menu
             }
-            else
-            {
-                cancelAction.Enable(); 
-            }
-
-            if (!isInMenu && !isPause)
+            else if (GameManager.instance.MenuActive != null && !DialogueManager.instance.IsActive)
             {
                 EnableCharacterInputs();
+                GameManager.instance.UnpauseGame();
+                GameManager.instance.DeactivatePauseMenu();
+                //close menu
             }
+            else if(GameManager.instance.MenuActive != null && DialogueManager.instance.IsActive)
+            {
+                GameManager.instance.UnpauseGame();
+                GameManager.instance.DeactivatePauseMenu();
+                //close menu
+            }
+            else if(GameManager.instance.MenuActive== null && DialogueManager.instance.IsActive)
+            {
+                DialogueManager.instance.disableDialogueUI();
+                EnableCharacterInputs();
+            }
+
         }
 
         // Controls crouching input
@@ -203,17 +212,12 @@ namespace Input
         // Controls opening Inventory input
         public void OnInventory(InputAction.CallbackContext context)
         {
-            isInMenu = true;
-            DisableCharacterInputs();
+            if (GameManager.instance.IsPauseActive || DialogueManager.instance.IsActive) return;
+            if (GameManager.instance.InventoryActive) GameManager.instance.DeactivateInventoryUI();
+            else GameManager.instance.ActivateInventoryUI();
             Debug.Log("Inventory Button Pressed");
         }
 
-        // Controls canceling out of menus input
-        public void OnCancelled(InputAction.CallbackContext context)
-        {
-            EnableCharacterInputs();
-            DialogueManager.instance.disableDialogueUI();
-        }
 
         // Disables all inputs the player can use in general gameplay
         public void DisableCharacterInputs()
@@ -224,7 +228,7 @@ namespace Input
             sprintAction.Disable();
             flashLightAction.Disable();
             inventoryAction.Disable();
-            cancelAction.Enable();
+            
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
@@ -232,7 +236,7 @@ namespace Input
         // Enables all inputs the player can use in general gameplay
         public void EnableCharacterInputs()
         {
-            isInMenu = false;
+           
             
             moveAction.Enable();
             aimAction.Enable();
@@ -240,7 +244,7 @@ namespace Input
             sprintAction.Enable();
             flashLightAction.Enable();
             inventoryAction.Enable();
-            cancelAction.Disable();
+           
             
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;

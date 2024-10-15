@@ -22,4 +22,8 @@ public static class EventSheet
     public static Action<Suspect> SendKiller;
     public static Action<Suspect, SpawnPointType, bool> SpawnKiller;
     public static Action<List<BaseClueData>, SpawnPointType,bool> SpawnExcessClues;
+    public static Action<Item> SendItemToInventory;
+    public static Action<Clue> SendClueToTracker;
+    public static Action IHavePressedInteractButton;
+
 }

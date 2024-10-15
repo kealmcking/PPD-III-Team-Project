@@ -25,6 +25,7 @@ public class ButtonFunctions : MonoBehaviour
     public void ResumeGame()
     {
         GameManager.instance.UnpauseGame();
+        GameManager.instance.DeactivatePauseMenu();
     }
 
     public void QuitGame()
