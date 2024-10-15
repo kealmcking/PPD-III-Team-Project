@@ -689,10 +689,10 @@ Animator:
   m_GameObject: {fileID: 614106288089288121}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4a5a8c8ff5d6d2e48ab8d2b27100cf57, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 77c824925aabc624288a9cc65859ff64, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -5890,8 +5890,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3895900668954901552}
   - component: {fileID: 2509493557501858797}
-  - component: {fileID: 216322780724254400}
   - component: {fileID: 8903992667986733635}
+  - component: {fileID: 6372273568534646299}
+  - component: {fileID: 960384203962970219}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -5934,8 +5935,8 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 0
-  _animator: {fileID: 216322780724254400}
-  playerLookAtTarget: {fileID: 0}
+  _animator: {fileID: 56899943519693591}
+  playerLookAtTarget: {fileID: 6372273568534646299}
   playerModels:
   - {fileID: 5252778422959493162}
   - {fileID: 1801476101899557818}
@@ -5966,13 +5967,19 @@ MonoBehaviour:
   - {fileID: 5825618512946024674}
   - {fileID: 7806390145626679444}
   - {fileID: 2255886007027024040}
+  characterDB: {fileID: 11400000, guid: 9624d4bf029e8e44b8976293f9850f04, type: 2}
+  _character:
+    characterModel: {fileID: 0}
+    characterName: 
+    characterDisplayUI: {fileID: 0}
+    isUnlocked: 0
   _origSpeed: 1
   _walkSpeed: 2
   _crouchMod: 0.5
   _climbMod: 0
   _sprintMod: 2
-  _walkBackwardMod: 0.5
-  moveSmoothSpeed: 10
+  _walkBackwardMod: 0.75
+  moveSmoothSpeed: 5
   rotSpeed: 10
   _crouchTime: 0.2
   _crouchHeight: 1
@@ -5986,28 +5993,6 @@ MonoBehaviour:
   itemHandOffset: {x: 0.70710677, y: 0.70710677, z: -0.00000003090862, w: -0.00000003090862}
   gravity: -9.81
   handPos: {fileID: 0}
---- !u!95 &216322780724254400
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7058200114144239472}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b69174d668ba02d44b14a084b217670a, type: 3}
-  m_Controller: {fileID: 9100000, guid: 77c824925aabc624288a9cc65859ff64, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!143 &8903992667986733635
 CharacterController:
   m_ObjectHideFlags: 0
@@ -6034,6 +6019,38 @@ CharacterController:
   m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &6372273568534646299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7058200114144239472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa4948b6ebdcffa4eb8a3c271a126a72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 56899943519693591}
+  headBone: {fileID: 5288626501997052305}
+  headTarget: {fileID: 0}
+  lookSpeed: 5
+--- !u!114 &960384203962970219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7058200114144239472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f28a42715cfd1044854a9c1744dc8ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 0}
+  mask: {fileID: 0}
+  isBeingInteractedWith: 0
+  npc: {fileID: 0}
 --- !u!1 &7112729148637736323
 GameObject:
   m_ObjectHideFlags: 0
