@@ -67,6 +67,8 @@ namespace Input
 
             inventoryAction.performed += ctx => { OnInventory(ctx); };
 
+            cancelAction.performed += ctx => { OnCancelled(ctx); };
+
         }
         
         #region Getters
@@ -218,6 +220,32 @@ namespace Input
             Debug.Log("Inventory Button Pressed");
         }
 
+        public void OnCancelled(InputAction.CallbackContext context)
+        {
+            if(GameManager.instance.InventoryActive && GameManager.instance.MenuActive != GameManager.instance.MenuInventory)
+                GameManager.instance.DeactivateInventoryUISecondary();
+            else if(GameManager.instance.InventoryActive)GameManager.instance.DeactivateInventoryUI();
+            
+            if(GameManager.instance.CraftTableActive) GameManager.instance.DeactivateCraftTableUI();
+            if (GameManager.instance.MenuActive != null && !DialogueManager.instance.IsActive)
+            {
+                EnableCharacterInputs();
+                GameManager.instance.UnpauseGame();
+                GameManager.instance.DeactivatePauseMenu();
+                //close menu
+            }
+            else if(GameManager.instance.MenuActive != null && DialogueManager.instance.IsActive)
+            {
+                GameManager.instance.UnpauseGame();
+                GameManager.instance.DeactivatePauseMenu();
+                //close menu
+            }
+            else if(GameManager.instance.MenuActive== null && DialogueManager.instance.IsActive)
+            {
+                DialogueManager.instance.disableDialogueUI();
+                EnableCharacterInputs();
+            }
+        }
 
         // Disables all inputs the player can use in general gameplay
         public void DisableCharacterInputs()
@@ -228,6 +256,7 @@ namespace Input
             sprintAction.Disable();
             flashLightAction.Disable();
             inventoryAction.Disable();
+            cancelAction.Enable();
             
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -237,7 +266,7 @@ namespace Input
         public void EnableCharacterInputs()
         {
            
-            
+            cancelAction.Disable();
             moveAction.Enable();
             aimAction.Enable();
             crouchAction.Enable();
@@ -279,6 +308,7 @@ namespace Input
             sprintAction.Disable();
             flashLightAction.Disable();
             inventoryAction.Disable();
+            cancelAction.Disable();
             EnableInteractUI.ImInInteractionZone -= SetInteractable;
         }
         
