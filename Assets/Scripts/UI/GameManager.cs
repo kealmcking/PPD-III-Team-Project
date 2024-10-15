@@ -112,14 +112,14 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         
-        audioManager.PauseSounds();
+        audioManager.instance.PauseSounds();
     }
     public void ActivatePauseMenu()
     {
         characterUI.SetActive(false);
         menuActive = pauseUI;
         menuActive.SetActive(true);
-        audioManager.PlaySFX(audioManager.UIOpen, audioManager.UIVol);
+        audioManager.instance.PlaySFX(audioManager.instance.UIOpen, audioManager.instance.UIVol);
     }
     public void UnpauseGame()
     {
@@ -127,8 +127,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = timeScaleOG;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-       
-        audioManager.PauseSounds();
+
+        audioManager.instance.PauseSounds();
     }
     public void DeactivatePauseMenu()
     {
@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
         menuActive = null;
         characterUI.SetActive(true);
 
-        audioManager.PlaySFX(audioManager.UIClose, audioManager.UIVol);
+        audioManager.instance.PlaySFX(audioManager.instance.UIClose, audioManager.instance.UIVol);
     }
     public void ActivateInventoryUI()
     {
@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
         menuActive = winUI;
         menuActive.SetActive(true);
 
-        audioManager.PlaySFX(audioManager.UIWin, audioManager.UIVol);
+        audioManager.instance.PlaySFX(audioManager.instance.UIWin, audioManager.instance.UIVol);
     }
 
     public void LoseGame()
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
         menuActive = loseUI;
         menuActive.SetActive(true);
 
-        audioManager.PlaySFX(audioManager.UILose, audioManager.UIVol);
+        audioManager.instance.PlaySFX(audioManager.instance.UILose, audioManager.instance.UIVol);
     }
 
     public void OptionsMenu()
@@ -206,7 +206,7 @@ public class GameManager : MonoBehaviour
         pauseUI.SetActive(false);
         ButtonFunctions.instance.LoadOptions();
 
-        //audioManager.PlaySFX(audioManager.UIOpen, audioManager.UIVol);
+        audioManager.instance.PlaySFX(audioManager.instance.UIOpen, audioManager.instance.UIVol);
     }
 
 
