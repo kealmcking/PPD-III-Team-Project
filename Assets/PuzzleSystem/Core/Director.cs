@@ -100,7 +100,7 @@ public class Director : MonoBehaviour
         if(newSuspects.Count > 0)
         {
             EventSheet.InitializeSuspectsToScene?.Invoke(newSuspects, SpawnPointType.Starting, true);
-            EventSheet.SendSuspects?.Invoke(newSuspects);
+            EventSheet.SendSuspects?.Invoke(suspects);
         }
         if(motives.Count > 0)
             EventSheet.SendMotives?.Invoke(motives);
@@ -125,7 +125,7 @@ public class Director : MonoBehaviour
         }
         else
         {
-            EventSheet.SpawnKiller?.Invoke(gameSelection.GetKiller().SuspectPrefab,SpawnPointType.Killer,true);
+            EventSheet.SpawnKiller?.Invoke(gameSelection.GetKiller().Suspect.SuspectPrefab,SpawnPointType.Killer,true);
         }
     }
     private class PuzzleController
@@ -150,9 +150,9 @@ public class Director : MonoBehaviour
     }
     private class ClueController
     {
-        private List<BaseItemData> foundClues = new List<BaseItemData>();
+        private List<BaseClueData> foundClues = new List<BaseClueData>();
         public ClueController(){ }
-        public void AddClue(BaseItemData clue)
+        public void AddClue(BaseClueData clue)
         { 
             foundClues.Add(clue);
             EventSheet.SendFoundClue?.Invoke(clue);

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(SphereCollider), typeof(EnableInteractUI))]
 public class Detective : EnvironmentInteractable
 {
     public override void Interact()
@@ -18,6 +18,6 @@ public class Detective : EnvironmentInteractable
 
         if (GameManager.instance.CraftTableActive) GameManager.instance.DeactivateCraftTableUI();
         interactUI.ToggleCanvas();
-        GameManager.instance.ActivateDetectiveUI();
+        GameManager.instance.ActivateDecisionUI();
     }
 }

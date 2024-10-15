@@ -39,6 +39,7 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!GameManager.instance.InventoryActive) return;
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             invSlot clickedSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<invSlot>();
@@ -55,6 +56,7 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (!GameManager.instance.InventoryActive) return;
         if (draggedItem != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Left)
         {
             clickedSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<invSlot>();

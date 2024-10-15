@@ -21,18 +21,23 @@ public class ClueInitializer
     {
         List<BaseClueData> clues = new List<BaseClueData>();
         foreach (var suspect in suspects) {
-            if (suspect.ID == selection.GetKiller().ID) continue;
+            //if (suspect.ID == selection.GetKiller().ID) continue;
             
             KillerClueData data = (KillerClueData)KillerClueData.CreateInstance("KillerClueData");
             if(data.Icon != null)
                data.SetIcon(suspect.Icon);
-            if(data.Prefab != null)
-               data.SetPrefab(suspect.SuspectPrefab);
+            if(data.Suspect != null)
+               data.SetSuspectData(suspect);
             if(data.Name != null)
                data.SetName(suspect.Name);
             if(data.Description != null)
                data.SetDescription(suspect.Description);
-            clues.Add(data);
+            if (suspect.ID == selection.GetKiller().ID)
+            {
+                EventSheet.SendKillerClue?.Invoke(data);
+            }
+            else
+                clues.Add(data);
         }
         rooms.ForEach(s => 
             {
@@ -49,7 +54,7 @@ public class ClueInitializer
             if (s.ID != selection.GetMotive().ID)
                 clues.Add(s);
         });
-        
+        EventSheet.SendAllClues(clues);
         selection.GetCase().Puzzles.ForEach(p =>
         {
             p.Reward = Randomizer.GetRandomizedObjectFromListAndRemove(ref clues);

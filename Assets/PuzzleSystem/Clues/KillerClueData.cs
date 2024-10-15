@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class KillerClueData : BaseClueData
 {
-    [SerializeField] Suspect prefab;
-    public new Suspect Prefab => prefab;
+    [SerializeField] SuspectData suspectData;
+    public SuspectData Suspect => suspectData;
     public void SetName(string name)
     {
         itemName = name; 
@@ -16,9 +16,9 @@ public class KillerClueData : BaseClueData
     {
         this.icon = icon;
     }
-    public void SetPrefab(Suspect prefab)
+    public void SetSuspectData(SuspectData value)
     {
-        this.prefab = prefab;
+        suspectData = value;
     }
     public void SetDescription(Description description)
     {

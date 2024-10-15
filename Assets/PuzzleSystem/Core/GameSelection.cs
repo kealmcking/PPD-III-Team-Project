@@ -4,7 +4,7 @@ using System.Collections.Generic;
 /// </summary>
 public class GameSelection
 {
-    private SuspectData killer;
+    private KillerClueData killer;
     private RoomClueData room;
     private WeaponClueData weapon;
     private MotiveClueData motive;
@@ -13,8 +13,8 @@ public class GameSelection
     {
         if (suspects.Count > 0)
         {
-            killer = Randomizer.GetRandomizedObjectFromList(suspects);
-            killer.SuspectPrefab.GetComponent<Suspect>().IsKiller = true;
+            SuspectData data = Randomizer.GetRandomizedObjectFromList(suspects);
+            data.SuspectPrefab.GetComponent<Suspect>().IsKiller = true;
         }
         if (rooms.Count > 0)
             room = Randomizer.GetRandomizedObjectFromList(rooms);
@@ -24,10 +24,16 @@ public class GameSelection
             motive = Randomizer.GetRandomizedObjectFromList(motives);
         if (cases.Count > 0)
         caseFile = Randomizer.GetRandomizedObjectFromList(cases);
+        EventSheet.SendKillerClue += KillerUpdate;
     }
-    public SuspectData GetKiller() { return killer; }
+    public KillerClueData GetKiller() { return killer; }
     public RoomClueData GetRoom() { return room; }
     public WeaponClueData GetWeapon() { return weapon; }
     public MotiveClueData GetMotive() { return motive; }
     public Case GetCase() { return caseFile; }
+    public void KillerUpdate(KillerClueData data)
+    {
+        killer = data;
+        EventSheet.SendKillerClue -= KillerUpdate;
+    }
 }

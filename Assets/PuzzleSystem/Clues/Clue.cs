@@ -6,11 +6,11 @@ using UnityEngine;
 /// </summary>
 public class Clue : MonoBehaviour, IInteractable, ICustomizableComponent
 {
-    [SerializeField] BaseItemData data;
+    [SerializeField] BaseClueData data;
     [SerializeField] Rigidbody rb;
     [SerializeField] EnableInteractUI interactUI;
     [SerializeField] Collider col;
-    public BaseItemData Data => data;
+    public BaseClueData Data => data;
     private Guid id = new Guid();
     public Guid ID => id;
     private void Awake()

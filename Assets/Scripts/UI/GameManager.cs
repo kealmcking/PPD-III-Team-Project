@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject characterUI;
     [SerializeField] private GameObject menuInventory;
     [SerializeField] private GameObject craftTableUI;
+    [SerializeField] private GameObject decisionUI;
     [SerializeField] private GameObject menuActive;
     public GameObject MenuInventory => menuInventory;
     public GameObject MenuActive => menuActive;
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour
 
     public bool InventoryActive { get; private set; }
     public bool CraftTableActive { get; private set; }
+    public bool DecisionActive { get; private set; }
+
     [Header("Day System")]
     [SerializeField] int _day;
 
@@ -180,6 +183,37 @@ public class GameManager : MonoBehaviour
         menuActive = null;
         CraftTableActive = false;
     }
+
+    public void ActivateSleepMenu()
+    {
+        menuActive = sleepUI;
+        sleepUI.SetActive(true);
+        characterUI.SetActive(false);
+    }
+
+    public void DeactivateSleepMenu()
+    {
+        menuActive = characterUI;
+        sleepUI.SetActive(false);
+        characterUI.SetActive(true);
+    }
+    public void ActivateDecisionUI()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+        menuActive = decisionUI;
+        menuActive.SetActive(true);
+        DecisionActive = true;
+    }
+    public void DeactivateDecisionUI()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        menuActive.SetActive(false);
+        menuActive = null;
+        DecisionActive = false;
+    }
+
     public void WinGame()
     {
         PauseGame();
@@ -209,22 +243,7 @@ public class GameManager : MonoBehaviour
         audioManager.instance.PlaySFX(audioManager.instance.UIOpen, audioManager.instance.UIVol);
     }
 
-    public void ActivateSleepMenu()
-    {
-        menuActive = sleepUI;
-        sleepUI.SetActive(true);
-        characterUI.SetActive(false);
-    }
-
-    public void DeactivateSleepMenu()
-    {
-        menuActive = characterUI;
-        sleepUI.SetActive(false);
-        characterUI.SetActive(true);
-    }
    
-
-
     public void UpdateObjectiveText(string text)
     {
         objectivesText.text = text;
@@ -274,8 +293,5 @@ public class GameManager : MonoBehaviour
         DeactivateSleepMenu();
     }
 
-    internal void ActivateDetectiveUI()
-    {
-        throw new NotImplementedException();
-    }
+   
 }

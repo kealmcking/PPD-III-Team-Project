@@ -6,11 +6,11 @@ public static class EventSheet
 {
     public static Action<List<Puzzle>> SendPuzzles;
     public static Action<List<Lore>> SendLore;
-    public static Action<BaseItemData> SendFoundClue;
+    public static Action<BaseClueData> SendFoundClue;
     public static Action<List<RoomClueData>> SendRooms;
     public static Action<List<WeaponClueData>> SendWeapons;
     public static Action<List<MotiveClueData>> SendMotives;
-    public static Action<List<Suspect>> SendSuspects;
+    public static Action<List<SuspectData>> SendSuspects;
     public static Action<List<Suspect>, SpawnPointType, bool> InitializeSuspectsToScene;
     public static Action<GameSelection> SendGameSelection;
     public static Action<int> SendDay;
@@ -25,5 +25,6 @@ public static class EventSheet
     public static Action<Item> SendItemToInventory;
     public static Action<Clue> SendClueToTracker;
     public static Action IHavePressedInteractButton;
-
+    public static Action<KillerClueData> SendKillerClue;
+    public static Action<List<BaseClueData>> SendAllClues;
 }
