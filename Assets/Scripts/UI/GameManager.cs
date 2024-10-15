@@ -209,8 +209,19 @@ public class GameManager : MonoBehaviour
         audioManager.instance.PlaySFX(audioManager.instance.UIOpen, audioManager.instance.UIVol);
     }
 
+    public void ActivateSleepMenu()
+    {
+        menuActive = sleepUI;
+        sleepUI.SetActive(true);
+        characterUI.SetActive(false);
+    }
 
-
+    public void DeactivateSleepMenu()
+    {
+        menuActive = characterUI;
+        sleepUI.SetActive(false);
+        characterUI.SetActive(true);
+    }
    
 
 
@@ -245,7 +256,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void TimeToGoToSleep()
+    public void TimeToGoToSleep()
     {
         if(isTimeToSleep && wentToSleep)
         {
@@ -258,9 +269,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Sleeping()
     {
-        menuActive = sleepUI;
+        ActivateSleepMenu();
         yield return new WaitForSeconds(1f);
-        menuActive = characterUI;
+        DeactivateSleepMenu();
     }
 
     internal void ActivateDetectiveUI()
