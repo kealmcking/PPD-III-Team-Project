@@ -318,7 +318,6 @@ public class playerController : MonoBehaviour
         if (item != null)
         {
             item.ItemPulse(transform.forward);
-        }
-        
+        }        
     }
 }
