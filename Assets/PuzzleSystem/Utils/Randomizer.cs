@@ -2,12 +2,20 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using UnityEngine;
 /// <summary>
 /// Helper class used specifically for randomizing the chosen murderers objects at the start of the game.
 /// </summary>
 public static class Randomizer 
 {
+    private static readonly System.Random rng = new System.Random();
+
+    public static System.Random GetRandom()
+    {
+        return rng;
+    }
     /// <summary>
     /// Returns a random object from an array. 
     /// </summary>
@@ -50,6 +58,22 @@ public static class Randomizer
             .FirstOrDefault();
         list.Remove(item);
         return item;
+    }
+    public static Suspect GetRandomizedSuspectFromListAndRemove(ref List<Suspect> list)
+    {
+        Suspect suspectToRemove = null;
+       
+        list = list.OrderBy(s => rng.Next()).ToList();
+        foreach(var sus in list)
+        {
+            if (sus.IsKiller) continue;
+            suspectToRemove = sus;
+            break;
+        }
+              
+       if (suspectToRemove != null) 
+        list.Remove(suspectToRemove);
+        return suspectToRemove;
     }
     public static List<T> GetRandomizedGroupFromList<T>(List<T> list, int count)
     {

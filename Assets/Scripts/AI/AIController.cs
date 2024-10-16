@@ -46,7 +46,7 @@ public class AIController : MonoBehaviour
 
         playerPos = GameObject.FindWithTag("Player").transform.position;
         playerDir = playerPos - transform.position;
-       // chasePlayer();
+        chasePlayer();
         if (playerInRange)
         {
             faceTarget();
@@ -58,7 +58,7 @@ public class AIController : MonoBehaviour
 
     private void chasePlayer()
     {
-         if(suspect.IsKiller && GameManager.instance.Day == 7)
+         if(suspect.IsKiller && GameManager.instance.Day == 5)
          {
              isEnemyChasing = true;
              agent.SetDestination(playerPos);

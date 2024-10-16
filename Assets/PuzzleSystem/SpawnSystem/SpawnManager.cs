@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.VFX;
 
 
@@ -20,6 +21,7 @@ public class SpawnManager : MonoBehaviour
         EventSheet.SpawnGhost += SpawnGhost;
         EventSheet.SpawnKiller += SpawnKiller;
         EventSheet.SpawnExcessClues += SpawnClues;
+        EventSheet.RelocateSuspects += RelocateRemainingSuspects;
     }
     private void OnDisable()
     {
@@ -27,6 +29,7 @@ public class SpawnManager : MonoBehaviour
         EventSheet.SpawnGhost -= SpawnGhost;
         EventSheet.SpawnKiller -= SpawnKiller;
         EventSheet.SpawnExcessClues -= SpawnClues;
+        EventSheet.RelocateSuspects -= RelocateRemainingSuspects;
     }
     private void SpawnGhost(GhostData ghost, SpawnPointType type, bool randomize = false, SpawnPoint spawnPoint = null) 
     {
@@ -38,7 +41,7 @@ public class SpawnManager : MonoBehaviour
                 SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
             Ghost instance = Instantiate(ghost.Prefab);
             instance.transform.position = spawn.transform.position;
-            EventSheet.SendGhost?.Invoke(instance);
+           // EventSheet.SendGhost?.Invoke(instance);
 
         }
         else if(spawnPoint != null)
@@ -64,18 +67,51 @@ public class SpawnManager : MonoBehaviour
     {           
             Instantiate(obj).gameObject.transform.position = spawningPoint.transform.position;
     }
-    private void SpawnGroupByMono<T>(List<T> group, SpawnPointType type, bool randomize = false) where T : MonoBehaviour
+    private void RelocateRemainingSuspects(List<Suspect> group, SpawnPointType type, bool randomize = false)
     {
         if (randomize)
         {
             List<SpawnPoint> filteredSpawns = spawnPoints
                 .Where(s => s.Type == type)
                 .ToList();
+            foreach (var item in group)
+            {
+                SpawnPoint spawn = Randomizer.GetRandomizedObjectFromListAndRemove(ref filteredSpawns);
+                item.GetComponent<NavMeshAgent>().enabled = false;
+                item.transform.position = spawn.transform.position;
+                item.GetComponent<NavMeshAgent>().enabled = true;
+            }
+        }
+        else
+        {
+            List<SpawnPoint> filteredSpawns = spawnPoints
+                .Where(s => s.Type == type)
+                .ToList();
+
+            for (int i = 0; i < group.Count; i++)
+            {
+                SpawnPoint spawn = filteredSpawns.ElementAt(i);
+                group.ElementAt(i).transform.position = spawn.transform.position;
+            }
+        }
+    }
+    private void SpawnGroupByMono(List<Suspect> group, SpawnPointType type, bool randomize = false) 
+    {
+        if (randomize)
+        {
+            List<Suspect> sus = new List<Suspect>();
+            List<SpawnPoint> filteredSpawns = spawnPoints
+                .Where(s => s.Type == type)
+                .ToList();
             foreach(var item in group)
             {
                 SpawnPoint spawn = Randomizer.GetRandomizedObjectFromListAndRemove(ref filteredSpawns);
-                Instantiate(item).gameObject.transform.position = spawn.transform.position;
-            }        
+                Suspect sceneSuspect = Instantiate(item);
+                sceneSuspect.transform.position = spawn.transform.position;
+                sus.Add(sceneSuspect);
+
+            }
+            EventSheet.SendSceneSuspects?.Invoke(sus);
         }
         else
         {
@@ -86,7 +122,7 @@ public class SpawnManager : MonoBehaviour
             for(int i = 0; i < group.Count; i++)
             {
                 SpawnPoint spawn = filteredSpawns.ElementAt(i);
-                Instantiate(group.ElementAt(i)).gameObject.transform.position = spawn.transform.position;
+              //  Instantiate(group.ElementAt(i)).gameObject.transform.position = spawn.transform.position;
             }
         }
     }
@@ -125,8 +161,9 @@ public class SpawnManager : MonoBehaviour
                 .ToList();
             SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
            // killer.ActivateMask();
-            killer.gameObject.transform.position = spawn.transform.position;
-            EventSheet.SendKiller?.Invoke(killer);
+           killer.GetComponent<NavMeshAgent>().enabled = false;
+            killer.transform.position = spawn.transform.position;
+            killer.GetComponent<NavMeshAgent>().enabled = true;
 
         }
         else
@@ -139,7 +176,7 @@ public class SpawnManager : MonoBehaviour
             SpawnPoint spawn = filteredSpawns.FirstOrDefault();
            //killer.ActivateMask();
             killer.gameObject.transform.position = spawn.transform.position;
-            EventSheet.SendKiller?.Invoke(killer);
+          
         }
     }
     private void SpawnClues(List<BaseClueData> clues, SpawnPointType type, bool randomize = false)

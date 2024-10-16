@@ -23,7 +23,8 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
     public NPC Npc => npc;
     public SuspectData Data => data;
     public Animator Anim => anim;
-    public bool IsKiller { get; set; } = false;
+    public bool IsKiller = false;
+    //public bool IsKiller { get; set; } = false;
 
    
     public GameObject Mask => mask;
@@ -36,6 +37,7 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
          {
              Debug.LogError("You do not have a mask component on this suspect: " +name+", add a mask before continuing");
          }*/
+        IsKiller = false;
     }
 
     public void ActivateMask()

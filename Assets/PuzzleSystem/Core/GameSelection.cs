@@ -11,28 +11,18 @@ public class GameSelection
     private Case caseFile;
     public GameSelection(List<SuspectData> suspects,List<KillerClueData> killers,List<RoomClueData> rooms, List<WeaponClueData> weapons, List<Case> cases, List<MotiveClueData> motives)
     {
-        if(killers.Count > 0 && suspects.Count >0)
+        if (killers.Count > 0 && suspects.Count > 0)
         {
-            foreach (var suspect in suspects)
+            int count = System.Math.Min(suspects.Count, killers.Count);
+            for (int i = 0; i < count; i++)
             {
-                foreach (var killer in killers)
-                {
-                    killer.SetName(suspect.Name);
-                    killer.SetDescription(suspect.Description);
-                    killer.SetIcon(suspect.Icon);
-                }
-            }
-            killer = Randomizer.GetRandomizedObjectFromList(killers);
-            foreach (var suspect in suspects)
-            {
-                if(suspect.Name == killer.Name)
-                {
-                    suspect.SuspectPrefab.IsKiller = true;
-                    EventSheet.SendKillerData?.Invoke(suspect);
-                    break;
-                }
+                killers[i].SetName(suspects[i].Name);
+                killers[i].SetDescription(suspects[i].Description);
+                killers[i].SetIcon(suspects[i].Icon);
+                killers[i].data = suspects[i];
             }
         }
+
         if (rooms.Count > 0)
             room = Randomizer.GetRandomizedObjectFromList(rooms);
         if (weapons.Count > 0)

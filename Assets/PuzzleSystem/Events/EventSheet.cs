@@ -19,7 +19,7 @@ public static class EventSheet
     public static Action<GhostData, SpawnPointType, bool,SpawnPoint> SpawnGhost;
     public static Action<Ghost> SendGhost;
     public static Action<int> TodaysDayIndexIsThis;
-    public static Action<Suspect> SendKiller;
+   // public static Action<Suspect> SendKiller;
     public static Action<Suspect, SpawnPointType, bool> SpawnKiller;
     public static Action<List<BaseClueData>, SpawnPointType,bool> SpawnExcessClues;
     public static Action<Item> SendItemToInventory;
@@ -28,4 +28,6 @@ public static class EventSheet
     public static Action<KillerClueData> SendKillerClue;
     public static Action<List<BaseClueData>> SendAllClues;
     public static Action<SuspectData> SendKillerData;
+    public static Action<List<Suspect>> SendSceneSuspects;
+    public static Action<List<Suspect>, SpawnPointType, bool> RelocateSuspects;
 }

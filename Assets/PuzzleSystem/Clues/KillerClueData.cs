@@ -5,7 +5,9 @@ using UnityEngine;
 /// </summary>
 [CreateAssetMenu(fileName = "KillerClue", menuName = "PuzzleSystem/Clues/KillerClue")]
 public class KillerClueData : BaseClueData
-{  
+{
+    public SuspectData data;
+
     public void SetName(string name)
     {
         itemName = name; 
