@@ -101,6 +101,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void DeactivateCharacterUI()
+    {
+        characterUI.SetActive(false);
+    }
+
 
     // Update is called once per frame
     void Update()
