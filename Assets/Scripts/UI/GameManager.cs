@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour
 
     public int characterIndex;
 
+    private Coroutine _coroutine = null;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -70,8 +72,7 @@ public class GameManager : MonoBehaviour
 
 
         menuActive = null;
-        
-        
+
         
 
         objectivesText.text = "";
@@ -110,7 +111,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateTimer(_time);       
+        UpdateTimer(_time);  
+        UpdateDayText(_day);
     }
 
     public void PauseGame()
@@ -193,14 +195,14 @@ public class GameManager : MonoBehaviour
     {
         menuActive = sleepUI;
         sleepUI.SetActive(true);
-        characterUI.SetActive(false);
+        //characterUI.SetActive(false);
     }
 
     public void DeactivateSleepMenu()
     {
         menuActive = characterUI;
         sleepUI.SetActive(false);
-        characterUI.SetActive(true);
+        //characterUI.SetActive(true);
     }
     public void ActivateDecisionUI()
     {
@@ -282,20 +284,32 @@ public class GameManager : MonoBehaviour
 
     public void TimeToGoToSleep()
     {
-        if (isTimeToSleep && wentToSleep)
+
+
+        if (_coroutine == null)
         {
-            _day++;
-            EventSheet.TodaysDayIndexIsThis.Invoke(_day);
-            UpdateDayText(_day);
-            StartCoroutine(Sleeping());
+            _coroutine = StartCoroutine(Sleeping());            
+
         }
     }
 
     IEnumerator Sleeping()
     {
+
+        //InputManager.instance.DisableCharacterInputs();
         ActivateSleepMenu();
         yield return new WaitForSeconds(1f);
         DeactivateSleepMenu();
+        //InputManager.instance.EnableCharacterInputs();
+
+        _day++;
+        EventSheet.TodaysDayIndexIsThis.Invoke(_day);
+        
+        isTimeToSleep = false;
+        _coroutine = null;
+
+
+
     }
 
    
