@@ -12,23 +12,23 @@ public class DecisionUIManager : MonoBehaviour
     [SerializeField] GameObject generateButton;
     private GameSelection gameSelection;
     [Header("Bindings")]
-    private Dictionary<Toggle, BaseClueData> suspectChoices = new Dictionary<Toggle, BaseClueData>();
+    private Dictionary<Toggle, BaseClueData> killerChoices = new Dictionary<Toggle, BaseClueData>();
     private Dictionary<Toggle, BaseClueData> motiveChoices = new Dictionary<Toggle, BaseClueData>();
     private Dictionary<Toggle, BaseClueData> weaponChoices = new Dictionary<Toggle, BaseClueData>();
     private Dictionary<Toggle, BaseClueData> roomChoices = new Dictionary<Toggle, BaseClueData>();
     [Header("Lists")]
-    public List<Toggle> suspectToggles = new List<Toggle>();
+    public List<Toggle> killerToggles = new List<Toggle>();
     public List<Toggle> motiveToggles = new List<Toggle>();
     public List<Toggle> weaponToggles = new List<Toggle>();
     public List<Toggle> roomToggles = new List<Toggle>();
 
-    BaseClueData selectedSuspect;
+    BaseClueData selectedKiller;
     BaseClueData selectedMotive;
     BaseClueData selectedWeapon;
     BaseClueData selectedRoom;
     void Awake()
     {
-        suspectToggles.ForEach(t => { t.isOn = false; suspectChoices.Add(t, null); });
+        killerToggles.ForEach(t => { t.isOn = false; killerChoices.Add(t, null); });
         motiveToggles.ForEach(t => { t.isOn = false; motiveChoices.Add(t, null); });
         weaponToggles.ForEach(t => { t.isOn = false; weaponChoices.Add(t, null); });
         roomToggles.ForEach(t => { t.isOn = false; roomChoices.Add(t, null); });
@@ -46,6 +46,10 @@ public class DecisionUIManager : MonoBehaviour
         EventSheet.SendKillerClue -= UpdateKiller;
         EventSheet.SendGameSelection -= UpdateCorrectChoices;
     }
+    private void Update()
+    {
+        ValidateSubmissionReady();
+    }
     private void UpdateChoices(List<BaseClueData> clues)
     {
         foreach(BaseClueData clue in clues)
@@ -53,7 +57,7 @@ public class DecisionUIManager : MonoBehaviour
             switch (clue)
             {
                 case KillerClueData suspect:
-                    AssignClueToEmptyToggle(suspectChoices,suspect);
+                    AssignClueToEmptyToggle(killerChoices,suspect);
                     break;
                 case MotiveClueData motive:
                     AssignClueToEmptyToggle(motiveChoices, motive);
@@ -83,7 +87,7 @@ public class DecisionUIManager : MonoBehaviour
     }   
     private void UpdateKiller(KillerClueData data)
     {
-        AssignClueToEmptyToggle(suspectChoices, data);
+        AssignClueToEmptyToggle(killerChoices, data);
     }
     private void UpdateToggleUI(Toggle toggle, BaseClueData data)
     {
@@ -94,14 +98,14 @@ public class DecisionUIManager : MonoBehaviour
     }
     private void ValidateSubmissionReady()
     {
-        if (selectedSuspect != null && selectedRoom != null && selectedMotive != null && selectedWeapon != null)
+        if (selectedKiller != null && selectedRoom != null && selectedMotive != null && selectedWeapon != null)
         {
             generateButton.SetActive(true);
         }
         else
         {
             generateButton.SetActive(false);
-            selectedSuspect = suspectChoices.Where(kvp => kvp.Key.isOn).Select(kvp => kvp.Value).FirstOrDefault();
+            selectedKiller = killerChoices.Where(kvp => kvp.Key.isOn).Select(kvp => kvp.Value).FirstOrDefault();
             selectedWeapon = weaponChoices.Where(kvp => kvp.Key.isOn).Select(kvp => kvp.Value).FirstOrDefault();
             selectedRoom = roomChoices.Where(kvp => kvp.Key.isOn).Select(kvp => kvp.Value).FirstOrDefault();
             selectedMotive = motiveChoices.Where(kvp => kvp.Key.isOn).Select(kvp => kvp.Value).FirstOrDefault();
@@ -111,7 +115,7 @@ public class DecisionUIManager : MonoBehaviour
     }
     public void MakeDecision()
     {
-        if(selectedSuspect.ID == gameSelection.GetKiller().ID && selectedRoom.ID == gameSelection.GetRoom().ID && 
+        if(selectedKiller.ID == gameSelection.GetKiller().ID && selectedRoom.ID == gameSelection.GetRoom().ID && 
             selectedWeapon.ID == gameSelection.GetWeapon().ID && selectedMotive.ID == gameSelection.GetMotive().ID)
         {
             GameManager.instance.WinGame();

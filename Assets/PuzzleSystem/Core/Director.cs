@@ -16,6 +16,9 @@ public class Director : MonoBehaviour
         "It is also used to update the UI for instance when guessing the weapon which was used for the murder")] List<WeaponClueData> weapons;
     [SerializeField, Tooltip("This contains the list of the motives. " +
       "It is also used to update the UI for instance when guessing the motive which was used for the murder")] List<MotiveClueData> motives;
+    [SerializeField, Tooltip("This contains the list of the motives. " +
+     "It is also used to update the UI for instance when guessing the motive which was used for the murder")]
+    List<KillerClueData> killers;
     [SerializeField, Tooltip("Add all potential suspects here")] List<SuspectData> suspectPool;
     [SerializeField,Tooltip("This represents all the possible cases available for this level")] List<Case> cases;
     
@@ -30,7 +33,7 @@ public class Director : MonoBehaviour
     private ClueController cController;
     private PuzzleController pController;
     private LoreController lController;
-    
+    SuspectData chosenKiller = null;
     public List<Case> Cases { get { return cases; } private set { cases = value; } }
     public List<RoomClueData> Rooms { get { return rooms; } private set { rooms = value; } }
     public List<WeaponClueData> Weapons { get { return weapons; } private set { weapons = value; } }
@@ -38,10 +41,12 @@ public class Director : MonoBehaviour
     public GameSelection GameSelection => gameSelection;
     public void OnEnable()
     {
+        EventSheet.SendKillerData += SetChosenKiller;
         EventSheet.TodaysDayIndexIsThis += HandleDayChange;
     }
     public void OnDisable()
     {
+        EventSheet.SendKillerData -= SetChosenKiller;
         EventSheet.TodaysDayIndexIsThis -= HandleDayChange;
     }
     public void Awake()
@@ -53,12 +58,12 @@ public class Director : MonoBehaviour
         suspects = Randomizer.GetRandomizedGroupFromList(suspectPool, suspectCount);
         scenePuzzles = FindObjectsByType<Puzzle>(FindObjectsInactive.Include,FindObjectsSortMode.None).ToList();
         sceneLore = FindObjectsByType<Lore>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
-        gameSelection = new GameSelection(rooms,weapons,cases,motives);        
+        gameSelection = new GameSelection(suspects,killers,rooms,weapons,cases,motives);        
         cController = new ClueController();
         List<Puzzle> activeP = new List<Puzzle>();
         List<Lore> activeL = new List<Lore>();
 
-
+       
         if (scenePuzzles.Count > 0)
         {
             foreach (Puzzle puzzle in gameSelection.GetCase().Puzzles)
@@ -91,7 +96,7 @@ public class Director : MonoBehaviour
            
         }
 
-        List<BaseClueData>clues = initializer.Initialize(gameSelection, suspects, rooms, weapons, motives);
+        List<BaseClueData>clues = initializer.Initialize(gameSelection,killers, suspects, rooms, weapons, motives);
         if (clues.Count > 0)
         {
                 EventSheet.SpawnExcessClues?.Invoke(clues,SpawnPointType.Clue,true);
@@ -131,8 +136,12 @@ public class Director : MonoBehaviour
         }
         else
         {
-            EventSheet.SpawnKiller?.Invoke(gameSelection.GetKiller().Suspect.SuspectPrefab,SpawnPointType.Killer,true);
+            EventSheet.SpawnKiller?.Invoke(chosenKiller.SuspectPrefab,SpawnPointType.Killer,true);
         }
+    }
+    private void SetChosenKiller(SuspectData data)
+    {
+        chosenKiller = data;
     }
     private class PuzzleController
     {

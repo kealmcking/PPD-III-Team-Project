@@ -58,16 +58,16 @@ public class AIController : MonoBehaviour
 
     private void chasePlayer()
     {
-        // if(suspect.IsKiller && GameManager.instance.Day == 7)
-        // {
-        //     isEnemyChasing = true;
-        //     agent.SetDestination(playerPos);
-        //     if(Vector3.Distance(transform.position, playerPos) <= attackDist)
-        //     {
-        //         anim.SetTrigger("Attack");
-        //     }
-        // }
-        //
+         if(suspect.IsKiller && GameManager.instance.Day == 7)
+         {
+             isEnemyChasing = true;
+             agent.SetDestination(playerPos);
+             if(Vector3.Distance(transform.position, playerPos) <= attackDist)
+             {
+               anim.SetTrigger("Attack");
+             }
+         }
+        
         
     }
 

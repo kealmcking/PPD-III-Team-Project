@@ -27,4 +27,5 @@ public static class EventSheet
     public static Action IHavePressedInteractButton;
     public static Action<KillerClueData> SendKillerClue;
     public static Action<List<BaseClueData>> SendAllClues;
+    public static Action<SuspectData> SendKillerData;
 }
