@@ -40,9 +40,11 @@ public class Director : MonoBehaviour
     public List<WeaponClueData> Weapons { get { return weapons; } private set { weapons = value; } }
     public List<MotiveClueData> Motives { get { return motives; } private set { motives = value; } }
     public GameSelection GameSelection => gameSelection;
+    public List<BaseClueData> clues = new List<BaseClueData>();
     public void OnEnable()
     {
-       // EventSheet.SendKiller += SetChosenKiller;
+        // EventSheet.SendKiller += SetChosenKiller;
+        EventSheet.SendAllClues += HandleAllClues;
         EventSheet.TodaysDayIndexIsThis += HandleDayChange;
         EventSheet.SendSceneSuspects += SetSceneSuspects;
     }
@@ -51,6 +53,7 @@ public class Director : MonoBehaviour
        // EventSheet.SendKiller -= SetChosenKiller;
         EventSheet.TodaysDayIndexIsThis -= HandleDayChange;
         EventSheet.SendSceneSuspects -= SetSceneSuspects;
+        EventSheet.SendAllClues -= HandleAllClues;
     }
     public void Awake()
     {
@@ -140,11 +143,30 @@ public class Director : MonoBehaviour
             EventSheet.SpawnKiller?.Invoke(chosenKiller,SpawnPointType.Killer,true);
         }
     }
+    private void HandleAllClues(List<BaseClueData> clues)
+    {
+        this.clues = clues; 
+    }
     private void SetSceneSuspects(List<Suspect> scene)
     {
         sceneSuspects = scene;
         chosenKiller = sceneSuspects[UnityEngine.Random.Range(0, sceneSuspects.Count)];
         chosenKiller.IsKiller = true;
+        KillerClueData clueToSend = null;
+        foreach(var clue in clues)
+        {
+            if(clue is KillerClueData killerData)
+            {
+                if(killerData != null)
+                {
+                    if(killerData.data.ID == chosenKiller.Data.ID && killerData.data.Description == chosenKiller.Data.Description && killerData.data.Name == chosenKiller.Data.Name)
+                    {
+                        clueToSend = killerData; 
+                    }
+                }
+            }
+        }
+        EventSheet.SendKillerClue?.Invoke(clueToSend);
     }
     private void SetChosenKiller(Suspect value)
     {
