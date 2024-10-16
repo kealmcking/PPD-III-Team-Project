@@ -19,6 +19,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] bool isConditionMet;
     [SerializeField] private bool hasBeenPickedUp = false;
     public ConditionConfig Config => config;
+    public ConditionEndPoint Goal => goal;
     public bool IsConditionMet
     {
         get { return isConditionMet; }
@@ -61,7 +62,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
          if (isPickUp && !hasBeenPickedUp)
         {
             interactUI.ToggleCanvas();
-            hasBeenPickedUp = true;
+          //  hasBeenPickedUp = true;
         }
            
         // if (config is InteractConditionConfig iConfig)
