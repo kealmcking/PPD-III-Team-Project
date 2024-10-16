@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -11,10 +12,7 @@ public class SpawnManager : MonoBehaviour
     private void Awake()
     {
        spawnPoints = FindObjectsByType<SpawnPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList(); 
-        foreach(var point in spawnPoints)
-        {
-            Debug.Log("SpawnPoint: " +point.Type.ToString());
-        }
+
     } 
     private void OnEnable()
     {
@@ -146,16 +144,28 @@ public class SpawnManager : MonoBehaviour
     }
     private void SpawnClues(List<BaseClueData> clues, SpawnPointType type, bool randomize = false)
     {
+        foreach (var clue in clues)
+        {
+            Debug.Log("clue: " + clue.ToString());
+        }
         if (randomize)
         {
-        
+            foreach(var clue in clues)
+            {
+                Debug.Log("clue: " + clue.ToString());
+            }
             List<SpawnPoint> filteredSpawns = spawnPoints
                 .Where(s => s.Type == type)
                 .ToList();
             foreach (BaseClueData item in clues)
             {
+                foreach (var point in filteredSpawns)
+                {
+                    Debug.Log("SpawnPoint: " + point.Type.ToString());
+                }
                 SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
                 Clue prefab = Instantiate(item.Prefab);
+                Debug.Log("PrefabInstantiated: " + prefab.ToString());
                 prefab.gameObject.transform.position = spawn.transform.position;
             }
         }

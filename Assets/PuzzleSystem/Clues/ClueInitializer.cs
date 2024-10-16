@@ -14,23 +14,23 @@ public class ClueInitializer : MonoBehaviour
         List<BaseClueData> clues = new List<BaseClueData>();
         killers.ForEach(s =>
         {
-            if (s.ID != selection.GetKiller().ID)
+           // if (s.ID != selection.GetKiller().ID)
                 clues.Add(s);
         });
        
         rooms.ForEach(s => 
             {
-                if (s.ID != selection.GetRoom().ID)
+               // if (s.ID != selection.GetRoom().ID)
                 clues.Add(s);
             });
         weapons.ForEach(s =>
         {
-            if (s.ID != selection.GetWeapon().ID)
+           // if (s.ID != selection.GetWeapon().ID)
                 clues.Add(s);
         });
         motives.ForEach(s =>
         {
-            if (s.ID != selection.GetMotive().ID)
+           // if (s.ID != selection.GetMotive().ID)
                 clues.Add(s);
         });
         EventSheet.SendAllClues(clues);

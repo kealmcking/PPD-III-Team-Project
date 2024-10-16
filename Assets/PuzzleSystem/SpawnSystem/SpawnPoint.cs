@@ -13,7 +13,7 @@ public class SpawnPoint : MonoBehaviour
     public SpawnPointType Type => type;
     public void Awake()
     {
-        MoveSpawnPointToNavMesh();
+       // MoveSpawnPointToNavMesh();
     }
     /// <summary>
     /// Sets the spawn points of each spawner to the navmesh useful for setting the AI directly on the navmesh
