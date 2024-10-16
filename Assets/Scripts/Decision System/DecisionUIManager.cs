@@ -22,10 +22,10 @@ public class DecisionUIManager : MonoBehaviour
     public List<Toggle> weaponToggles = new List<Toggle>();
     public List<Toggle> roomToggles = new List<Toggle>();
 
-    BaseClueData selectedKiller;
-    BaseClueData selectedMotive;
-    BaseClueData selectedWeapon;
-    BaseClueData selectedRoom;
+    [SerializeField] BaseClueData selectedKiller;
+    [SerializeField] BaseClueData selectedMotive;
+    [SerializeField] BaseClueData selectedWeapon;
+    [SerializeField] BaseClueData selectedRoom;
     void Awake()
     {
         killerToggles.ForEach(t => { t.isOn = false; killerChoices.Add(t, null); });
@@ -115,6 +115,8 @@ public class DecisionUIManager : MonoBehaviour
     }
     public void MakeDecision()
     {
+        Close();
+        GameManager.instance.DeactivateCharacterUI();
         if(selectedKiller.ID == gameSelection.GetKiller().ID && selectedRoom.ID == gameSelection.GetRoom().ID && 
             selectedWeapon.ID == gameSelection.GetWeapon().ID && selectedMotive.ID == gameSelection.GetMotive().ID)
         {
