@@ -37,7 +37,7 @@ public class SpawnManager : MonoBehaviour
                 .ToList();
                 SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
             Ghost instance = Instantiate(ghost.Prefab);
-            instance.gameObject.transform.position = spawn.transform.position;
+            instance.transform.position = spawn.transform.position;
             EventSheet.SendGhost?.Invoke(instance);
 
         }

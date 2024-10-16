@@ -63,6 +63,10 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
          
             puzzleGate.Anim.Play("BookcaseOpen",0);
         }
+        foreach (var condition in conditions)
+        {
+            Destroy(condition.gameObject);
+        }
         IsComplete = true;
     }
 }

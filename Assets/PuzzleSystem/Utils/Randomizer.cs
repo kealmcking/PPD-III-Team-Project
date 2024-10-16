@@ -40,11 +40,11 @@ public static class Randomizer
         list.Remove(item);
         return item;
     }
-    public static Suspect GetConditionalRandomizedSuspectFromListAndRemove(ref List<Suspect> list)
+    public static SuspectData GetConditionalRandomizedSuspectFromListAndRemove(ref List<SuspectData> list)
     {
         int num = list.Count;
-        Func<Suspect, bool> condition = s => !s.IsKiller;
-        Suspect item = list
+        Func<SuspectData, bool> condition = s => !s.SuspectPrefab.IsKiller;
+        SuspectData item = list
             .OrderBy(s => UnityEngine.Random.Range(0, num))
             .Where(s => condition(s))
             .FirstOrDefault();
