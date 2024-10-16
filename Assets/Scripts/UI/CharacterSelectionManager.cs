@@ -34,7 +34,7 @@ public class CharacterSelectionManager : MonoBehaviour
             toggle.isOn = false;
         }
         EventSystem.current.SetSelectedGameObject(toggleList[characterIndex].gameObject);
-
+        
 
     }
 
