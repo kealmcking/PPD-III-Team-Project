@@ -9,7 +9,7 @@ public class ClueInitializer : MonoBehaviour
  
     SuspectData chosenKiller = null;
     
-    public List<BaseClueData> Initialize(GameSelection selection, List<KillerClueData> killers, List<SuspectData> suspects, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives)
+    public void Initialize(GameSelection selection, List<KillerClueData> killers, List<SuspectData> suspects, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives)
     {
         List<BaseClueData> clues = new List<BaseClueData>();
         killers.ForEach(s =>
@@ -34,10 +34,14 @@ public class ClueInitializer : MonoBehaviour
                 clues.Add(s);
         });
         EventSheet.SendAllClues(clues);
-        selection.GetCase().Puzzles.ForEach(p =>
+        if(selection.GetCase().Puzzles.Count > 0)
         {
-            p.Reward = Randomizer.GetRandomizedObjectFromListAndRemove(ref clues);
-        });
-      return clues;
+            selection.GetCase().Puzzles.ForEach(p =>
+            {
+                p.Reward = Randomizer.GetRandomizedObjectFromListAndRemove(ref clues);
+            });
+        }
+        EventSheet.SpawnExcessClues?.Invoke(clues, SpawnPointType.Clue, true);
+
     }
 }
