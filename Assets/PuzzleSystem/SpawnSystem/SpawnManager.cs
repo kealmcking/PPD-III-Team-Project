@@ -10,7 +10,11 @@ public class SpawnManager : MonoBehaviour
     private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();  
     private void Awake()
     {
-       spawnPoints = FindObjectsByType<SpawnPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();       
+       spawnPoints = FindObjectsByType<SpawnPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList(); 
+        foreach(var point in spawnPoints)
+        {
+            Debug.Log("SpawnPoint: " +point.Type.ToString());
+        }
     } 
     private void OnEnable()
     {
@@ -144,14 +148,15 @@ public class SpawnManager : MonoBehaviour
     {
         if (randomize)
         {
-            Debug.Log("Attempting to spawn clues");
+        
             List<SpawnPoint> filteredSpawns = spawnPoints
                 .Where(s => s.Type == type)
                 .ToList();
-            foreach (var item in clues)
+            foreach (BaseClueData item in clues)
             {
-                SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList( filteredSpawns);
-                Instantiate(item.Prefab).gameObject.transform.position = spawn.transform.position;
+                SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
+                Clue prefab = Instantiate(item.Prefab);
+                prefab.gameObject.transform.position = spawn.transform.position;
             }
         }
         else

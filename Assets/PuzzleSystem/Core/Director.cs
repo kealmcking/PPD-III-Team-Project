@@ -96,11 +96,8 @@ public class Director : MonoBehaviour
            
         }
 
-        List<BaseClueData>clues = initializer.Initialize(gameSelection,killers, suspects, rooms, weapons, motives);
-        if (clues.Count > 0)
-        {
-                EventSheet.SpawnExcessClues?.Invoke(clues,SpawnPointType.Clue,true);
-        }
+        initializer.Initialize(gameSelection,killers, suspects, rooms, weapons, motives);
+        
         pController = new PuzzleController(activeP);
         lController = new LoreController(activeL);
 
