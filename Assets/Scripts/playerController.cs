@@ -5,7 +5,6 @@ using DialogueSystem;
 using UnityEngine;
 using Input;
 using Unity.Mathematics;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public class playerController : MonoBehaviour
 {
