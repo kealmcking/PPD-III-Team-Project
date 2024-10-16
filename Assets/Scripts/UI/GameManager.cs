@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
         menuActive.SetActive(false);
         menuActive = null;
         characterUI.SetActive(true);
-
+        InputManager.instance.EnableCharacterInputs();
         audioManager.instance.PlaySFX(audioManager.instance.UIClose, audioManager.instance.UIVol);
     }
     public void ActivateInventoryUI()
