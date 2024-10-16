@@ -34,10 +34,14 @@ public class ClueInitializer : MonoBehaviour
                 clues.Add(s);
         });
         EventSheet.SendAllClues(clues);
-        selection.GetCase().Puzzles.ForEach(p =>
+        if(selection.GetCase().Puzzles.Count > 0)
         {
-            p.Reward = Randomizer.GetRandomizedObjectFromListAndRemove(ref clues);
-        });
+            selection.GetCase().Puzzles.ForEach(p =>
+            {
+                p.Reward = Randomizer.GetRandomizedObjectFromListAndRemove(ref clues);
+            });
+        }
+       
       return clues;
     }
 }

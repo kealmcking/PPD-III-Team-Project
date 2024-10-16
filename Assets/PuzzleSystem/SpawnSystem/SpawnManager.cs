@@ -144,12 +144,13 @@ public class SpawnManager : MonoBehaviour
     {
         if (randomize)
         {
+            Debug.Log("Attempting to spawn clues");
             List<SpawnPoint> filteredSpawns = spawnPoints
                 .Where(s => s.Type == type)
                 .ToList();
             foreach (var item in clues)
             {
-                SpawnPoint spawn = Randomizer.GetRandomizedObjectFromListAndRemove(ref filteredSpawns);
+                SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList( filteredSpawns);
                 Instantiate(item.Prefab).gameObject.transform.position = spawn.transform.position;
             }
         }
