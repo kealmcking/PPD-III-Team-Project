@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class LoadedPlayer : MonoBehaviour
 {
     public CharacterDB characterDB;
     [SerializeField] private Transform characterSpawnPoint;

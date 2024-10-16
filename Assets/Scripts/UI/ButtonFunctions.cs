@@ -59,6 +59,10 @@ public class ButtonFunctions : MonoBehaviour
         //audioMixer.SetFloat("SFXVolume", volume);
     }
 
+    public void CharacterSelectScreen()
+    {
+        SceneManager.LoadScene(1);
+    }
     public void PlayGame()
     {
         SceneManager.LoadScene(2);

@@ -76,6 +76,8 @@ public class playerController : MonoBehaviour
     bool _isFleeing;
     bool _isSprinting;
 
+    private int selectedOption;
+
 
     private void OnEnable()
     {
@@ -90,12 +92,15 @@ public class playerController : MonoBehaviour
     private void Awake()
     {
          audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
+         selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
+         _currentCharacterModel = playerModels[selectedOption].gameObject;
+         SetCharacterModel(_currentCharacterModel);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        int selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
+       
         _currentSpeed = _walkSpeed;
         _origSpeed = _currentSpeed;
         charController = GetComponent<CharacterController>();
@@ -109,6 +114,7 @@ public class playerController : MonoBehaviour
     public void SetCharacterModel(GameObject characterModel)
     {
         _currentCharacterModel = characterModel;
+        playerModels[selectedOption].gameObject.SetActive(true);
     }
     private void FixedUpdate()
     {
