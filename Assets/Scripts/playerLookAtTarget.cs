@@ -7,7 +7,7 @@ using UnityEngine;
 public class playerLookAtTarget : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private Transform headBone;
+    public Transform headBone;
     public Transform headTarget;
     [SerializeField] private float lookSpeed = 5.0f;
 
