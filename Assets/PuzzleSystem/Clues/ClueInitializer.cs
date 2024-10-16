@@ -1,29 +1,21 @@
 
 using System.Collections.Generic;
 using System.Net;
+using UnityEngine;
 using UnityEngine.AI;
 
-public class ClueInitializer 
+public class ClueInitializer : MonoBehaviour
 {
-  
-    List<SuspectData> suspects = new List<SuspectData>();
-    List<RoomClueData> rooms = new List<RoomClueData>();
-    List<WeaponClueData> weapons = new List<WeaponClueData>();
-    List<MotiveClueData> motives = new List<MotiveClueData>();
-    public ClueInitializer(List<SuspectData> suspects, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives) 
-    { 
-        this.suspects = suspects;
-        this.rooms = rooms;
-        this.weapons = weapons;
-        this.motives = motives;
-    }
-    public List<BaseClueData> Initialize(GameSelection selection)
+ 
+    SuspectData chosenKiller = null;
+    
+    public List<BaseClueData> Initialize(GameSelection selection, List<SuspectData> suspects, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives)
     {
         List<BaseClueData> clues = new List<BaseClueData>();
         foreach (var suspect in suspects) {
             //if (suspect.ID == selection.GetKiller().ID) continue;
-            
-            KillerClueData data = (KillerClueData)KillerClueData.CreateInstance("KillerClueData");
+            Debug.Log("Suspect: " + suspect.name);
+            KillerClueData data = ScriptableObject.CreateInstance<KillerClueData>();
             if(data.Icon != null)
                data.SetIcon(suspect.Icon);
             if(data.Suspect != null)
@@ -32,8 +24,10 @@ public class ClueInitializer
                data.SetName(suspect.Name);
             if(data.Description != null)
                data.SetDescription(suspect.Description);
-            if (suspect.ID == selection.GetKiller().ID)
-            {
+            if (chosenKiller == null)
+            {                
+                data.Suspect.SuspectPrefab.GetComponent<Suspect>().IsKiller = true;
+                chosenKiller = suspect;
                 EventSheet.SendKillerClue?.Invoke(data);
             }
             else

@@ -12,7 +12,7 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
 {
     [SerializeField] SuspectData data;
     [SerializeField] GameObject mask;
-    [SerializeField] bool isBeingInteractedWith;
+
     [SerializeField] NPC npc;
     [SerializeField] EnableInteractUI interactUI;
     [SerializeField] Collider col;

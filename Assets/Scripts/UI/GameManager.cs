@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
 
     public void TimeToGoToSleep()
     {
-        if(isTimeToSleep && wentToSleep)
+        if (isTimeToSleep && wentToSleep)
         {
             _day++;
             EventSheet.TodaysDayIndexIsThis.Invoke(_day);

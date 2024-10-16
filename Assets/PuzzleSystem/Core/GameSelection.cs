@@ -9,13 +9,9 @@ public class GameSelection
     private WeaponClueData weapon;
     private MotiveClueData motive;
     private Case caseFile;
-    public GameSelection(List<SuspectData> suspects, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<Case> cases, List<MotiveClueData> motives)
+    public GameSelection(List<RoomClueData> rooms, List<WeaponClueData> weapons, List<Case> cases, List<MotiveClueData> motives)
     {
-        if (suspects.Count > 0)
-        {
-            SuspectData data = Randomizer.GetRandomizedObjectFromList(suspects);
-            data.SuspectPrefab.GetComponent<Suspect>().IsKiller = true;
-        }
+        
         if (rooms.Count > 0)
             room = Randomizer.GetRandomizedObjectFromList(rooms);
         if (weapons.Count > 0)

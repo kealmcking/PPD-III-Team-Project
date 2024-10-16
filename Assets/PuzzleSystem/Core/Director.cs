@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 public class Director : MonoBehaviour
 {
-
+    [SerializeField] ClueInitializer initializer;
     [SerializeField,Tooltip("This contains the list of where the murder can take place. " +
         "It is also used to update the UI for instance when guessing the room in which the murder takes place")] List<RoomClueData> rooms;
     [SerializeField,Tooltip("This contains the list of the murder weapons. " +
@@ -21,6 +21,7 @@ public class Director : MonoBehaviour
     
     [SerializeField, Tooltip("Represents the number of suspects that will be spawned for the game")] int suspectCount = 7;
     [SerializeField,Tooltip("Will be used as the ghost when a suspect dies")] GhostData ghost;
+   
     List<SuspectData> suspects;
     List<Puzzle> scenePuzzles;
     List<Lore> sceneLore;
@@ -43,12 +44,16 @@ public class Director : MonoBehaviour
     {
         EventSheet.TodaysDayIndexIsThis -= HandleDayChange;
     }
+    public void Awake()
+    {
+        initializer ??= GetComponent<ClueInitializer>();
+    }
     public void Start()
     {
         suspects = Randomizer.GetRandomizedGroupFromList(suspectPool, suspectCount);
         scenePuzzles = FindObjectsByType<Puzzle>(FindObjectsInactive.Include,FindObjectsSortMode.None).ToList();
         sceneLore = FindObjectsByType<Lore>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
-        gameSelection = new GameSelection(suspects,rooms,weapons,cases,motives);        
+        gameSelection = new GameSelection(rooms,weapons,cases,motives);        
         cController = new ClueController();
         List<Puzzle> activeP = new List<Puzzle>();
         List<Lore> activeL = new List<Lore>();
@@ -85,8 +90,8 @@ public class Director : MonoBehaviour
             }
            
         }
-        ClueInitializer clueInit = new ClueInitializer(suspects, rooms, weapons, motives);
-        List<BaseClueData>clues = clueInit.Initialize(gameSelection);
+
+        List<BaseClueData>clues = initializer.Initialize(gameSelection, suspects, rooms, weapons, motives);
         if (clues.Count > 0)
         {
                 EventSheet.SpawnExcessClues?.Invoke(clues,SpawnPointType.Clue,true);
@@ -110,6 +115,7 @@ public class Director : MonoBehaviour
             EventSheet.SendWeapons?.Invoke(weapons);
         if (gameSelection != null)
             EventSheet.SendGameSelection?.Invoke(gameSelection);
+        
     }
     private void HandleDayChange(int day)
     {
