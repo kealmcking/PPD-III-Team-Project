@@ -121,14 +121,14 @@ public class Director : MonoBehaviour
     }
     private void HandleDayChange(int day)
     {
-        if (day < suspects.Count - 1)
+        if (day < 6)
         {
             List<Suspect> newSuspects = suspects
                 .Select(s => s.SuspectPrefab)
                 .ToList();
             Suspect suspect = Randomizer.GetConditionalRandomizedSuspectFromListAndRemove(ref newSuspects);
             EventSheet.SuspectDied?.Invoke(suspect);
-            //ghost.Prefab.SuspectData = suspect.Data;
+            ghost.Prefab.SuspectData = suspect.Data;
             EventSheet.SpawnGhost?.Invoke(ghost, SpawnPointType.Ghost, true, null);
         }
         else

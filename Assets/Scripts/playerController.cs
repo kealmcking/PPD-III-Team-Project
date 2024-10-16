@@ -316,21 +316,23 @@ public class playerController : MonoBehaviour
         if (closestCollider != null && closestCollider.TryGetComponent(out IInteractable interactable))
         {
             _animator.SetTrigger("activate");
-            interactable.Interact();
+            
 
             if (interactable is Condition condition && condition.CanPickup() && !condition.HasBeenPickedUp())
             {
+                condition.Interact();
                 AddObjectToRightHand(condition);
                 playerLookAtTarget.headTarget = null;
             }
+            else interactable.Interact();
         }
     }
 
-    private void AddObjectToRightHand(IInteractable obj)
+    private void AddObjectToRightHand(Condition obj)
     {
-        obj.GetObject().transform.SetParent(handPos);
-        obj.GetObject().transform.localPosition = Vector3.zero;
-        obj.GetObject().transform.localRotation = Quaternion.identity * itemHandOffset;
+        obj.transform.SetParent(handPos);
+        obj.transform.localPosition = Vector3.zero;
+        obj.transform.localRotation = Quaternion.identity * itemHandOffset;
         objectInHand = obj;
     }
 

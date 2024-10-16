@@ -8,13 +8,23 @@ public class Ghost : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] GhostData ghostData;
     public GhostData GhostData => ghostData;
     public SuspectData SuspectData { get { return suspectData; } set { suspectData = value; } }
-    public void Interact()
-    {
 
+    [SerializeField] EnableInteractUI interactUI;
+    [SerializeField] Collider col;
+    public virtual void Awake()
+    {
+        col ??= GetComponent<SphereCollider>();
+        col.isTrigger = true;
+        interactUI ??= GetComponent<EnableInteractUI>();
     }
     public GameObject GetObject()
     {
         return gameObject;
     }
 
+    public virtual void Interact()
+    {
+
+        interactUI.ToggleCanvas();
+    }
 }

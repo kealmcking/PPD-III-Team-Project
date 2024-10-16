@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class ClueInitializer : MonoBehaviour
 {
  
-    SuspectData chosenKiller = null;
+   // SuspectData chosenKiller = null;
     
     public void Initialize(GameSelection selection, List<KillerClueData> killers, List<SuspectData> suspects, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives)
     {

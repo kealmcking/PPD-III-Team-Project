@@ -21,10 +21,10 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
         "The transforms will be the potential spawning points for the components used to craft the item needed to complete the puzzle." +
         "It is recommended that their is more positions than components to allow for more unpredictable possible spawn points for the components.")]
     List<Transform> componentPositions = new List<Transform>();
-
+    [SerializeField] ConditionEndPoint puzzleGate;
     [SerializeField, Tooltip("Simply the position where the reward(clue) will be spawned. after completing the puzzle.")] Transform rewardSpawnPosition;
     private Guid id = new Guid();
-    public BaseClueData Reward { get; set; }
+    public BaseClueData Reward { get; set; } = null;
     public Guid ID => id;
     public bool IsComplete{get; private set;}
     
@@ -55,7 +55,14 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
         vfx.Play();
         if (clip != null) { }
           //playclip here  clip.
+          if(Reward!= null)
         Instantiate(Reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
+        Debug.Log("You finished the puzzle YAY!!!");
+        if(puzzleGate != null)
+        {
+         
+            puzzleGate.Anim.Play("BookcaseOpen",0);
+        }
         IsComplete = true;
     }
 }

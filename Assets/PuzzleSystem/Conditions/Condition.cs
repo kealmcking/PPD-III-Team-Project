@@ -34,36 +34,48 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     public void Awake()
     {
         interactUI ??= GetComponent<EnableInteractUI>();
-        col ??= GetComponent<SphereCollider>();
-        col.isTrigger = true;
+        //col ??= GetComponent<SphereCollider>();
+        //col.isTrigger = true;
     }
     public void Start()
     {
-        config.EnterSetup(this);
+        if (config != null)
+            config.EnterSetup(this);
     }
     public void Update()
     {
+        if(config != null)
         IsConditionMet = config.ConditionStatus(this);
     }
+
     public void OnTriggerEnter(Collider other)
     {
-        config.TriggerEntered(this, other);
+       
+         other.TryGetComponent(out ConditionEndPoint end);
+        if (end != null)
+            IsConditionMet = true;
+
+        //config.TriggerEntered(this, other);
     }
+    
     public void OnTriggerStay(Collider other)
     {
-        config.TriggerStayed(this, other);
+        if (config != null)
+            config.TriggerStayed(this, other);
     }
     public void OnTriggerExit(Collider other)
     {
-        config.TriggerExited(this, other);
+        if (config != null)
+            config.TriggerExited(this, other);
     }
     public void Interact()
     {
-         if (isPickUp && !hasBeenPickedUp)
+        interactUI.ToggleCanvas();
+     /*   if (isPickUp && !hasBeenPickedUp)
         {
             interactUI.ToggleCanvas();
           //  hasBeenPickedUp = true;
-        }
+        }*/
            
         // if (config is InteractConditionConfig iConfig)
         // iConfig.Interact(this);
