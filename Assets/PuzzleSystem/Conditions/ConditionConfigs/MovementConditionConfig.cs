@@ -11,9 +11,10 @@ public class MovementConditionConfig : ConditionConfig
     {
         initialPosition = conditionObject.transform.position;      
     }
-    public override bool ConditionStatus(Condition conditionObject)
+    public override void ConditionStatus(Condition conditionObject)
     {
-        if (Vector3.Distance(initialPosition, conditionObject.transform.position) >= expectedDistance) return true;
-        else return false;
+        if (Vector3.Distance(initialPosition, conditionObject.transform.position) >= expectedDistance)
+            ConfigConditionMet?.Invoke();
+        
     }    
 }

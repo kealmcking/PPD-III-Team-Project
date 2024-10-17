@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
@@ -11,6 +12,8 @@ using UnityEngine;
 /// Additionally, it contains the reward(typically a clue), and the potential for components used to build 
 /// the required item to complete the puzzle.
 /// </summary>
+/// 
+[RequireComponent(typeof(AudioSource))]
 public class Puzzle : MonoBehaviour, ICustomizableComponent
 {
     [SerializeField] List<Condition> conditions = new List<Condition>();   
@@ -21,13 +24,14 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
         "The transforms will be the potential spawning points for the components used to craft the item needed to complete the puzzle." +
         "It is recommended that their is more positions than components to allow for more unpredictable possible spawn points for the components.")]
     List<Transform> componentPositions = new List<Transform>();
-    [SerializeField] ConditionEndPoint puzzleGate;
+    
     [SerializeField, Tooltip("Simply the position where the reward(clue) will be spawned. after completing the puzzle.")] Transform rewardSpawnPosition;
     private Guid id = new Guid();
     public BaseClueData Reward { get; set; } = null;
     public Guid ID => id;
-    public bool IsComplete{get; private set;}
-    
+    public bool IsComplete { get; private set; } = false;
+    AudioSource src;
+
     private void OnEnable()
     {
         conditions.ForEach(c => c.ConditionStatus += UpdateCondition);
@@ -43,30 +47,24 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
     }
     public void UpdateCondition()
     {
-        if (conditions.Count <= 0) return;
-        foreach (var condition in conditions)
+        if (conditions.Count > 0)
         {
-            if (!condition.IsConditionMet) return;
+            foreach (var condition in conditions)
+            {
+                if (!condition.IsConditionMet) return;
+            }
+
+            //Fire off events for various updates when puzzle complete
+            //sfx/vfx/etc
+            if (vfx != null)
+                vfx.Play();
+            if (clip != null) { }
+            //playclip here clip.
+            if (Reward != null)
+                Instantiate(Reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
+
+            conditions.ForEach((c) => Destroy(c.gameObject));
+            IsComplete = true;
         }
-        
-        //Fire off events for various updates when puzzle complete
-        //sfx/vfx/etc
-        if(vfx!=null)
-        vfx.Play();
-        if (clip != null) { }
-          //playclip here  clip.
-          if(Reward!= null)
-        Instantiate(Reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
-        Debug.Log("You finished the puzzle YAY!!!");
-        if(puzzleGate != null)
-        {
-         
-            puzzleGate.Anim.Play("BookcaseOpen",0);
-        }
-        foreach (var condition in conditions)
-        {
-            Destroy(condition.gameObject);
-        }
-        IsComplete = true;
     }
 }

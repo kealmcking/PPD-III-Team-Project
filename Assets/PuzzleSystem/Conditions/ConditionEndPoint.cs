@@ -6,19 +6,21 @@ using UnityEngine;
 /// for example can be used as the goal the player needs to push an object to or
 /// for them to place an object on.
 /// </summary>
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(Collider))]
 public class ConditionEndPoint : MonoBehaviour
 {
-    [SerializeField] SphereCollider col;
+    [SerializeField] Collider col;
+    [SerializeField] List<ConditionEndpointConfig> config = new List<ConditionEndpointConfig>();
 
-    [SerializeField] float colRadius;
-    [SerializeField] Animator anim;
-    public Animator Anim => anim;
+    public List<ConditionEndpointConfig> Config => config;
     private void Awake()
     {
-        col ??= GetComponent<SphereCollider>();  
-      
-
-        anim??= GetComponent<Animator>();
+        col ??= GetComponent<Collider>();      
+       
+    }
+    public void PlayConfig()
+    {
+        if(config != null && config.Count > 0)  
+            config.ForEach(c => c.RunConfiguration(this));
     }
 }
