@@ -13,8 +13,10 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject contents;
     [SerializeField] private GameObject masterVolume;
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject creditsUI;
     [SerializeField] public GameObject menuActive;
     [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject backButton;
 
     // Start is called before the first frame update
     void Awake()
@@ -36,6 +38,22 @@ public class MainMenuManager : MonoBehaviour
         //{
         //    UnpauseGame();
         //}
+    }
+    public void DisplayCredits()
+    {
+        if(menuActive == mainMenu)
+        {
+            menuActive = creditsUI;
+            menuActive.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(backButton);
+        }
+        else if(menuActive == creditsUI)
+        {
+            menuActive.SetActive(false);
+            menuActive = mainMenu;
+            menuActive.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(playButton);
+        }
     }
 
     // Update is called once per frame

@@ -118,4 +118,10 @@ public class ButtonFunctions : MonoBehaviour
         CharacterSelectionManager.instance.charactermodels[CharacterSelectionManager.instance.characterIndex].enabled = true;
         CharacterSelectionManager.instance.toggleList[CharacterSelectionManager.instance.characterIndex].isOn = true;
     }
+
+    public void DisplayCredits()
+    {
+        MainMenuManager.instance.DisplayCredits();
+    }
+    
 }
