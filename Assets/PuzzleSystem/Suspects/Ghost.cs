@@ -27,4 +27,6 @@ public class Ghost : MonoBehaviour, IInteractable, ICustomizableComponent
 
         interactUI.ToggleCanvas();
     }
+
+ 
 }

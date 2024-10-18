@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using NUnit.Framework.Internal;
+using Unity.VisualScripting;
 
 public static class EventSheet 
 {
@@ -30,4 +31,6 @@ public static class EventSheet
     public static Action<SuspectData> SendKillerData;
     public static Action<List<Suspect>> SendSceneSuspects;
     public static Action<List<Suspect>, SpawnPointType, bool> RelocateSuspects;
+    public static Action<BaseItemData> EquipItem;
+    public static Action UseHeldItem;
 }

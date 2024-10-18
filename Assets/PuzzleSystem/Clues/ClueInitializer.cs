@@ -31,7 +31,7 @@ public class ClueInitializer : MonoBehaviour
         motives.ForEach(s =>
         {
            // if (s.ID != selection.GetMotive().ID)
-                clues.Add(s);
+                //clues.Add(s);
         });
         EventSheet.SendAllClues(clues);
         if(selection.GetCase().Puzzles.Count > 0)

@@ -37,6 +37,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 657875834096989982}
+  - {fileID: 550485537600204774}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6411456988420291885
@@ -106,7 +107,10 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 197af6dc2f609b9449da98083a818e19, type: 2}
   rb: {fileID: 8297931317305047960}
   interactUI: {fileID: 7124139259860210449}
-  col: {fileID: 7502768729632330824}
+  interactCol: {fileID: 7502768729632330824}
+  bodyCol: {fileID: 1431972999974798314}
+  overrideController: {fileID: 22100000, guid: 3d1e8559778b4264cb2787205adc6bd3, type: 2}
+  handlePoint: {fileID: 550485537600204774}
 --- !u!54 &8297931317305047960
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -115,7 +119,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1063885466244007342}
   serializedVersion: 4
-  m_Mass: 3.09
+  m_Mass: 9.96
   m_Drag: 0.3
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -127,7 +131,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -191,6 +195,37 @@ CapsuleCollider:
   m_Height: 1.0277157
   m_Direction: 1
   m_Center: {x: 0, y: -0.15792735, z: 0.04468292}
+--- !u!1 &1297980652784300821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 550485537600204774}
+  m_Layer: 0
+  m_Name: HandlePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &550485537600204774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297980652784300821}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.295, z: -0.032}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8833719166081666885}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &9203316642961472188
 PrefabInstance:
   m_ObjectHideFlags: 0
