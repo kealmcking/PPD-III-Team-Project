@@ -20,7 +20,6 @@ public static class EventSheet
     public static Action<GhostData, SpawnPointType, bool,SpawnPoint> SpawnGhost;
     public static Action<Ghost> SendGhost;
     public static Action<int> TodaysDayIndexIsThis;
-   // public static Action<Suspect> SendKiller;
     public static Action<Suspect, SpawnPointType, bool> SpawnKiller;
     public static Action<List<BaseClueData>, SpawnPointType,bool> SpawnExcessClues;
     public static Action<Item> SendItemToInventory;

@@ -7,12 +7,12 @@ public class ItemCollisionConditionConfig : ConditionConfig
     [SerializeField] CraftableItemData triggerCheck;
     public override void ConditionStatus(Condition conditionObject)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void EnterSetup(Condition conditionObject)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void TriggerEntered(Condition conditionObject, Collider other)
