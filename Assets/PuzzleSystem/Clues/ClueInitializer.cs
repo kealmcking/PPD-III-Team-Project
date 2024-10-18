@@ -12,6 +12,7 @@ public class ClueInitializer : MonoBehaviour
     public void Initialize(GameSelection selection, List<KillerClueData> killers, List<SuspectData> suspects, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives)
     {
         List<BaseClueData> clues = new List<BaseClueData>();
+       
         killers.ForEach(s =>
         {
            // if (s.ID != selection.GetKiller().ID)
@@ -31,8 +32,9 @@ public class ClueInitializer : MonoBehaviour
         motives.ForEach(s =>
         {
            // if (s.ID != selection.GetMotive().ID)
-                //clues.Add(s);
+                clues.Add(s);
         });
+
         EventSheet.SendAllClues(clues);
         if(selection.GetCase().Puzzles.Count > 0)
         {

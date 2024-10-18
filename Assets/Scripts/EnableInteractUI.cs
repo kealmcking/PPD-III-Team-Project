@@ -28,8 +28,12 @@ public class EnableInteractUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        interactCanvas = GetComponentInChildren<Canvas>().gameObject;
-        interactCanvas.SetActive(false);
+        if (interactCanvas != null)
+        {
+            interactCanvas = GetComponentInChildren<Canvas>().gameObject;
+            interactCanvas.SetActive(false);
+        }
+ 
     }
 
     // Update is called once per frame
