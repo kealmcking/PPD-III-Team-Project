@@ -28,14 +28,17 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
     public Guid ID => id;
     public bool IsComplete { get; private set; } = false;
     AudioSource src;
-
+    private void Awake()
+    {
+        conditionSets[0].gameObject.SetActive(true);
+    }
     private void OnEnable()
     {
-        conditionSets[setIndex].gameObject.SetActive(true);
+        
         foreach (var set in conditionSets)
-          {
+        {
                 set.ConditionSetComplete += UpdatePuzzle;
-          }
+        }
             
     }
     private void OnDisable()
