@@ -13,6 +13,7 @@ public class invSlot : MonoBehaviour
     }
     public void setCurItem(invItem item)
     {
+        if (item == null) return;
         curItem = item;
         item.transform.SetParent(transform);
         item.transform.position = transform.position;

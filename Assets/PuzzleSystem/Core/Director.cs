@@ -28,11 +28,8 @@ public class Director : MonoBehaviour
     public List<SuspectData> suspects;
     List<Puzzle> scenePuzzles;
     List<Lore> sceneLore;
-
+    List<Puzzle> activePuzzles = new List<Puzzle>();
     private GameSelection gameSelection;
-    private ClueController cController;
-    private PuzzleController pController;
-    private LoreController lController;
     public Suspect chosenKiller = null;
     public List<Suspect> sceneSuspects = new List<Suspect>();
     public List<Case> Cases { get { return cases; } private set { cases = value; } }
@@ -43,14 +40,12 @@ public class Director : MonoBehaviour
     public List<BaseClueData> clues = new List<BaseClueData>();
     public void OnEnable()
     {
-        // EventSheet.SendKiller += SetChosenKiller;
         EventSheet.SendAllClues += HandleAllClues;
         EventSheet.TodaysDayIndexIsThis += HandleDayChange;
         EventSheet.SendSceneSuspects += SetSceneSuspects;
     }
     public void OnDisable()
     {
-       // EventSheet.SendKiller -= SetChosenKiller;
         EventSheet.TodaysDayIndexIsThis -= HandleDayChange;
         EventSheet.SendSceneSuspects -= SetSceneSuspects;
         EventSheet.SendAllClues -= HandleAllClues;
@@ -65,9 +60,6 @@ public class Director : MonoBehaviour
         scenePuzzles = FindObjectsByType<Puzzle>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
         sceneLore = FindObjectsByType<Lore>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
         gameSelection = new GameSelection(suspects, killers, rooms, weapons, cases, motives);
-        cController = new ClueController();
-        List<Puzzle> activeP = new List<Puzzle>();
-        List<Lore> activeL = new List<Lore>();
 
 
         if (scenePuzzles.Count > 0)
@@ -79,7 +71,7 @@ public class Director : MonoBehaviour
                     if (puzzle.ID == sPuzzle.ID)
                     {
                         sPuzzle.GameObject().SetActive(true);
-                        activeP.Add(sPuzzle);
+                        activePuzzles.Add(sPuzzle);
                     }
                 }
 
@@ -95,17 +87,13 @@ public class Director : MonoBehaviour
                     if (lore.ID == sLore.ID)
                     {
                         sLore.GameObject().SetActive(true);
-                        activeL.Add(sLore);
                     }
                 }
             }
 
         }
 
-        initializer.Initialize(gameSelection, killers, suspects, rooms, weapons, motives);
-
-        pController = new PuzzleController(activeP);
-        lController = new LoreController(activeL);
+        initializer.Initialize(killers, rooms, weapons, motives, activePuzzles);
 
         List<Suspect> newSuspects = suspects
             .Select(s => s.SuspectPrefab)
@@ -126,20 +114,13 @@ public class Director : MonoBehaviour
         
     }
     private void HandleDayChange(int day)
-    {
-        
-            
-            
+    {          
             Suspect suspect = Randomizer.GetRandomizedSuspectFromListAndRemove(ref sceneSuspects);
-
-            Destroy(suspect.gameObject);
-            
-            
+            Destroy(suspect.gameObject);          
             EventSheet.SpawnGhost?.Invoke(ghost, SpawnPointType.Ghost, true, null);
             EventSheet.RelocateSuspects?.Invoke(sceneSuspects, SpawnPointType.Suspect, true);
         if (day >= 5)
-        {
-            
+        {          
             EventSheet.SpawnKiller?.Invoke(chosenKiller,SpawnPointType.Killer,true);
         }
     }
@@ -172,34 +153,7 @@ public class Director : MonoBehaviour
     {
         chosenKiller = value;
     }
-    private class PuzzleController
-    {
-        private List<Puzzle> activePuzzles = new List<Puzzle>();
-        public List<Puzzle> ActivePuzzles => activePuzzles;
-        public PuzzleController(List<Puzzle> puzzles)
-        {
-            activePuzzles = puzzles;
-          //  EventSheet.SendPuzzles?.Invoke(activePuzzles);
-        }
-    }
-    private class LoreController
-    {
-        private List<Lore> activeLore = new List<Lore>();
-        public List<Lore> ActiveLore => activeLore;
-        public LoreController(List<Lore> lores)
-        {
-            activeLore = lores;
-          //  EventSheet.SendLore?.Invoke(activeLore);
-        }
-    }
-    private class ClueController
-    {
-        private List<BaseClueData> foundClues = new List<BaseClueData>();
-        public ClueController(){ }
-        public void AddClue(BaseClueData clue)
-        { 
-            foundClues.Add(clue);
-            EventSheet.SendFoundClue?.Invoke(clue);
-        }       
-    }
+ 
+
+   
 }
