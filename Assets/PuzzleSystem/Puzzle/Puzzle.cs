@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 //make editor script for a button when finalize puzzle is pressed a window will pop-up that asks which case/motive should be a list of all the Motive class scriptable objects select one you want to add it to then press ok.
 //This will create a prefab of this puzzle and add the prefab to this folder 'Assets\PuzzleSystem\PrefabDump\Puzzles'. and then add the prefab to the selected Motives list of puzzles if no scriptable object motive is made then create one this newly created motive will be placed in Assets\PuzzleSystem\Motives\SO
@@ -11,62 +11,82 @@ using UnityEngine;
 /// Additionally, it contains the reward(typically a clue), and the potential for components used to build 
 /// the required item to complete the puzzle.
 /// </summary>
+/// 
+[RequireComponent(typeof(AudioSource))]
+[ExecuteInEditMode]
 public class Puzzle : MonoBehaviour, ICustomizableComponent
 {
-    [SerializeField] List<Condition> conditions = new List<Condition>();   
+    [SerializeField] List<ConditionSet> conditionSets = new List<ConditionSet>();
     [SerializeField] AudioClip clip;
     [SerializeField] ParticleSystem vfx;
-    [SerializeField, Tooltip("List of all the craftable components required to create the items to finish this puzzle")] List<CraftableComponentData> components = new List<CraftableComponentData>(3);
-    [SerializeField, Tooltip("create an empty transform and make it a child of the puzzle inside this field add the transform." +
-        "The transforms will be the potential spawning points for the components used to craft the item needed to complete the puzzle." +
-        "It is recommended that their is more positions than components to allow for more unpredictable possible spawn points for the components.")]
-    List<Transform> componentPositions = new List<Transform>();
-    [SerializeField] ConditionEndPoint puzzleGate;
+    private int setIndex = 0;
+
+
     [SerializeField, Tooltip("Simply the position where the reward(clue) will be spawned. after completing the puzzle.")] Transform rewardSpawnPosition;
     private Guid id = new Guid();
-    public BaseClueData Reward { get; set; } = null;
+    [SerializeField] BaseClueData reward;
+    public BaseClueData Reward { get { return reward; } set { reward = value; } }
     public Guid ID => id;
-    public bool IsComplete{get; private set;}
-    
+    public bool IsComplete { get; private set; } = false;
+    AudioSource src;
+    private void Awake()
+    {
+        conditionSets[0].gameObject.SetActive(true);
+    }
     private void OnEnable()
     {
-        conditions.ForEach(c => c.ConditionStatus += UpdateCondition);
-        if (components.Count > 0 && componentPositions.Count > 0) 
-        components.ForEach((c) => {Instantiate(c.Prefab).GameObject().transform.position = Randomizer.GetRandomizedObjectFromListAndRemove(ref componentPositions).position;});
+        
+        foreach (var set in conditionSets)
+        {
+                set.ConditionSetComplete += UpdatePuzzle;
+        }
+            
     }
     private void OnDisable()
     {
-        foreach (var condition in conditions)
+        foreach (var set in conditionSets)
         {
-            condition.ConditionStatus -= UpdateCondition;
+            set.ConditionSetComplete -= UpdatePuzzle;
         }
     }
-    public void UpdateCondition()
+    public void UpdatePuzzle()
     {
-        if (conditions.Count <= 0) return;
-        foreach (var condition in conditions)
+        if (conditionSets.Count > 0)
         {
-            if (!condition.IsConditionMet) return;
+           if(conditionSets.Count > setIndex)
+           {
+                if(conditionSets[setIndex].DeactivateSetAfterCompletion == true)
+                conditionSets[setIndex].gameObject.SetActive(false);
+                conditionSets[setIndex++].gameObject.SetActive(true);
+            }
+
+            //Fire off events for various updates when puzzle complete
+            //sfx/vfx/etc
+            if (vfx != null)
+                vfx.Play();
+            if (clip != null) { }
+            //playclip here clip.
+            if (Reward != null)
+                Instantiate(Reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
+
+            IsComplete = true;
         }
-        
-        //Fire off events for various updates when puzzle complete
-        //sfx/vfx/etc
-        if(vfx!=null)
-        vfx.Play();
-        if (clip != null) { }
-          //playclip here  clip.
-          if(Reward!= null)
-        Instantiate(Reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
-        Debug.Log("You finished the puzzle YAY!!!");
-        if(puzzleGate != null)
-        {
-         
-            puzzleGate.Anim.Play("BookcaseOpen",0);
-        }
-        foreach (var condition in conditions)
-        {
-            Destroy(condition.gameObject);
-        }
-        IsComplete = true;
     }
+
+#if UNITY_EDITOR
+    private void Reset()
+    {
+        AddConditionSet();
+    }
+       private void AddConditionSet()
+    {
+     
+        if (transform.Find("ConditionSet") == null)
+        {
+            GameObject conditionSetObject = new GameObject("ConditionSet");
+            conditionSetObject.transform.SetParent(transform);
+            conditionSetObject.AddComponent<ConditionSet>(); 
+        }
+    }
+#endif   
 }

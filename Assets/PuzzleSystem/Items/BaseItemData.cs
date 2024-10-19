@@ -16,4 +16,7 @@ public abstract class BaseItemData : ScriptableObject, ICustomizableComponent
     public Sprite Icon => icon;
     public string Name => itemName;
     public Description Description => description;
+
+   
+
 }

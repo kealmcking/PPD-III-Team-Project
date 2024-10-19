@@ -19,6 +19,8 @@ public class Clue : MonoBehaviour, IInteractable, ICustomizableComponent
         col.isTrigger = true;
         rb ??= GetComponent<Rigidbody>();
         interactUI ??= GetComponent<EnableInteractUI>();
+
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
     }
     public void ItemPulse(Vector3 startPosition)
     {

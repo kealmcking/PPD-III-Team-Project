@@ -5,6 +5,7 @@ using DialogueSystem;
 using UnityEngine;
 using Input;
 using Unity.Mathematics;
+using static UnityEditor.Progress;
 
 public class playerController : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class playerController : MonoBehaviour
 
     private Camera _mainCam;
     private audioManager audioManager;
-
+    private RuntimeAnimatorController originalController;
     private float horizInput;
     private float vertInput;
 
@@ -51,8 +52,8 @@ public class playerController : MonoBehaviour
 
     [Header("Player Stats - Misc")]
     [SerializeField] float interactDistance;
-    [SerializeField] private Light flashlight;
-    [SerializeField] private Quaternion itemHandOffset;
+ 
+ 
 
     [Header("Player Stats - Gravity")]
     [SerializeField] private float gravity = -9.81f;
@@ -69,7 +70,6 @@ public class playerController : MonoBehaviour
 
     private float targetVertValue;
 
-    bool _isFlashlightOn;
     bool _isCrouching;
     bool _isClimbing;
     bool _isFleeing;
@@ -81,15 +81,28 @@ public class playerController : MonoBehaviour
     private void OnEnable()
     {
         EventSheet.IHavePressedInteractButton += Interact;
+        EventSheet.EquipItem += ValidateEquippedItem;
+        EventSheet.UseHeldItem += Use;
+        EventSheet.DropHeldItem += Drop;
+        EventSheet.ThrowHeldItem += Throw;
+        EventSheet.ThrowAnimationEvent += ThrowEvent;
+        EventSheet.ItemColliderAnimationEvent += ItemColliderToggle;
     }
 
     private void OnDisable()
     {
         EventSheet.IHavePressedInteractButton -= Interact;
+        EventSheet.EquipItem -= ValidateEquippedItem;
+        EventSheet.UseHeldItem -= Use;
+        EventSheet.DropHeldItem -= Drop;
+        EventSheet.ThrowHeldItem -= Throw;
+        EventSheet.ThrowAnimationEvent -= ThrowEvent;
+        EventSheet.ItemColliderAnimationEvent -= ItemColliderToggle;
     }
 
     private void Awake()
     {
+         originalController = _animator.runtimeAnimatorController;
          audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
          selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
          _currentCharacterModel = playerModels[selectedOption].gameObject;
@@ -266,18 +279,6 @@ public class playerController : MonoBehaviour
         charController.center = Vector3.Lerp(charController.center, _newCenter, Time.deltaTime / _crouchTime);
     }
 
-    void toggleFlashlight()
-    {
-        flashlight.enabled = InputManager.instance.getFlashlight();
-    }
-    void updateFlashlightDirection()
-    {
-        if (flashlight.enabled)
-        {
-            flashlight.transform.rotation = Camera.main.transform.rotation;
-        }
-    }
-
     private void Interact()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
@@ -315,39 +316,134 @@ public class playerController : MonoBehaviour
         // Interact with the closest valid object
         if (closestCollider != null && closestCollider.TryGetComponent(out IInteractable interactable))
         {
-            _animator.SetTrigger("activate");
-            
-
-            if (interactable is Condition condition && condition.CanPickup() && !condition.HasBeenPickedUp())
+            if(interactable is Item item && objectInHand == null)
             {
-                condition.Interact();
-                AddObjectToRightHand(condition);
-                playerLookAtTarget.headTarget = null;
+                _animator.SetTrigger("activate");
+                ValidateEquippedItem(item.Data);
+                Destroy(item.gameObject);
             }
-            else interactable.Interact();
+            else
+            {
+                _animator.SetTrigger("activate");
+                interactable.Interact();
+            }
+
+          
         }
     }
-
-    private void AddObjectToRightHand(Condition obj)
+    private void Use()
     {
-        obj.transform.SetParent(handPos);
-        obj.transform.localPosition = Vector3.zero;
-        obj.transform.localRotation = Quaternion.identity * itemHandOffset;
-        objectInHand = obj;
-    }
-
-    private void ThrowObject()
-    {
-        if (objectInHand == null) return;
-        objectInHand.GetObject().transform.SetParent(null);
-        _animator.SetTrigger("activate");
-        Item item = objectInHand.GetObject().GetComponent<Item>();
-        if (item != null)
+        if(objectInHand != null && objectInHand is Item item)
         {
-            item.ItemPulse(transform.forward);
-        }        
+            _animator.SetTrigger("UseItem");
+            item.Use();
+        }
     }
+    private void Throw()
+    {
+        if (objectInHand != null && objectInHand is Item item)
+        {
+            _animator.SetTrigger("ThrowItem");
+        }
+    }
+    //Called by the throw animation to detach the item from the players hand and reset the item state. 
+    public void ThrowEvent()
+    {
+        if (objectInHand != null && objectInHand is Item item)
+        {
+            item.HandleDeactivateItemState();
 
+            item.transform.SetParent(null);
+
+         
+         
+            item.transform.position = handPos.position + transform.forward * 1f + Vector3.up * 1f;
+
+       
+            item.ItemPulse(transform.forward);
+            objectInHand = null;
+        }   
+    }
+    private void Drop()
+    {
+        if (objectInHand != null && objectInHand is Item item)
+        {
+            _animator.SetTrigger("DropItem");
+            if (item.OverrideController != null)
+            {
+                RemoveOverrideController(item);
+            }
+            item.HandleDeactivateItemState();
+            item.transform.SetParent(null);
+            objectInHand = null;
+        }
+    }
+    private void ValidateEquippedItem(BaseItemData data)
+    {
+        if(data == null) return;
+        if(data.Prefab != null && data.Prefab is Item item)
+        {
+            Item instance = Instantiate(item);
+            AddObjectToRightHand(instance);
+        }
+    }
+    private void AddObjectToRightHand(IInteractable obj)
+    {
+        if (obj == null) return;
+    
+            //when an object is in the hand if its a condition object it will be thrown if not it will attempt to be readded to the player inventory
+            if(objectInHand != null)
+            {
+            if (objectInHand is Item item)
+            {
+                if (item.OverrideController != null)
+                {
+                    RemoveOverrideController(item);
+                }
+                item.HandleDeactivateItemState();
+                objectInHand.Interact();
+                objectInHand = null;
+            }
+        }
+        //now that their is no more item in the hand we will add the object passed in to the hand
+
+        //If the object in hand is of type Item we will see if the item has an override controller if it doess then our current controller
+        //should be replaced with the override controller
+        if (obj is Item equippedItem)
+        {
+            //override controller add here
+            if (equippedItem.OverrideController != null)
+            {
+                SetAnimationOverride(equippedItem);
+            }
+            equippedItem.HandleActivateItemState();
+            equippedItem.transform.SetParent(handPos);
+            Quaternion rotationOffset = Quaternion.Inverse(equippedItem.HandlePoint.rotation) * equippedItem.transform.rotation;
+            equippedItem.transform.rotation = handPos.rotation*rotationOffset;
+            Vector3 offset = equippedItem.HandlePoint.position - equippedItem.transform.position; 
+            equippedItem.transform.position = handPos.position - offset;
+            objectInHand = equippedItem;
+            playerLookAtTarget = null;
+        }
+    }
+    private void RemoveOverrideController(Item item)
+    {
+        _animator.runtimeAnimatorController = originalController;
+    }
+    private void SetAnimationOverride(Item item)
+    {
+        _animator.runtimeAnimatorController = item.OverrideController;
+    }
+    public void ItemColliderToggle()
+    {
+        if (objectInHand is Item item)
+        {
+            if (item.BodyCol.enabled)
+                item.BodyCol.enabled = false;
+            else
+                item.BodyCol.enabled = true;
+        }
+    }
     public void UpdatePlayerCharacter(int index)
     {
         playerModels[index].enabled = true;

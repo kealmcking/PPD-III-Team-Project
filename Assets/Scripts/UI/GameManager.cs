@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
     private Coroutine _coroutine = null;
 
     // Start is called before the first frame update
+
     void Awake()
     {
         if (instance == null)
@@ -92,6 +93,7 @@ public class GameManager : MonoBehaviour
         playerController.UpdatePlayerCharacter(characterIndex);
     }
 
+    //EventSheet.SendClueToTracker
     public void DisplayCharacterUI()
     {
         if (menuActive != null)
@@ -155,6 +157,7 @@ public class GameManager : MonoBehaviour
         menuActive = menuInventory;
         menuActive.SetActive(true);
         InventoryActive = true;
+        InputManager.instance.DisableCharacterInputs();
     }
     public void DeactivateInventoryUI()
     {
@@ -163,6 +166,7 @@ public class GameManager : MonoBehaviour
         menuActive.SetActive(false);
         menuActive = null;       
         InventoryActive = false;
+        InputManager.instance.EnableCharacterInputs();
     }
     public void ActivateInventoryUISecondary()
     {
@@ -181,6 +185,7 @@ public class GameManager : MonoBehaviour
         menuActive = craftTableUI;
         menuActive.SetActive(true);
         CraftTableActive = true;
+        InputManager.instance.DisableCharacterInputs();
     }
     public void DeactivateCraftTableUI()
     {
@@ -189,6 +194,7 @@ public class GameManager : MonoBehaviour
         menuActive.SetActive(false);
         menuActive = null;
         CraftTableActive = false;
+        InputManager.instance.EnableCharacterInputs();
     }
 
     public void ActivateSleepMenu()

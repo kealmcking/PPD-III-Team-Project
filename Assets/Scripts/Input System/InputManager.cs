@@ -3,6 +3,7 @@ using DialogueSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace Input
 {
@@ -10,9 +11,7 @@ namespace Input
     {
         #region Variables
         public static InputManager instance;
-
-        
-
+       
         [Header("Input Actions")]
         public InputAction moveAction;
         public InputAction aimAction;
@@ -20,18 +19,17 @@ namespace Input
         public InputAction pauseAction;
         public InputAction crouchAction;
         public InputAction sprintAction;
-        public InputAction flashLightAction;
         public InputAction inventoryAction;
         public InputAction cancelAction;
-        
+        public InputAction useAction;
+        public InputAction dropAction;
+        public InputAction throwAction;
         [Header("VISIBLE FOR DEBUG PURPOSES")]
         [SerializeField] private Vector2 moveAmount;
         [SerializeField] private Vector2 aimAmount;
        // [SerializeField] private bool isPause;
         [SerializeField] private bool isSprint;
-        [SerializeField] private bool isCrouch;
-        [SerializeField] private bool isFlashLight;
-      
+        [SerializeField] private bool isCrouch;     
         
         private bool isInInteractableArea = false;
 
@@ -63,14 +61,16 @@ namespace Input
             sprintAction.performed += ctx => { OnSprint(ctx); };
             sprintAction.canceled += ctx => { OnSprint(ctx); };
 
-            flashLightAction.performed += ctx => { OnFlashLight(ctx); };
-
             inventoryAction.performed += ctx => { OnInventory(ctx); };
 
             cancelAction.performed += ctx => { OnCancelled(ctx); };
-
+            useAction.performed += ctx => { OnUse(ctx); };
+            dropAction.performed += ctx => { OnDrop(ctx); };
+            throwAction.performed += ctx => { OnThrow(ctx); };
         }
-        
+
+      
+
         #region Getters
 
         public bool getIsCrouch()
@@ -83,10 +83,6 @@ namespace Input
             return isSprint;
         }
 
-        public bool getFlashlight()
-        {
-            return isFlashLight;
-        }
         
         public Vector2 getMoveAmount()
         {
@@ -143,7 +139,18 @@ namespace Input
           
             
         }
-
+        private void OnUse(InputAction.CallbackContext ctx)
+        {
+            EventSheet.UseHeldItem?.Invoke();
+        }
+        private void OnDrop(InputAction.CallbackContext ctx)
+        {
+            EventSheet.DropHeldItem?.Invoke();
+        }
+        private void OnThrow(InputAction.CallbackContext ctx)
+        {
+            EventSheet.ThrowHeldItem?.Invoke();
+        }
         // Controls Pausing input
         public void OnPause(InputAction.CallbackContext context)
         {
@@ -204,13 +211,6 @@ namespace Input
             else { crouchAction.Enable(); }
         }
 
-        // Controls enabling flashlight input
-        public void OnFlashLight(InputAction.CallbackContext context)
-        {
-            isFlashLight = !isFlashLight;
-            
-        }
-
         // Controls opening Inventory input
         public void OnInventory(InputAction.CallbackContext context)
         {
@@ -254,12 +254,13 @@ namespace Input
             aimAction.Disable();
             crouchAction.Disable();
             sprintAction.Disable();
-            flashLightAction.Disable();
             inventoryAction.Disable();
             cancelAction.Enable();
-            
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            useAction.Disable();
+            dropAction.Disable();
+            throwAction.Disable();
+            UnityEngine.Cursor.visible = true;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
         }
 
         // Enables all inputs the player can use in general gameplay
@@ -271,12 +272,12 @@ namespace Input
             aimAction.Enable();
             crouchAction.Enable();
             sprintAction.Enable();
-            flashLightAction.Enable();
             inventoryAction.Enable();
-           
-            
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            useAction.Enable();
+            dropAction.Enable();
+            throwAction.Enable();
+            UnityEngine.Cursor.visible = false;
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void SetInteractable(bool context, EnableInteractUI enableInteractUI)
@@ -293,8 +294,10 @@ namespace Input
             pauseAction.Enable();
             crouchAction.Enable();
             sprintAction.Enable();
-            flashLightAction.Enable();
             inventoryAction.Enable();
+            useAction.Enable();
+            dropAction.Enable();
+            throwAction.Enable();
             EnableInteractUI.ImInInteractionZone += SetInteractable;
         }
 
@@ -306,9 +309,11 @@ namespace Input
             pauseAction.Disable();
             crouchAction.Disable();
             sprintAction.Disable();
-            flashLightAction.Disable();
             inventoryAction.Disable();
             cancelAction.Disable();
+            useAction.Disable();
+            dropAction.Disable();
+            throwAction.Disable();
             EnableInteractUI.ImInInteractionZone -= SetInteractable;
         }
         

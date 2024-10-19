@@ -153,6 +153,7 @@ public class DecisionUIManager : MonoBehaviour
 }   
     private void UpdateKiller(KillerClueData data)
     {
+        
         killer = data;
         killerChoices.Add(data);
         UpdateToggleUI(killerToggles.ElementAt(killerChoices.IndexOf(data)), data);
