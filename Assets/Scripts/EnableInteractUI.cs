@@ -28,8 +28,12 @@ public class EnableInteractUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        interactCanvas = GetComponentInChildren<Canvas>().gameObject;
-        interactCanvas.SetActive(false);
+        if (interactCanvas != null)
+        {
+        
+            interactCanvas.SetActive(false);
+        }
+ 
     }
 
     // Update is called once per frame
@@ -40,7 +44,7 @@ public class EnableInteractUI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && interactCanvas!= null)
         {
             interactCanvas.SetActive(true);
             ImInInteractionZone.Invoke(true, this);
@@ -49,7 +53,7 @@ public class EnableInteractUI : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !isInMenu && GetComponent<Suspect>())
+        if (other.CompareTag("Player") && !isInMenu && GetComponent<Suspect>() && interactCanvas != null)
         {
             interactCanvas.SetActive(true);
         }
@@ -57,7 +61,7 @@ public class EnableInteractUI : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && interactCanvas != null)
         {
             interactCanvas.SetActive(false);
             ImInInteractionZone.Invoke(false, this);
