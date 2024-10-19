@@ -234,13 +234,34 @@ namespace DialogueSystem
         IEnumerator typeLine(string line)
         {
             speakerText.text = currentNPC.name + ": ";
+            bool insideTag = false;
+            string currentText = "";
 
             foreach (char letter in line.ToCharArray())
             {
-                speakerText.text += letter;
-                yield return new WaitForSeconds(timeBetweenLetters);
+                if (letter == '<')
+                {
+                    insideTag = true;
+                }
+
+                if (insideTag)
+                {
+                    currentText += letter;
+                    if (letter == '>')
+                    {
+                        insideTag = false;
+                    }
+                }
+                else
+                {
+                    currentText += letter;
+                    speakerText.text = currentText;
+                    yield return new WaitForSeconds(timeBetweenLetters);
+                }
             }
-            
+
+            speakerText.text = currentText;
+
         }
         
    

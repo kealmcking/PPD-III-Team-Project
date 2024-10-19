@@ -48,7 +48,7 @@ public class CustomCameraController : MonoBehaviour
     {
         HandleCameraRotation();
         HandleCameraMovement();
-        HandleCameraCollision();
+        //HandleCameraCollision();
     }
 
     // Allow full camera rotation with the mouse or joystick
@@ -88,13 +88,13 @@ public class CustomCameraController : MonoBehaviour
     // Adjust the camera's position to avoid clipping through objects
     private void HandleCameraCollision()
     {
-        Vector3 desiredPosition = player.position 
+        Vector3 desiredPosition = transform.position 
                                   + transform.right * offset.x
                                   - transform.forward * offset.z 
                                   + Vector3.up * offset.y;
                                   
         RaycastHit hit;
-        if (Physics.Linecast(player.position, desiredPosition, out hit, collisionLayers))
+        if (Physics.Linecast(transform.position, desiredPosition, out hit, collisionLayers))
         {
             // Move the camera closer if there's an obstacle
             desiredPosition = hit.point + (hit.normal * collisionBuffer);
