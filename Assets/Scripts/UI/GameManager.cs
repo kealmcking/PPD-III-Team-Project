@@ -110,11 +110,11 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateToggleUI(Toggle toggle, BaseClueData data)
     {
-        //TextMeshProUGUI text = toggle.GetComponentInChildren<TextMeshProUGUI>();
-        //if (text != null)
-        //    text.text = data.Name;
+        TextMeshProUGUI text = toggle.GetComponentInChildren<TextMeshProUGUI>();
+        if (text != null)
+            text.text = data.Name;
         toggle.image.sprite = data.Icon;
-        //toggle.isOn = true;
+        
     }
 
     public void ClueFound(Toggle toggle)
