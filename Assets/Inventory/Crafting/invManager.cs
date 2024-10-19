@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Input;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using System;
+using NUnit.Framework.Interfaces;
 
 public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -12,12 +14,11 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] invSlot[] componentSlots = new invSlot[8];
     [SerializeField] invSlot[] craftTableSlots = new invSlot[3];
     [SerializeField] invItem itemPrefab;
-    [SerializeField] RectTransform mainCanvas;
-    [SerializeField] RectTransform nestedRect;
     invItem draggedItem;
     invSlot lastItemSlot;
     invSlot clickedSlot;
-
+    bool isRightClick = false;
+    bool isLeftClick = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +33,7 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     // Update is called once per frame
     void Update()
     {
-        if (draggedItem != null)
+        if (draggedItem != null && isLeftClick)
         {
             draggedItem.transform.position = UnityEngine.Input.mousePosition;
         }
@@ -40,13 +41,22 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         if (!GameManager.instance.InventoryActive) return;
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left || eventData.button == PointerEventData.InputButton.Right)
         {
+            if(eventData.button == PointerEventData.InputButton.Right)
+            {
+                isLeftClick = false;
+                isRightClick = true;
+            }
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                isRightClick = false;
+                isLeftClick = true;              
+            }
             invSlot clickedSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<invSlot>();
             
-            if (clickedSlot != null)
-            {
-               
+            if (clickedSlot != null && clickedSlot.curItem != null)
+            {            
                 draggedItem = clickedSlot.curItem;
                 clickedSlot.curItem = null;
                 lastItemSlot = clickedSlot;
@@ -57,7 +67,13 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         if (!GameManager.instance.InventoryActive) return;
-        if (draggedItem != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Left)
+        if( draggedItem != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Right)
+        {
+            lastItemSlot.setCurItem(draggedItem);
+            Equip();
+            return;
+        }
+        else if (draggedItem != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Left)
         {
             clickedSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<invSlot>();
             if (clickedSlot == null || !SlotValidation(clickedSlot, draggedItem))
@@ -84,11 +100,27 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             lastItemSlot.setCurItem(draggedItem);
             draggedItem = null;
         }
-        else {
+        else if(draggedItem != null && eventData.button != PointerEventData.InputButton.Right)
+        {
+            
             lastItemSlot.setCurItem(draggedItem);
             DropItem();
         }
     }
+
+    private void Equip()
+    {
+        Debug.Log("attempting to equip");
+                BaseItemData data = lastItemSlot.curItem.ItemData;
+        Debug.Log("Data being passed in"+data);
+        EventSheet.EquipItem?.Invoke(data);
+                draggedItem = null;
+          //      lastItemSlot.curItem.transform.SetParent(null);                
+                Destroy(lastItemSlot.curItem.gameObject);
+        lastItemSlot.curItem = null;
+        Debug.Log("Should be destroyed" + lastItemSlot.curItem);
+    }
+
     public void itemPickedUp(Item item)
     {
         invSlot emptySlot = null;

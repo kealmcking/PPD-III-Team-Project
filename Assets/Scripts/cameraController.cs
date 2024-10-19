@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Input;
+using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class CustomCameraController : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class CustomCameraController : MonoBehaviour
     public Vector3 offset = new Vector3(0.5f, 1.5f, -3f);     // Camera offset (with x for shoulder effect)
     public float smoothSpeed = 0.125f;                              // Smoothing speed for camera movement
     public float sensitivity = 100f;                                // Sensitivity for manual camera control
+    public float mouseSensitivity = 200f;
+    public float controllerSensitivity = 100f;
     public LayerMask collisionLayers;                               // Layers to check for camera collision
     public float collisionBuffer = 0.2f;                            // Buffer distance for collision
     public Camera cameraComponent;                                  // Reference to the camera component
@@ -22,6 +26,8 @@ public class CustomCameraController : MonoBehaviour
 
     private Vector2 smoothedMouseDelta;
     private float mouseSmoothing = 0.1f;
+    
+    InputDevice activeDevice;
 
     void Start()
     {
@@ -31,11 +37,18 @@ public class CustomCameraController : MonoBehaviour
         Cursor.visible = false;
     }
 
+    private void Update()
+    {
+        activeDevice = InputSystem.GetDevice<InputDevice>();
+        
+        UpdateSensitivity(activeDevice);
+    }
+
     void FixedUpdate()
     {
         HandleCameraRotation();
         HandleCameraMovement();
-        HandleCameraCollision();
+        //HandleCameraCollision();
     }
 
     // Allow full camera rotation with the mouse or joystick
@@ -75,13 +88,13 @@ public class CustomCameraController : MonoBehaviour
     // Adjust the camera's position to avoid clipping through objects
     private void HandleCameraCollision()
     {
-        Vector3 desiredPosition = player.position 
+        Vector3 desiredPosition = transform.position 
                                   + transform.right * offset.x
                                   - transform.forward * offset.z 
                                   + Vector3.up * offset.y;
                                   
         RaycastHit hit;
-        if (Physics.Linecast(player.position, desiredPosition, out hit, collisionLayers))
+        if (Physics.Linecast(transform.position, desiredPosition, out hit, collisionLayers))
         {
             // Move the camera closer if there's an obstacle
             desiredPosition = hit.point + (hit.normal * collisionBuffer);
@@ -89,5 +102,16 @@ public class CustomCameraController : MonoBehaviour
 
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
+    }
+
+    private void UpdateSensitivity(InputDevice activeDevice)
+    {
+        if (activeDevice is Keyboard || activeDevice is Mouse)
+        {
+            sensitivity = mouseSensitivity;
+        } else if (activeDevice is Gamepad)
+        {
+            sensitivity = controllerSensitivity;
+        }
     }
 }
