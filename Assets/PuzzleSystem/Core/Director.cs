@@ -28,7 +28,7 @@ public class Director : MonoBehaviour
     public List<SuspectData> suspects;
     List<Puzzle> scenePuzzles;
     List<Lore> sceneLore;
-
+    List<Puzzle> activePuzzles = new List<Puzzle>();
     private GameSelection gameSelection;
     public Suspect chosenKiller = null;
     public List<Suspect> sceneSuspects = new List<Suspect>();
@@ -71,6 +71,7 @@ public class Director : MonoBehaviour
                     if (puzzle.ID == sPuzzle.ID)
                     {
                         sPuzzle.GameObject().SetActive(true);
+                        activePuzzles.Add(sPuzzle);
                     }
                 }
 
@@ -92,7 +93,7 @@ public class Director : MonoBehaviour
 
         }
 
-        initializer.Initialize(gameSelection, killers, suspects, rooms, weapons, motives);
+        initializer.Initialize(killers, rooms, weapons, motives, activePuzzles);
 
         List<Suspect> newSuspects = suspects
             .Select(s => s.SuspectPrefab)

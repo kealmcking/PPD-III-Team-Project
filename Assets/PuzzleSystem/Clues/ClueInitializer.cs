@@ -9,7 +9,7 @@ public class ClueInitializer : MonoBehaviour
  
    // SuspectData chosenKiller = null;
     
-    public void Initialize(GameSelection selection, List<KillerClueData> killers, List<SuspectData> suspects, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives)
+    public void Initialize(List<KillerClueData> killers, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives,List<Puzzle> activePuzzles)
     {
         List<BaseClueData> clues = new List<BaseClueData>();
        
@@ -36,9 +36,9 @@ public class ClueInitializer : MonoBehaviour
         });
 
         EventSheet.SendAllClues(clues);
-        if(selection.GetCase().Puzzles.Count > 0)
+        if(activePuzzles.Count > 0)
         {
-            selection.GetCase().Puzzles.ForEach(p =>
+            activePuzzles.ForEach(p =>
             {
                 p.Reward = Randomizer.GetRandomizedObjectFromListAndRemove(ref clues);
             });

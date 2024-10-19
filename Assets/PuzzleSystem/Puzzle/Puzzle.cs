@@ -16,15 +16,16 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Puzzle : MonoBehaviour, ICustomizableComponent
 {
-    [SerializeField] List<ConditionSet> conditionSets = new List<ConditionSet>();   
+    [SerializeField] List<ConditionSet> conditionSets = new List<ConditionSet>();
     [SerializeField] AudioClip clip;
     [SerializeField] ParticleSystem vfx;
     private int setIndex = 0;
 
-    
+
     [SerializeField, Tooltip("Simply the position where the reward(clue) will be spawned. after completing the puzzle.")] Transform rewardSpawnPosition;
     private Guid id = new Guid();
-    public BaseClueData Reward { get; set; } = null;
+    [SerializeField] BaseClueData reward;
+    public BaseClueData Reward { get { return reward; } set { reward = value; } }
     public Guid ID => id;
     public bool IsComplete { get; private set; } = false;
     AudioSource src;
