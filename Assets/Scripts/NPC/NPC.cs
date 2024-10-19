@@ -7,6 +7,7 @@ public class NPC : ScriptableObject
 {
     [Header("Dialogue")] 
     public DialogueTree[] trees;
+    public MotiveClueData motive;
     
     [Header("Sprites")]
     public Sprite characterSprite_base;

@@ -16,6 +16,7 @@ public class Dialogue : ScriptableObject
 
     public string animationString;
     public Lore unlockedLore;
+    public MotiveClueData unlockedMotive;
 
     private string initialDialogue;
     private bool initialHasBeenRead;
