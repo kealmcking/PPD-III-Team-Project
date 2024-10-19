@@ -11,6 +11,11 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] BaseItemData data;
     [SerializeField] Rigidbody rb;
     [SerializeField] EnableInteractUI interactUI;
+    [SerializeField] float forceMultiplier = 5;
+  
+
+
+        
     [SerializeField,Tooltip("Used specifically to handle interactions")] SphereCollider interactCol;
     [SerializeField, Tooltip("Used specifically for turning the collider of the body of the item off and on when using it.")]Collider bodyCol;
     [SerializeField,Tooltip("Only add an override controller here if you want the item to have unique animations when being used")] AnimatorOverrideController overrideController;
@@ -20,6 +25,7 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
     public AnimatorOverrideController OverrideController => overrideController;
     private Guid id = new Guid();
     public Guid ID => id;
+    public Collider BodyCol => bodyCol;
     private void Awake()
     {
         
@@ -43,9 +49,9 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
             Debug.Log("You forgot to add the body collider");
         }
     }
-    public void ItemPulse(Vector3 startPosition)
-    {
-        rb.AddForce(startPosition * 5, ForceMode.Impulse);
+    public void ItemPulse(Vector3 startPosition) 
+    {    
+        rb.AddForce(startPosition * forceMultiplier, ForceMode.Impulse);
     }
     public void Interact()
     {
@@ -71,17 +77,10 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
         rb.isKinematic = false;
         rb.useGravity = true;
         interactCol.enabled = true;
-        interactUI.ToggleCanvas();
         interactUI.enabled = true;
+        interactUI.ToggleCanvas();
     }
-    public void HandleBodyColliderToggle()
-    {
-        if (bodyCol != null)
-        {
-            if (bodyCol.enabled)
-                bodyCol.enabled = false;
-            else
-                bodyCol.enabled = true;
-        }
-    }
+   
+      
+   
 }

@@ -32,4 +32,8 @@ public static class EventSheet
     public static Action<List<Suspect>, SpawnPointType, bool> RelocateSuspects;
     public static Action<BaseItemData> EquipItem;
     public static Action UseHeldItem;
+    public static Action DropHeldItem;
+    public static Action ThrowHeldItem;
+    public static Action ThrowAnimationEvent;
+    public static Action ItemColliderAnimationEvent;
 }

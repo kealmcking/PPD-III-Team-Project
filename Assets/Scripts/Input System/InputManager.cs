@@ -3,6 +3,7 @@ using DialogueSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace Input
 {
@@ -21,6 +22,8 @@ namespace Input
         public InputAction inventoryAction;
         public InputAction cancelAction;
         public InputAction useAction;
+        public InputAction dropAction;
+        public InputAction throwAction;
         [Header("VISIBLE FOR DEBUG PURPOSES")]
         [SerializeField] private Vector2 moveAmount;
         [SerializeField] private Vector2 aimAmount;
@@ -62,6 +65,8 @@ namespace Input
 
             cancelAction.performed += ctx => { OnCancelled(ctx); };
             useAction.performed += ctx => { OnUse(ctx); };
+            dropAction.performed += ctx => { OnDrop(ctx); };
+            throwAction.performed += ctx => { OnThrow(ctx); };
         }
 
       
@@ -137,6 +142,14 @@ namespace Input
         private void OnUse(InputAction.CallbackContext ctx)
         {
             EventSheet.UseHeldItem?.Invoke();
+        }
+        private void OnDrop(InputAction.CallbackContext ctx)
+        {
+            EventSheet.DropHeldItem?.Invoke();
+        }
+        private void OnThrow(InputAction.CallbackContext ctx)
+        {
+            EventSheet.ThrowHeldItem?.Invoke();
         }
         // Controls Pausing input
         public void OnPause(InputAction.CallbackContext context)
@@ -244,8 +257,10 @@ namespace Input
             inventoryAction.Disable();
             cancelAction.Enable();
             useAction.Disable();
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            dropAction.Disable();
+            throwAction.Disable();
+            UnityEngine.Cursor.visible = true;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
         }
 
         // Enables all inputs the player can use in general gameplay
@@ -259,9 +274,10 @@ namespace Input
             sprintAction.Enable();
             inventoryAction.Enable();
             useAction.Enable();
-            
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            dropAction.Enable();
+            throwAction.Enable();
+            UnityEngine.Cursor.visible = false;
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void SetInteractable(bool context, EnableInteractUI enableInteractUI)
@@ -280,6 +296,8 @@ namespace Input
             sprintAction.Enable();
             inventoryAction.Enable();
             useAction.Enable();
+            dropAction.Enable();
+            throwAction.Enable();
             EnableInteractUI.ImInInteractionZone += SetInteractable;
         }
 
@@ -294,6 +312,8 @@ namespace Input
             inventoryAction.Disable();
             cancelAction.Disable();
             useAction.Disable();
+            dropAction.Disable();
+            throwAction.Disable();
             EnableInteractUI.ImInInteractionZone -= SetInteractable;
         }
         

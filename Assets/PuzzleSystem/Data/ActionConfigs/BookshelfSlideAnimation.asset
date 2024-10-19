@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79a2cd549ba34f640a9604b39e8627fa, type: 3}
-  m_Name: BookShelfCollision
+  m_Script: {fileID: 11500000, guid: a8f05b5b8488626488183e658710916f, type: 3}
+  m_Name: BookshelfSlideAnimation
   m_EditorClassIdentifier: 
-  triggerCheck: {fileID: 0}
+  nameOfAnimationState: ConditionState
+  animationLayerIndex: 0
+  overrideController: {fileID: 22100000, guid: 19abcecb742f2124cab4456ce39d70e1, type: 2}

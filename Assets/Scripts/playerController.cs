@@ -52,8 +52,8 @@ public class playerController : MonoBehaviour
 
     [Header("Player Stats - Misc")]
     [SerializeField] float interactDistance;
-    [SerializeField] private Light flashlight;
-    [SerializeField] private Quaternion itemHandOffset;
+ 
+ 
 
     [Header("Player Stats - Gravity")]
     [SerializeField] private float gravity = -9.81f;
@@ -70,7 +70,6 @@ public class playerController : MonoBehaviour
 
     private float targetVertValue;
 
-    bool _isFlashlightOn;
     bool _isCrouching;
     bool _isClimbing;
     bool _isFleeing;
@@ -84,6 +83,10 @@ public class playerController : MonoBehaviour
         EventSheet.IHavePressedInteractButton += Interact;
         EventSheet.EquipItem += ValidateEquippedItem;
         EventSheet.UseHeldItem += Use;
+        EventSheet.DropHeldItem += Drop;
+        EventSheet.ThrowHeldItem += Throw;
+        EventSheet.ThrowAnimationEvent += ThrowEvent;
+        EventSheet.ItemColliderAnimationEvent += ItemColliderToggle;
     }
 
     private void OnDisable()
@@ -91,11 +94,15 @@ public class playerController : MonoBehaviour
         EventSheet.IHavePressedInteractButton -= Interact;
         EventSheet.EquipItem -= ValidateEquippedItem;
         EventSheet.UseHeldItem -= Use;
+        EventSheet.DropHeldItem -= Drop;
+        EventSheet.ThrowHeldItem -= Throw;
+        EventSheet.ThrowAnimationEvent -= ThrowEvent;
+        EventSheet.ItemColliderAnimationEvent -= ItemColliderToggle;
     }
 
     private void Awake()
     {
-        originalController = _animator.runtimeAnimatorController;
+         originalController = _animator.runtimeAnimatorController;
          audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
          selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
          _currentCharacterModel = playerModels[selectedOption].gameObject;
@@ -309,8 +316,19 @@ public class playerController : MonoBehaviour
         // Interact with the closest valid object
         if (closestCollider != null && closestCollider.TryGetComponent(out IInteractable interactable))
         {
-            _animator.SetTrigger("activate");
-           interactable.Interact();
+            if(interactable is Item item && objectInHand == null)
+            {
+                _animator.SetTrigger("activate");
+                ValidateEquippedItem(item.Data);
+                Destroy(item.gameObject);
+            }
+            else
+            {
+                _animator.SetTrigger("activate");
+                interactable.Interact();
+            }
+
+          
         }
     }
     private void Use()
@@ -319,6 +337,45 @@ public class playerController : MonoBehaviour
         {
             _animator.SetTrigger("UseItem");
             item.Use();
+        }
+    }
+    private void Throw()
+    {
+        if (objectInHand != null && objectInHand is Item item)
+        {
+            _animator.SetTrigger("ThrowItem");
+        }
+    }
+    //Called by the throw animation to detach the item from the players hand and reset the item state. 
+    public void ThrowEvent()
+    {
+        if (objectInHand != null && objectInHand is Item item)
+        {
+            item.HandleDeactivateItemState();
+
+            item.transform.SetParent(null);
+
+         
+         
+            item.transform.position = handPos.position + transform.forward * 1f + Vector3.up * 1f;
+
+       
+            item.ItemPulse(transform.forward);
+            objectInHand = null;
+        }   
+    }
+    private void Drop()
+    {
+        if (objectInHand != null && objectInHand is Item item)
+        {
+            _animator.SetTrigger("DropItem");
+            if (item.OverrideController != null)
+            {
+                RemoveOverrideController(item);
+            }
+            item.HandleDeactivateItemState();
+            item.transform.SetParent(null);
+            objectInHand = null;
         }
     }
     private void ValidateEquippedItem(BaseItemData data)
@@ -345,6 +402,7 @@ public class playerController : MonoBehaviour
                 }
                 item.HandleDeactivateItemState();
                 objectInHand.Interact();
+                objectInHand = null;
             }
         }
         //now that their is no more item in the hand we will add the object passed in to the hand
@@ -365,6 +423,7 @@ public class playerController : MonoBehaviour
             Vector3 offset = equippedItem.HandlePoint.position - equippedItem.transform.position; 
             equippedItem.transform.position = handPos.position - offset;
             objectInHand = equippedItem;
+            playerLookAtTarget = null;
         }
     }
     private void RemoveOverrideController(Item item)
@@ -377,9 +436,12 @@ public class playerController : MonoBehaviour
     }
     public void ItemColliderToggle()
     {
-        if(objectInHand is Item item)
+        if (objectInHand is Item item)
         {
-           item.HandleBodyColliderToggle();
+            if (item.BodyCol.enabled)
+                item.BodyCol.enabled = false;
+            else
+                item.BodyCol.enabled = true;
         }
     }
     public void UpdatePlayerCharacter(int index)

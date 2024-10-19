@@ -21,7 +21,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     "Scriptable Object here You can stack multiple for multiple effects.")]
     List<ActionConfig> actions = new List<ActionConfig>();
     [SerializeField] EnableInteractUI interactUI;
-    [SerializeField] bool isConditionMet = true;
+    [SerializeField] bool isConditionMet = false;
     [SerializeField,Tooltip("When this condition is met do you want to set this conditions active state to false?")] bool setObjectFalseOnComplete = false;
     [SerializeField] Rigidbody rb;
     [SerializeField] bool isInteractable;
@@ -92,6 +92,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Interact()
     {
+        if(isInteractable)
         interactUI.ToggleCanvas();
     }
     public GameObject GetObject()

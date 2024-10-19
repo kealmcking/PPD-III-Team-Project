@@ -11,7 +11,7 @@ public class AnimationAction : ActionConfig
     public override void RunAction(Condition condition)
     {
         condition.TryGetComponent(out Animator anim);
-        if (anim != null && nameOfAnimationState!= "")
+        if (anim != null && nameOfAnimationState== "ConditionState")
         {
             anim.runtimeAnimatorController = overrideController;
             anim.Play(nameOfAnimationState,animationLayerIndex);

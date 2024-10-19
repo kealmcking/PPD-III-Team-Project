@@ -68,7 +68,6 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
             if (Reward != null)
                 Instantiate(Reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
 
-            gameObject.SetActive(false);
             IsComplete = true;
         }
     }
