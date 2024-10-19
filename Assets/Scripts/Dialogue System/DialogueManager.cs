@@ -100,6 +100,11 @@ namespace DialogueSystem
                 speakerText.text = currentNPC.name + ": " + currentDialogueLine.response[dialogueIndex];
                 typingCoroutine = StartCoroutine(typeLine(currentDialogueLine.response[dialogueIndex]));
             }
+
+            if (currentDialogueLine.unlockedMotive != null)
+            {
+                EventSheet.SendFoundClue?.Invoke(currentDialogueLine.unlockedMotive);
+            }
         }
 
         // Used by a button to advance to the next line of dialogue
