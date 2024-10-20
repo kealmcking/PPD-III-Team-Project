@@ -33,6 +33,12 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     // Update is called once per frame
     void Update()
     {
+        if (!GameManager.instance.InventoryActive)
+        {
+            lastItemSlot.setCurItem(draggedItem);
+            draggedItem = null;
+            TooltipManager.instance.hide();
+        }
         if (draggedItem != null && isLeftClick)
         {
             draggedItem.transform.position = UnityEngine.Input.mousePosition;
@@ -178,6 +184,7 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             Destroy(item.gameObject);
         }
         Destroy(lastItemSlot.curItem.gameObject);
+        TooltipManager.instance.hide();
     }
     private bool SlotValidation(invSlot slot, invItem item) 
     {
