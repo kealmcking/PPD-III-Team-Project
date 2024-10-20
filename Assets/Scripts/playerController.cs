@@ -9,6 +9,7 @@ public class playerController : MonoBehaviour
 {
     [SerializeField] CharacterController charController;
     [SerializeField] LayerMask ignoreMask;
+    [SerializeField] LayerMask killerLayer;
     [SerializeField] private Animator _animator;
     [SerializeField] private playerLookAtTarget playerLookAtTarget;
     public List<SkinnedMeshRenderer> playerModels = new List<SkinnedMeshRenderer>();
@@ -72,9 +73,25 @@ public class playerController : MonoBehaviour
     bool _isClimbing;
     bool _isFleeing;
     bool _isSprinting;
+    public bool isDead = false;
 
     private int selectedOption;
 
+
+
+    public void killPlayer()
+    {
+            GameManager.instance.LoseGame();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+         if(other.gameObject.layer == killerLayer)
+        {
+            killPlayer();
+        }
+        
+    }
 
     private void OnEnable()
     {
