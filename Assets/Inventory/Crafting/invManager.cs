@@ -38,8 +38,9 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             lastItemSlot.setCurItem(draggedItem);
             draggedItem = null;
             TooltipManager.instance.hide();
+            return;
         }
-        if (draggedItem != null && isLeftClick)
+        else if (draggedItem != null && isLeftClick)
         {
             draggedItem.transform.position = UnityEngine.Input.mousePosition;
         }
@@ -125,6 +126,7 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 Destroy(lastItemSlot.curItem.gameObject);
         lastItemSlot.curItem = null;
         Debug.Log("Should be destroyed" + lastItemSlot.curItem);
+        TooltipManager.instance.hide();
     }
 
     public void itemPickedUp(Item item)
