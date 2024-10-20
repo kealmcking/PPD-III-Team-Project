@@ -27,6 +27,7 @@ public class AIController : MonoBehaviour
     [SerializeField] Vector3 roomSize = new Vector3 (10, 0, 10);
 
     [SerializeField] Suspect suspect;
+    [SerializeField] Item item;
 
     // Start is called before the first frame update
 
@@ -40,7 +41,6 @@ public class AIController : MonoBehaviour
         startingPos = transform.position;
         agent.speed = normSpeed;
     }
-
 
     // Update is called once per frame
     void Update()
@@ -66,6 +66,8 @@ public class AIController : MonoBehaviour
     {
          if(suspect.IsKiller && GameManager.instance.Day == 5)
          {
+            if (!item.gameObject.activeSelf)
+                item.gameObject.SetActive(true);
              isEnemyChasing = true;
              setSpeed(chaseSpeed);
              agent.SetDestination(playerPos);
@@ -142,5 +144,15 @@ public class AIController : MonoBehaviour
         agent.speed = newSpeed;
     }
 
+    public void BeginningSlash()
+    {
+        item.BodyCol.enabled = true;
+    }
+
+    public void EndOfSlash()
+    {
+        item.BodyCol.enabled = false;
+
+    }
 }
    
