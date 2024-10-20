@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class invItem : MonoBehaviour
+public class invItem : MonoBehaviour //IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] BaseItemData itemData;
     [SerializeField] SlotValidationType type = SlotValidationType.None;
@@ -20,4 +21,16 @@ public class invItem : MonoBehaviour
         ItemData = itemData;
         iconImage.sprite = itemData.Icon;
     }
+
+    /*public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("got it " + itemData.Name);
+        TooltipManager.instance.setAndShow(itemData.Name, itemData.Description.Text);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Debug.Log("dont got it " + itemData.Name);
+        TooltipManager.instance.hide();
+    }*/
 }
