@@ -31,7 +31,7 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
     AudioSource src;
     private void Awake()
     {
-        conditionSets[0].gameObject.SetActive(true);
+        //conditionSets[0].gameObject.SetActive(true);
     }
     private void OnEnable()
     {

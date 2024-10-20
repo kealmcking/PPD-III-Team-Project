@@ -17,11 +17,17 @@ public class AIController : MonoBehaviour
     bool playerInRange;
     bool isEnemyChasing = false;
     [SerializeField] float attackDist = .5f;
+    [SerializeField] float normSpeed = 1f;
+    [SerializeField] float chaseSpeed = 2f;
     Coroutine someCo;
     [SerializeField] int roamDist = 15;
     [SerializeField] int roamTimer = 1;
     [SerializeField] int faceTargetSpeed = 1 ;
+    [SerializeField] Vector3 roomCenter = Vector3.zero;
+    [SerializeField] Vector3 roomSize = new Vector3 (10, 0, 10);
+
     [SerializeField] Suspect suspect;
+    [SerializeField] Item item;
 
     // Start is called before the first frame update
 
@@ -33,8 +39,8 @@ public class AIController : MonoBehaviour
     {
         stoppingDistanceOrig = agent.stoppingDistance;
         startingPos = transform.position;
+        agent.speed = normSpeed;
     }
-
 
     // Update is called once per frame
     void Update()
@@ -60,23 +66,25 @@ public class AIController : MonoBehaviour
     {
          if(suspect.IsKiller && GameManager.instance.Day == 5)
          {
+            if (!item.gameObject.activeSelf)
+                item.gameObject.SetActive(true);
              isEnemyChasing = true;
+             setSpeed(chaseSpeed);
              agent.SetDestination(playerPos);
              if(Vector3.Distance(transform.position, playerPos) <= attackDist)
              {
                anim.SetTrigger("Attack");
              }
          }
-        
-        
     }
-
 
 
     IEnumerator roam()
     {
         isRoaming = true;
+        setSpeed(normSpeed);
         Vector3 randomPos = Random.insideUnitSphere * roamDist;
+        //Vector3 randomPos = getRandomRoomPos();
         randomPos += startingPos;
 
         NavMeshHit hit;
@@ -90,6 +98,13 @@ public class AIController : MonoBehaviour
 
         isRoaming = false;
         someCo = null;
+    }
+
+    private Vector3 getRandomRoomPos()
+    {
+        float xPos = Random.Range(roomCenter.x - roomSize.x / 2, roomCenter.x + roomSize.x / 2);
+        float zPos = Random.Range(roomCenter.z - roomSize.z / 2, roomCenter.z + roomSize.z / 2);
+        return new Vector3(xPos, transform.position.y, zPos);
     }
 
     void faceTarget()
@@ -124,5 +139,20 @@ public class AIController : MonoBehaviour
         }
     }
 
+    private void setSpeed(float newSpeed)
+    {
+        agent.speed = newSpeed;
+    }
+
+    public void BeginningSlash()
+    {
+        item.BodyCol.enabled = true;
+    }
+
+    public void EndOfSlash()
+    {
+        item.BodyCol.enabled = false;
+
+    }
 }
    

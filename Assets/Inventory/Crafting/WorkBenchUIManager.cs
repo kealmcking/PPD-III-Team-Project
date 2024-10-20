@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,16 +11,14 @@ public class WorkBenchUIManager : MonoBehaviour
     [SerializeField] List<CraftableItemData> recipes = new List<CraftableItemData>();
     [SerializeField] invSlot[] tableSlots;
     [SerializeField] GameObject generateButton;
+    [SerializeField] GameObject vfx;
 
     [Header("Cogs")]
-    [SerializeField] GameObject topCog;
-    [SerializeField] GameObject leftCog;
-    [SerializeField] GameObject rightCog;
-  
-    private float lerpSpeed = 0.2f;
-    private Quaternion targetRotation;
-
- 
+    [SerializeField] Animator topCogAnimator;
+    [SerializeField] Animator leftCogAnimator;
+    [SerializeField] Animator rightCogAnimator;
+    string cogAnimatorState = "coggers";
+    
     
     public Item matchedItem;
     public  void Awake()
@@ -48,9 +47,24 @@ public class WorkBenchUIManager : MonoBehaviour
     }
     public void CreateItem()
     {
+        StartCoroutine(cogSpinner());
+        generateButton.SetActive(false);
+    }
+
+    IEnumerator cogSpinner()
+    {
+        //play audio / vfx
+        topCogAnimator.enabled = true;
+        leftCogAnimator.enabled = true;
+        rightCogAnimator.enabled = true;
+        yield return new WaitForSeconds(5);
+        topCogAnimator.enabled = false;
+        leftCogAnimator.enabled = false;
+        rightCogAnimator.enabled = false;
         Item itemToDrop = Instantiate(matchedItem.Data.Prefab);
         matchedItem = null;
-        foreach (var slot in tableSlots) {
+        foreach (var slot in tableSlots)
+        {
             Destroy(slot.curItem.gameObject);
             slot.curItem = null;
         }
@@ -60,11 +74,8 @@ public class WorkBenchUIManager : MonoBehaviour
         itemToDrop.transform.position = benchPos + benchForward * 1f + Vector3.up * 1f;
         itemToDrop.ItemPulse(benchForward);
 
-        //add a fake delay to the crafting
-        //play audio /vfx
-
-        generateButton.SetActive(false);
     }
+
     private void FindRecipe()
     {
         if (matchedItem != null) return;
@@ -118,11 +129,15 @@ public class WorkBenchUIManager : MonoBehaviour
         GameManager.instance.DeactivateCraftTableUI();
         GameManager.instance.DeactivateInventoryUISecondary();
     }
-    private void rotateCogs()
+
+    public void OnEnable()
     {
-        topCog.transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * lerpSpeed);
-        leftCog.transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * lerpSpeed);
-        rightCog.transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * lerpSpeed);
+        topCogAnimator.Play(cogAnimatorState);
+        leftCogAnimator.Play(cogAnimatorState);
+        rightCogAnimator.Play(cogAnimatorState);
+        topCogAnimator.enabled = false;
+        leftCogAnimator.enabled = false;
+        rightCogAnimator.enabled = false;
     }
 }
 

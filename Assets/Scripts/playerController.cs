@@ -5,12 +5,12 @@ using DialogueSystem;
 using UnityEngine;
 using Input;
 using Unity.Mathematics;
-using static UnityEditor.Progress;
 
 public class playerController : MonoBehaviour
 {
     [SerializeField] CharacterController charController;
     [SerializeField] LayerMask ignoreMask;
+    [SerializeField] LayerMask killerLayer;
     [SerializeField] private Animator _animator;
     [SerializeField] private playerLookAtTarget playerLookAtTarget;
     public List<SkinnedMeshRenderer> playerModels = new List<SkinnedMeshRenderer>();
@@ -74,9 +74,30 @@ public class playerController : MonoBehaviour
     bool _isClimbing;
     bool _isFleeing;
     bool _isSprinting;
+    public bool isDead = false;
 
     private int selectedOption;
 
+
+
+    public void killPlayer()
+    {
+        Debug.Log("Enter kill player");
+        Destroy(gameObject);
+        GameManager.instance.LoseGame();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Enter trigger " + other.gameObject.layer.ToString());
+        Debug.Log("Enter trigger " + other);
+        if (other.CompareTag("Weapon"))
+        {
+            Debug.Log("passed layer check");
+            killPlayer();
+        }
+        
+    }
 
     private void OnEnable()
     {
