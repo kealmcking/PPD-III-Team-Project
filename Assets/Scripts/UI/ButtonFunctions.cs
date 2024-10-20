@@ -21,7 +21,7 @@ public class ButtonFunctions : MonoBehaviour
     {
         instance = this;
 
-        
+        if (masterVolume == null) return;
         LoadOptions();
     }
 
@@ -61,11 +61,11 @@ public class ButtonFunctions : MonoBehaviour
 
     public void CharacterSelectScreen()
     {
-        SceneManager.LoadScene(1);
+        MainMenuManager.instance.DisplayCharSelect();
     }
     public void PlayGame()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
 
     public void MainMenuOptions()

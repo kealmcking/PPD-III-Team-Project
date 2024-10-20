@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using DialogueSystem;
 using UnityEngine;
 using Input;
-using Unity.Mathematics;
-using static UnityEditor.Progress;
 
 public class playerController : MonoBehaviour
 {
