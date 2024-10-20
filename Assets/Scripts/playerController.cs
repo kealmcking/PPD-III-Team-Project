@@ -5,13 +5,13 @@ using DialogueSystem;
 using UnityEngine;
 using Input;
 using Unity.Mathematics;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 
 public class playerController : MonoBehaviour
 {
     [SerializeField] CharacterController charController;
     [SerializeField] LayerMask ignoreMask;
-    [SerializeField] LayerMask killerLayer;
+    //[SerializeField] LayerMask killerLayer;
     [SerializeField] private Animator _animator;
     [SerializeField] private playerLookAtTarget playerLookAtTarget;
     public List<SkinnedMeshRenderer> playerModels = new List<SkinnedMeshRenderer>();
@@ -86,14 +86,14 @@ public class playerController : MonoBehaviour
             GameManager.instance.LoseGame();
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
          if(other.gameObject.layer == killerLayer)
         {
             killPlayer();
         }
         
-    }
+    }*/
 
     private void OnEnable()
     {
