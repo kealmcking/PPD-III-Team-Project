@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.AI;
 [RequireComponent(typeof(CapsuleCollider),typeof(NavMeshAgent))]
@@ -22,7 +23,7 @@ public class AIController : MonoBehaviour
     [SerializeField] int roamTimer = 1;
     [SerializeField] int faceTargetSpeed = 1 ;
     [SerializeField] Suspect suspect;
-
+    [SerializeField] Item item;
     // Start is called before the first frame update
 
     private void Awake()
@@ -124,5 +125,13 @@ public class AIController : MonoBehaviour
         }
     }
 
+    public void EnableEvent()
+    {
+        item.BodyCol.enabled = true;
+    }
+    public void DisableEvent()
+    {
+        item.BodyCol.enabled = false;
+    }
 }
    

@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using DialogueSystem;
 using UnityEngine;
 using Input;
-using Unity.Mathematics;
-using static UnityEditor.Progress;
+
 
 public class playerController : MonoBehaviour
 {
@@ -447,5 +446,12 @@ public class playerController : MonoBehaviour
     public void UpdatePlayerCharacter(int index)
     {
         playerModels[index].enabled = true;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("KillerWeapon"))
+        {
+            GameManager.instance.LoseGame();
+        }
     }
 }
