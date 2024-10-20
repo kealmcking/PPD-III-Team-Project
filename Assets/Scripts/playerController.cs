@@ -5,7 +5,6 @@ using DialogueSystem;
 using UnityEngine;
 using Input;
 using Unity.Mathematics;
-using static UnityEditor.Progress;
 
 public class playerController : MonoBehaviour
 {
@@ -83,13 +82,18 @@ public class playerController : MonoBehaviour
 
     public void killPlayer()
     {
-            GameManager.instance.LoseGame();
+        Debug.Log("Enter kill player");
+        Destroy(gameObject);
+        GameManager.instance.LoseGame();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-         if(other.gameObject.layer == killerLayer)
+        Debug.Log("Enter trigger " + other.gameObject.layer.ToString());
+        Debug.Log("Enter trigger " + other);
+        if (other.CompareTag("Weapon"))
         {
+            Debug.Log("passed layer check");
             killPlayer();
         }
         

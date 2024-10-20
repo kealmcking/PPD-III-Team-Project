@@ -978,7 +978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5467994028497644890
 Transform:
   m_ObjectHideFlags: 0
@@ -3367,6 +3367,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 78.166
       objectReference: {fileID: 0}
+    - target: {fileID: 7851275897846709209, guid: 6b25af807c5134844bf238cabc78c67d,
+        type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3384,12 +3389,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8159290995598395097}
   m_SourcePrefab: {fileID: 100100000, guid: 6b25af807c5134844bf238cabc78c67d, type: 3}
---- !u!64 &3556949463217027933 stripped
-MeshCollider:
-  m_CorrespondingSourceObject: {fileID: 64529117724749390, guid: 6b25af807c5134844bf238cabc78c67d,
-    type: 3}
-  m_PrefabInstance: {fileID: 3583055872130422035}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3582318509677150897 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4329741853857698, guid: 6b25af807c5134844bf238cabc78c67d,
@@ -3458,8 +3457,7 @@ MonoBehaviour:
   rb: {fileID: 98410052262537521}
   interactUI: {fileID: 0}
   forceMultiplier: 5
-  isInteractable: 0
   interactCol: {fileID: 0}
-  bodyCol: {fileID: 3556949463217027933}
+  bodyCol: {fileID: 0}
   overrideController: {fileID: 0}
   handlePoint: {fileID: 0}
