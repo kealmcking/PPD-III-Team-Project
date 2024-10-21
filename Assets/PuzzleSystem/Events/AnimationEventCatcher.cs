@@ -26,19 +26,20 @@ public class AnimationEventCatcher : MonoBehaviour
 
     private void footStep()
     {
-        //audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
-        
         if (!playerController.GetCrouch() && !playerController.GetSprint())          //Walking
         {
             audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
         }
-        else if (!playerController.GetCrouch() && playerController.GetSprint())   //Sprinting
+        else if (!playerController.GetCrouch() && playerController.GetSprint())     //Sprinting
         {
             audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepRunVol);
         }
-        else if (playerController.GetCrouch() && !playerController.GetSprint())   //Crouching
+        else if (playerController.GetCrouch() && !playerController.GetSprint())     //Crouching
         {
             audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepCrouchVol);
+        } else                                                                      //Other/Error
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
         }
     }
 }

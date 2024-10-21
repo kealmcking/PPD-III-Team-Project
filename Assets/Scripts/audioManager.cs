@@ -25,9 +25,6 @@ public class audioManager : MonoBehaviour
     [Range(0, 1)] public float footStepRunVol;
     [Range(0, 1)] public float footStepCrouchVol;
 
-    [SerializeField] public AudioClip[] jump;
-    [Range(0, 1)] public float jumpVol;
-
     [SerializeField] public AudioClip[] landWood;
     [SerializeField] public AudioClip[] landDirt;
     [SerializeField] public AudioClip[] landStone;
@@ -72,11 +69,7 @@ public class audioManager : MonoBehaviour
 
     [Header("------------------------- Dialogue SFX")]
     [SerializeField] public AudioClip[] dialogueMutter;
-    [SerializeField] public AudioClip[] dialogueTalkF1; //Female 1
-    [SerializeField] public AudioClip[] dialogueTalkF2; //Female 2
-    [SerializeField] public AudioClip[] dialogueTalkM1; //Male 1
-    [SerializeField] public AudioClip[] dialogueTalkM2; //Male 2
-    //[SerializeField] AudioClip dialogueLieIndicator;
+    [SerializeField] public AudioClip[] dialogueTalk;
     [SerializeField] public AudioClip dialogueClose;
     [Range(0, 1)] public float dialogueVol;
 
