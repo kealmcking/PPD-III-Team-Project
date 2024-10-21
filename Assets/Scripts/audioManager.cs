@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class audioManager : MonoBehaviour
 {
@@ -137,6 +138,11 @@ public class audioManager : MonoBehaviour
             //Play Menu Music
             Menu.Play();
         }
+    }
+
+    public AudioMixerGroup GetSFXAudioMixer()
+    {
+        return SFX.outputAudioMixerGroup;
     }
 
     #region FloorTypes
