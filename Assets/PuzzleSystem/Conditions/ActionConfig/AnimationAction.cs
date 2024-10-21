@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 [CreateAssetMenu(fileName = "AnimationAction", menuName = "PuzzleSystem/ActionConfigs/AnimationAction")]
 public class AnimationAction : ActionConfig
