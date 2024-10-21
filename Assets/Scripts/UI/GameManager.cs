@@ -259,12 +259,14 @@ public class GameManager : MonoBehaviour
         menuActive = menuInventory;
         menuActive.SetActive(true);
         InventoryActive = true;
+        GetComponent<invManager>().IsUIActive = true;
         InputManager.instance.DisableCharacterInputs();
     }
     public void DeactivateInventoryUI()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        GetComponent<invManager>().IsUIActive = false;
         menuActive.SetActive(false);
         menuActive = null;       
         InventoryActive = false;

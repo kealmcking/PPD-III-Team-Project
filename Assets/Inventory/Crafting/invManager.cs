@@ -19,6 +19,8 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     invSlot clickedSlot;
     bool isRightClick = false;
     bool isLeftClick = false;
+    bool isUIActive = false;
+    public bool IsUIActive { get { return isUIActive; } set { isUIActive = value; } }
     // Start is called before the first frame update
     void Start()
     {
@@ -33,14 +35,16 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.instance.InventoryActive)
-        {
-            lastItemSlot.setCurItem(draggedItem);
-            draggedItem = null;
-            TooltipManager.instance.hide();
-            return;
+        if (isUIActive) { 
+            if (!GameManager.instance.InventoryActive)
+            {
+                lastItemSlot.setCurItem(draggedItem);
+                draggedItem = null;
+                TooltipManager.instance.hide();
+                return;
+            }
         }
-        else if (draggedItem != null && isLeftClick)
+        if (draggedItem != null && isLeftClick)
         {
             draggedItem.transform.position = UnityEngine.Input.mousePosition;
         }
