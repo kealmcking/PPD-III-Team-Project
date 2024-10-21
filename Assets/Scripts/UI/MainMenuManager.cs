@@ -17,6 +17,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] public GameObject menuActive;
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject backButton;
+    [SerializeField] private GameObject charSelect;
 
     // Start is called before the first frame update
     void Awake()
@@ -54,6 +55,12 @@ public class MainMenuManager : MonoBehaviour
             menuActive.SetActive(true);
             EventSystem.current.SetSelectedGameObject(playButton);
         }
+    }
+
+    public void DisplayCharSelect()
+    {
+        charSelect.SetActive(true);
+        contents.SetActive(false);
     }
 
     // Update is called once per frame

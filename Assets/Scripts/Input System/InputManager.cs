@@ -101,6 +101,8 @@ namespace Input
         {
             // Read Value for action each frame
             moveAmount = moveAction.ReadValue<Vector2>();
+
+            if (GameManager.instance == null) return;
             if(!GameManager.instance.InventoryActive)
             aimAmount = aimAction.ReadValue<Vector2>().normalized;
         }
