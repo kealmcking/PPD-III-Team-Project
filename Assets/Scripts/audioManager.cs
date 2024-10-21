@@ -77,6 +77,8 @@ public class audioManager : MonoBehaviour
     [Range(0, 1)] public float interactVol;
     [SerializeField] public AudioClip sleeping;
     [Range(0, 1)] public float sleepVol;
+    [SerializeField] public AudioClip flashlight;
+    [Range(0, 1)] public float flashlightVol;
     [SerializeField] public AudioClip errorAudio;
 
     [Header("------------------------- Misc Variables")]

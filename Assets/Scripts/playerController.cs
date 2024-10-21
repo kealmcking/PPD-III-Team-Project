@@ -163,6 +163,7 @@ public class playerController : MonoBehaviour
 
         rotateTowardCamera();
         //toggleFlashlight();
+        audioManager.PlaySFX(audioManager.flashlight, audioManager.flashlightVol);
         //updateFlashlightDirection();
     }
     void movement()
