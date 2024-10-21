@@ -213,22 +213,6 @@ public class playerController : MonoBehaviour
         ApplyGravity();
     }
 
-    private void footStep()
-    {
-        if (!_isCrouching && !_isSprinting)          //Walking
-        {
-            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
-        }
-        else if (!_isCrouching && _isSprinting)   //Sprinting
-        {
-            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepRunVol);
-        }
-        else if (!_isSprinting && _isCrouching)   //Crouching
-        {
-            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepCrouchVol);
-        }
-    }
-
     private void ApplyGravity()
     {
         if (charController.isGrounded)
@@ -298,6 +282,17 @@ public class playerController : MonoBehaviour
         _animator.SetBool("isCrouched", _isCrouching);
         charController.height = Mathf.Lerp(charController.height, _newHeight, Time.deltaTime / _crouchTime);
         charController.center = Vector3.Lerp(charController.center, _newCenter, Time.deltaTime / _crouchTime);
+    }
+
+    public bool GetCrouch()
+    {
+        if( _isCrouching ) return true;
+        else return false;
+    }
+    public bool GetSprint()
+    {
+        if( _isSprinting ) return true;
+        else return false;
     }
 
     private void Interact()

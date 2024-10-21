@@ -2068,6 +2068,7 @@ MonoBehaviour:
   psButton_spr: {fileID: 21300000, guid: c95c61292129ffe4ea2383042abfb242, type: 3}
   switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
   uiElement: {fileID: 0}
+  text: {fileID: 0}
 --- !u!114 &404995930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3412,6 +3413,7 @@ MonoBehaviour:
   psButton_spr: {fileID: 21300000, guid: c95c61292129ffe4ea2383042abfb242, type: 3}
   switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
   uiElement: {fileID: 0}
+  text: {fileID: 0}
 --- !u!114 &569665302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5751,6 +5753,7 @@ MonoBehaviour:
   psButton_spr: {fileID: 21300000, guid: c95c61292129ffe4ea2383042abfb242, type: 3}
   switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
   uiElement: {fileID: 0}
+  text: {fileID: 0}
 --- !u!114 &895643535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26717,9 +26720,13 @@ MonoBehaviour:
   anim: {fileID: 1216841733}
   animSpeedTrans: 0
   attackDist: 0.5
+  normSpeed: 1
+  chaseSpeed: 2
   roamDist: 0
   roamTimer: 5
   faceTargetSpeed: 5
+  roomCenter: {x: 0, y: 0, z: 0}
+  roomSize: {x: 10, y: 0, z: 10}
   suspect: {fileID: 0}
   item: {fileID: 0}
 --- !u!95 &1216841733
@@ -27579,6 +27586,7 @@ MonoBehaviour:
   psButton_spr: {fileID: 21300000, guid: c95c61292129ffe4ea2383042abfb242, type: 3}
   switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
   uiElement: {fileID: 0}
+  text: {fileID: 0}
 --- !u!114 &1313611712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27900,6 +27908,7 @@ MonoBehaviour:
   psButton_spr: {fileID: 21300000, guid: c95c61292129ffe4ea2383042abfb242, type: 3}
   switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
   uiElement: {fileID: 0}
+  text: {fileID: 0}
 --- !u!114 &1324077696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29782,6 +29791,110 @@ Transform:
   - {fileID: 584597065}
   m_Father: {fileID: 559573815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1578980544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1680093481652488, guid: d80749e682e1b2347ad32a1189b66577,
+    type: 3}
+  m_PrefabInstance: {fileID: 2055322547}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1578980547
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578980544}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 3194154667401045323, guid: 1bc6e4d3426d54948ac7c9073b2564bd,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 1449136fb3eb5994897ffc4ab9f47de4, type: 3}
+  m_Resource: {fileID: 8300000, guid: 1449136fb3eb5994897ffc4ab9f47de4, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &1579325301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30601,6 +30714,7 @@ MonoBehaviour:
   psButton_spr: {fileID: 21300000, guid: c95c61292129ffe4ea2383042abfb242, type: 3}
   switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
   uiElement: {fileID: 0}
+  text: {fileID: 0}
 --- !u!114 &1727104941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32210,6 +32324,7 @@ MonoBehaviour:
   psButton_spr: {fileID: 21300000, guid: c95c61292129ffe4ea2383042abfb242, type: 3}
   switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
   uiElement: {fileID: 0}
+  text: {fileID: 0}
 --- !u!1 &1947436188
 GameObject:
   m_ObjectHideFlags: 0
@@ -32550,6 +32665,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1680093481652488, guid: d80749e682e1b2347ad32a1189b66577,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1578980547}
     - targetCorrespondingSourceObject: {fileID: 1027867726443364, guid: d80749e682e1b2347ad32a1189b66577,
         type: 3}
       insertIndex: -1
@@ -32869,9 +32988,13 @@ MonoBehaviour:
   anim: {fileID: 95984851007724252}
   animSpeedTrans: 0
   attackDist: 0.5
+  normSpeed: 1
+  chaseSpeed: 2
   roamDist: 2
   roamTimer: 5
   faceTargetSpeed: 5
+  roomCenter: {x: 0, y: 0, z: 0}
+  roomSize: {x: 10, y: 0, z: 10}
   suspect: {fileID: 0}
   item: {fileID: 0}
 --- !u!195 &2114663550
@@ -38926,9 +39049,13 @@ MonoBehaviour:
   anim: {fileID: 3940726945703336715}
   animSpeedTrans: 0
   attackDist: 0.5
+  normSpeed: 1
+  chaseSpeed: 2
   roamDist: 15
   roamTimer: 1
   faceTargetSpeed: 1
+  roomCenter: {x: 0, y: 0, z: 0}
+  roomSize: {x: 10, y: 0, z: 10}
   suspect: {fileID: 1910138603883616481}
   item: {fileID: 7245856798700088970}
 --- !u!137 &4949611196584383061
