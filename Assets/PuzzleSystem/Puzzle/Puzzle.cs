@@ -17,6 +17,7 @@ using UnityEngine;
 public class Puzzle : MonoBehaviour, ICustomizableComponent
 {
     [SerializeField] List<ConditionSet> conditionSets = new List<ConditionSet>();
+    [SerializeField] AudioSource m_AudioSource;
     [SerializeField] AudioClip clip;
     [SerializeField] ParticleSystem vfx;
     private int setIndex = 0;
@@ -30,6 +31,7 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
 
     private void Awake()
     {
+        m_AudioSource = GetComponent<AudioSource>();
         conditionSets[0].gameObject.SetActive(true);
     }
     private void OnEnable()
@@ -61,9 +63,14 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
             //Fire off events for various updates when puzzle complete
             //sfx/vfx/etc
             if (vfx != null)
-                vfx.Play();
-            if (clip != null) { }
-            //playclip here clip.
+                
+               vfx.Play();
+      
+            if (clip != null) {
+                    m_AudioSource.clip = clip;
+                    m_AudioSource.Play();
+                }
+              
             if (Reward != null)
                 Instantiate(Reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
 
