@@ -226,31 +226,6 @@ MonoBehaviour:
       m_Action: Sprint
       m_Flags: 0
     m_Flags: 0
-  flashLightAction:
-    m_Name: Flash Light
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 0a18a6c3-5575-4fff-ba09-ba192dc9922a
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 994c9852-bb04-4c66-8312-32e8d8d261ed
-      m_Path: <Keyboard>/f
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Flash Light
-      m_Flags: 0
-    - m_Name: 
-      m_Id: c8b76931-7163-4315-93f6-d7fe04efa534
-      m_Path: <Gamepad>/buttonWest
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Flash Light
-      m_Flags: 0
-    m_Flags: 0
   inventoryAction:
     m_Name: Inventory
     m_Type: 0
@@ -301,8 +276,82 @@ MonoBehaviour:
       m_Action: Cancel
       m_Flags: 0
     m_Flags: 0
+  useAction:
+    m_Name: Use
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b692a088-35ef-4472-b1bf-ea2242de541d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: c2887c35-a2f1-4838-b0a2-7dd1c24a629c
+      m_Path: <Mouse>/leftButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Use
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 1c82a0e4-73c1-4d38-bb5d-8ec79baa9d1e
+      m_Path: <Gamepad>/rightTrigger
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Use
+      m_Flags: 0
+    m_Flags: 0
+  dropAction:
+    m_Name: Drop
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: ab1b951d-9e1e-4127-9732-e950c509715b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: e242828a-6c77-4148-a441-90af21f2a0c0
+      m_Path: <Keyboard>/q
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Drop
+      m_Flags: 0
+    m_Flags: 0
+  throwAction:
+    m_Name: Throw
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: acef3463-b9e5-48ea-bbaa-b23c61e6aa6e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: a0464286-3e7f-4d73-b7e1-29657ffdeb88
+      m_Path: <Mouse>/rightButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Throw
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 230a8063-8b9d-448f-a626-18b117ed536e
+      m_Path: <Gamepad>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Throw
+      m_Flags: 0
+    - m_Name: 
+      m_Id: bdbe0b2e-3f2f-477c-b08e-437645300737
+      m_Path: <Keyboard>/z
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Throw
+      m_Flags: 0
+    m_Flags: 0
   moveAmount: {x: 0, y: 0}
   aimAmount: {x: 0, y: 0}
   isSprint: 0
   isCrouch: 0
-  isFlashLight: 0
