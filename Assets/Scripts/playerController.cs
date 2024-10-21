@@ -316,7 +316,7 @@ public class playerController : MonoBehaviour
                 closestCollider = collider;
 
             Debug.Log(closestCollider.name);
-            if (Vector3.Distance(transform.position,collider.transform.position) < Vector3.Distance(transform.position, closestCollider.transform.position))
+            if (Vector3.Distance(transform.position,collider.transform.position) > Vector3.Distance(transform.position, closestCollider.transform.position))
             {
                 closestCollider = collider;                  
             }
