@@ -42,14 +42,14 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
         }    
         interactCol ??= GetComponent<SphereCollider>();
         rb??= GetComponent<Rigidbody>();
-        config.ConfigConditionMet += SendStatusUpdate;
+       
         
     }
     private void OnEnable()
     {
         if (components.Count > 0 && componentPositions.Count > 0)
             components.ForEach((c) => { Instantiate(c.Prefab).GameObject().transform.position = Randomizer.GetRandomizedObjectFromListAndRemove(ref componentPositions).position; });
-
+        config.ConfigConditionMet += SendStatusUpdate;
     }
     private void OnDisable()
     {

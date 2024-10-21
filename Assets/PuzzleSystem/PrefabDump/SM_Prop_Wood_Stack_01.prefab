@@ -128,7 +128,11 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: afed87cc1b4bf544994a3d978bd976ef, type: 2}
   rb: {fileID: 6026768351904555681}
   interactUI: {fileID: 9071245112085441869}
-  col: {fileID: 5149519261629029660}
+  forceMultiplier: 5
+  interactCol: {fileID: 5149519261629029660}
+  bodyCol: {fileID: 4919885209535767721}
+  overrideController: {fileID: 0}
+  handlePoint: {fileID: 0}
 --- !u!54 &6026768351904555681
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -155,7 +159,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!135 &5149519261629029660
 SphereCollider:
   m_ObjectHideFlags: 0
