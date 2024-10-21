@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -17,6 +18,7 @@ public class CharacterSelectionManager : MonoBehaviour
     [Header("Lists")]
     public List<SkinnedMeshRenderer> charactermodels = new List<SkinnedMeshRenderer>();
     public List<Toggle> toggleList = new List<Toggle>();
+    public List<Texture> characterIcon = new List<Texture>();
 
     public int characterIndex = 0;
 
@@ -24,6 +26,7 @@ public class CharacterSelectionManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+
       //  DisplayCharacterSelect();
         charactermodels[characterIndex].enabled = true;
         instance.toggleList[characterIndex].isOn = true;
@@ -34,6 +37,16 @@ public class CharacterSelectionManager : MonoBehaviour
         }
         EventSystem.current.SetSelectedGameObject(toggleList[characterIndex].gameObject);
         
+        for (int i = 0; i < toggleList.Count; i++)
+        {
+            toggleList[i].transform.Find("Background/Checkmark").GetComponent<Image>().gameObject.SetActive(false);
+            toggleList[i].transform.Find("Background/Icon").GetComponent<RawImage>().texture = characterIcon[i];
+
+            if (!toggleList[i].interactable)
+            {
+                toggleList[i].transform.Find("Background/Icon").GetComponent<RawImage>().color = Color.black;
+            }
+        }
 
     }
 
