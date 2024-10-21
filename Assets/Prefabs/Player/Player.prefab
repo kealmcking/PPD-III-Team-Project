@@ -4370,7 +4370,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8557329085074916138
 Transform:
   m_ObjectHideFlags: 0
@@ -5981,6 +5981,9 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 0
+  killerLayer:
+    serializedVersion: 2
+    m_Bits: 0
   _animator: {fileID: 56899943519693591}
   playerLookAtTarget: {fileID: 6372273568534646299}
   playerModels:
@@ -6037,6 +6040,7 @@ MonoBehaviour:
   interactDistance: 2
   gravity: -9.81
   handPos: {fileID: 6618836113252481888}
+  isDead: 0
 --- !u!143 &8903992667986733635
 CharacterController:
   m_ObjectHideFlags: 0
