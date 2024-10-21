@@ -6032,14 +6032,15 @@ MonoBehaviour:
   rotSpeed: 10
   _crouchTime: 0.2
   _crouchHeight: 1
-  _origHeight: 2
+  _origHeight: 1.5
   _newHeight: 0
-  _origCenter: {x: 0, y: 1, z: 0}
+  _origCenter: {x: 0, y: 0.8, z: 0}
   _newCenter: {x: 0, y: 0, z: 0}
   _crouchCenter: {x: 0, y: 0.5, z: 0}
   interactDistance: 2
   gravity: -9.81
   handPos: {fileID: 6618836113252481888}
+  headPos: {fileID: 5288626501997052305}
   isDead: 0
 --- !u!143 &8903992667986733635
 CharacterController:
