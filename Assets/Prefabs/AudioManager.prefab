@@ -219,20 +219,13 @@ MonoBehaviour:
   footStepWalkVol: 0.3
   footStepRunVol: 0.5
   footStepCrouchVol: 0.1
-  jump:
-  - {fileID: 8300000, guid: 593a241892faf1f48853c348a9adafa0, type: 3}
-  - {fileID: 8300000, guid: 59e17d749bf46b34eb380cf7941bcfbc, type: 3}
-  - {fileID: 8300000, guid: 763ffc435bb95674a941d5c57518bb3a, type: 3}
-  jumpVol: 0.5
-  landWood: []
-  landDirt: []
-  landStone: []
-  landVol: 0.5
   crouchDown:
   - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
   crouchUp:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
   crouchVol: 0.15
+  pickUp: {fileID: 0}
+  pickUpVol: 0.5
   puzzleMove: []
   puzzleHit:
   - {fileID: 8300000, guid: 0e270ecb84908054a9d6f727dbea974e, type: 3}
@@ -259,19 +252,11 @@ MonoBehaviour:
   invDrop: {fileID: 8300000, guid: aebae0e89d575dc43ae340319487ef87, type: 3}
   invEquip: {fileID: 0}
   invVol: 0.5
-  craftOpen: {fileID: 8300000, guid: 087224dd7ec352f42a3b950a07009a88, type: 3}
-  craftClose: {fileID: 8300000, guid: 1dc2f2287b118ff45939a91b08a2244e, type: 3}
-  craftItem: []
-  craftFail: []
-  craftVol: 0.5
-  dialogueMutter: []
-  dialogueTalkF1: []
-  dialogueTalkF2: []
-  dialogueTalkM1: []
-  dialogueTalkM2: []
-  dialogueClose: {fileID: 8300000, guid: 5aa948679296f2649802b2f562804537, type: 3}
+  dialogueMutter:
+  - {fileID: 8300000, guid: 400381e823835b742b1cb6c4213151f3, type: 3}
+  - {fileID: 8300000, guid: 493903d06dc3b9c42b5873906ea1fc1b, type: 3}
   dialogueVol: 0.5
-  ghostMoans: []
+  ghostMoans: {fileID: 0}
   ghostDialogueVol: 0.5
   killerChaseMusic: {fileID: 0}
   killerMusicVol: 0.5
@@ -280,10 +265,10 @@ MonoBehaviour:
   clueFound: {fileID: 0}
   clueVol: 0.5
   interactSFX: {fileID: 0}
-  interactVol: 0
-  sleeping: {fileID: 0}
-  sleepVol: 0
-  errorAudio: {fileID: 0}
+  interactVol: 0.5
+  sleeping: {fileID: 8300000, guid: 8d5797c37d0ce4d429e7a9134899e70e, type: 3}
+  sleepVol: 0.5
+  errorAudio: {fileID: 8300000, guid: 69e4ce5d3e61aa24c96191f33a139496, type: 3}
   Fadetime: 1
 --- !u!82 &2046236655223995155
 AudioSource:

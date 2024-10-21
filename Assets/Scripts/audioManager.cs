@@ -25,11 +25,6 @@ public class audioManager : MonoBehaviour
     [Range(0, 1)] public float footStepRunVol;
     [Range(0, 1)] public float footStepCrouchVol;
 
-    [SerializeField] public AudioClip[] landWood;
-    [SerializeField] public AudioClip[] landDirt;
-    [SerializeField] public AudioClip[] landStone;
-    [Range(0, 1)] public float landVol;
-
     [SerializeField] public AudioClip[] crouchDown;
     [SerializeField] public AudioClip[] crouchUp;
     [Range(0, 1)] public float crouchVol;
@@ -51,9 +46,7 @@ public class audioManager : MonoBehaviour
     [SerializeField] public AudioClip UIClick;
     [SerializeField] public AudioClip UIWin;
     [SerializeField] public AudioClip UILose;
-    [SerializeField] public AudioClip UIMusic;
     [Range(0, 1)] public float UIVol;
-    [Range(0, 1)] public float UIMusicVol;
 
     [Header("------------------------- Inventory SFX")]
     [SerializeField] public AudioClip invOpen;
@@ -63,20 +56,11 @@ public class audioManager : MonoBehaviour
     [SerializeField] public AudioClip invEquip;
     [Range(0, 1)] public float invVol;
 
-    [Header("------------------------- Crafting SFX")]
-    [SerializeField] public AudioClip craftOpen;
-    [SerializeField] public AudioClip craftClose;
-    [SerializeField] public AudioClip[] craftItem;
-    [SerializeField] public AudioClip[] craftFail;
-    [Range(0, 1)] public float craftVol;
-
     [Header("------------------------- Dialogue SFX")]
     [SerializeField] public AudioClip[] dialogueMutter;
-    [SerializeField] public AudioClip[] dialogueTalk;
-    [SerializeField] public AudioClip dialogueClose;
     [Range(0, 1)] public float dialogueVol;
 
-    [SerializeField] public AudioClip[] ghostMoans;
+    [SerializeField] public AudioClip ghostMoans;
     [Range(0, 1)] public float ghostDialogueVol;
 
     [Header("------------------------- Killer SFX")]
