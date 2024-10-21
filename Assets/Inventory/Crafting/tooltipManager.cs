@@ -30,7 +30,7 @@ public class TooltipManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        toolTip.transform.position = UnityEngine.Input.mousePosition * new Vector2(.5f, .5f);
+        toolTip.transform.position = UnityEngine.Input.mousePosition * new Vector2(1.3f, 1.3f);
     }
 
     public void setAndShow(string msg, string info)
