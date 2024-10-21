@@ -317,7 +317,7 @@ public class playerController : MonoBehaviour
                 closestCollider = collider;
 
             Debug.Log(closestCollider.name);
-            if (Vector3.Distance(transform.position,collider.transform.position) < Vector3.Distance(transform.position, closestCollider.transform.position))
+            if (Vector3.Distance(transform.position,collider.transform.position) > Vector3.Distance(transform.position, closestCollider.transform.position))
             {
                 closestCollider = collider;                  
             }
@@ -436,8 +436,7 @@ public class playerController : MonoBehaviour
             equippedItem.HandleActivateItemState();
             equippedItem.transform.SetParent(handPos);
             Quaternion rotationOffset = Quaternion.Inverse(equippedItem.HandlePoint.rotation) * equippedItem.transform.rotation;
-            equippedItem.HandlePoint.rotation = handPos.rotation*rotationOffset;
-            equippedItem.transform.rotation =equippedItem.HandlePoint.rotation;
+            equippedItem.transform.rotation = handPos.rotation*rotationOffset;
             Vector3 offset = equippedItem.HandlePoint.position - equippedItem.transform.position; 
             equippedItem.transform.position = handPos.position - offset;
             objectInHand = equippedItem;
