@@ -20,8 +20,6 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
     [SerializeField] AudioClip clip;
     [SerializeField] ParticleSystem vfx;
     private int setIndex = 0;
-
-
     [SerializeField, Tooltip("Simply the position where the reward(clue) will be spawned. after completing the puzzle.")] Transform rewardSpawnPosition;
     private Guid id = new Guid();
     [SerializeField] BaseClueData reward;
@@ -29,9 +27,10 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
     public Guid ID => id;
     public bool IsComplete { get; private set; } = false;
     AudioSource src;
+
     private void Awake()
     {
-        //conditionSets[0].gameObject.SetActive(true);
+        conditionSets[0].gameObject.SetActive(true);
     }
     private void OnEnable()
     {
@@ -59,7 +58,6 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
                 conditionSets[setIndex].gameObject.SetActive(false);
                 conditionSets[setIndex++].gameObject.SetActive(true);
             }
-
             //Fire off events for various updates when puzzle complete
             //sfx/vfx/etc
             if (vfx != null)
@@ -70,8 +68,10 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
                 Instantiate(Reward.Prefab).GameObject().transform.position = rewardSpawnPosition.position;
 
             IsComplete = true;
+
         }
     }
+
 
 #if UNITY_EDITOR
     private void Reset()

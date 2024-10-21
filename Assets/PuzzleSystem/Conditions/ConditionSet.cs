@@ -12,6 +12,7 @@ public class ConditionSet : MonoBehaviour
     [SerializeField] List<Condition> conditions = new List<Condition>();
     public List<Condition> Conditions => conditions;
     [SerializeField] bool deactivateSetAfterCompletion = true;
+ 
     public bool IsSetComplete { get; private set; }
     public bool DeactivateSetAfterCompletion => deactivateSetAfterCompletion;
 
@@ -44,7 +45,6 @@ public class ConditionSet : MonoBehaviour
             }
             IsSetComplete = true;
             ConditionSetComplete?.Invoke();
-
         }
     }
 }
