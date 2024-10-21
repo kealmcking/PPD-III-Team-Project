@@ -332,19 +332,23 @@ public class playerController : MonoBehaviour
         // Interact with the closest valid object
         if (closestCollider != null && closestCollider.TryGetComponent(out IInteractable interactable))
         {
-            if(interactable is Item item && objectInHand == null)
+            if(interactable is Item item)
             {
-                _animator.SetTrigger("activate");
-                ValidateEquippedItem(item.Data);
-                Destroy(item.gameObject);
+                if (item.Data is CraftableItemData itemData && objectInHand == null)
+                {
+                    _animator.SetTrigger("activate");
+                    ValidateEquippedItem(itemData);
+                    Destroy(item.gameObject);
+                }
+                else
+                {
+                    _animator.SetTrigger("activate");
+                    interactable.Interact();
+                }
             }
-            else
-            {
-                _animator.SetTrigger("activate");
-                interactable.Interact();
-            }
+            else interactable.Interact();
 
-          
+
         }
     }
     private void Use()
