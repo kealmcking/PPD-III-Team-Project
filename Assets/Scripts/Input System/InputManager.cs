@@ -256,7 +256,11 @@ namespace Input
             aimAction.Disable();
             crouchAction.Disable();
             sprintAction.Disable();
-            inventoryAction.Disable();
+            if (!GameManager.instance.InventoryActive)
+            {
+                inventoryAction.Disable();
+            }
+            
             cancelAction.Enable();
             useAction.Disable();
             dropAction.Disable();
