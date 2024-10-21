@@ -284,6 +284,17 @@ public class playerController : MonoBehaviour
         charController.center = Vector3.Lerp(charController.center, _newCenter, Time.deltaTime / _crouchTime);
     }
 
+    public bool GetCrouch()
+    {
+        if( _isCrouching ) return true;
+        else return false;
+    }
+    public bool GetSprint()
+    {
+        if( _isSprinting ) return true;
+        else return false;
+    }
+
     private void Interact()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);

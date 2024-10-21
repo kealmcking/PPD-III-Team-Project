@@ -5,9 +5,13 @@ using UnityEngine;
 public class AnimationEventCatcher : MonoBehaviour
 {
     private audioManager audioManager;
+    private playerController playerController;
+    private GameObject player;
 
     private void Awake()
     {
+        player = GameObject.FindWithTag("Player");
+        playerController = player.GetComponent<playerController>();
         audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
     }
 
@@ -22,20 +26,20 @@ public class AnimationEventCatcher : MonoBehaviour
 
     private void footStep()
     {
-        audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
-
-        //if (!_isCrouching && !_isSprinting)          //Walking
-        //{
-        //    audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
-        //}
-        //else if (!_isCrouching && _isSprinting)   //Sprinting
-        //{
-        //    audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepRunVol);
-        //}
-        //else if (!_isSprinting && _isCrouching)   //Crouching
-        //{
-        //    audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepCrouchVol);
-        //}
+        //audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
+        
+        if (!playerController.GetCrouch() && !playerController.GetSprint())          //Walking
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
+        }
+        else if (!playerController.GetCrouch() && playerController.GetSprint())   //Sprinting
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepRunVol);
+        }
+        else if (playerController.GetCrouch() && !playerController.GetSprint())   //Crouching
+        {
+            audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepCrouchVol);
+        }
     }
 }
 
