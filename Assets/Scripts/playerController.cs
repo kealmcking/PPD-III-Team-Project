@@ -60,6 +60,7 @@ public class playerController : MonoBehaviour
 
 
     [SerializeField] private Transform handPos;
+    [SerializeField] Transform headPos;
     private IInteractable objectInHand;
     private bool hasTurned;
     private bool startTurning;
@@ -299,40 +300,32 @@ public class playerController : MonoBehaviour
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
 
-        float closestDistanceSqr = float.MaxValue; // Store the closest object's squared distance
+      
         Collider closestCollider = null;
-
+        IInteractable potentialItem = null;
         foreach (var collider in colliders)
         {
-            // Calculate the squared distance to avoid unnecessary square root operations
-            float distSqr = (collider.transform.position - transform.position).sqrMagnitude;
+            collider.TryGetComponent(out IInteractable interactable);
+            if (interactable == null) continue;
+            potentialItem = interactable;
+            Vector3 direction = collider.transform.position - transform.position;
+            float angle = Vector3.Angle(transform.forward, direction);
+            if (angle > 90f || angle<0f) continue;
+            
+            if (closestCollider == null)
+                closestCollider = collider;
 
-            // Find the nearest object
-            if (distSqr < closestDistanceSqr)
+            Debug.Log(closestCollider.name);
+            if (Vector3.Distance(transform.position,collider.transform.position) > Vector3.Distance(transform.position, closestCollider.transform.position))
             {
-                // Check the angle to ensure it's within 45 degrees
-                Vector3 direction = collider.transform.position - transform.position;
-                float angle = Vector3.Angle(transform.forward, direction);
-
-                if (angle > 45f) continue;
-
-                // Check if nothing is blocking the object using a Raycast
-                if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, Mathf.Sqrt(distSqr)))
-                {
-                    // Ensure the hit object is the same as the collider
-                    if (hit.collider == collider)
-                    {
-                        closestDistanceSqr = distSqr;
-                        closestCollider = collider;
-                    }
-                }
+                closestCollider = collider;                  
             }
         }
 
         // Interact with the closest valid object
-        if (closestCollider != null && closestCollider.TryGetComponent(out IInteractable interactable))
+        if (closestCollider != null )
         {
-            if(interactable is Item item)
+            if (potentialItem is Item item)
             {
                 if (item.Data is CraftableItemData itemData && objectInHand == null)
                 {
@@ -342,12 +335,15 @@ public class playerController : MonoBehaviour
                 }
                 else
                 {
-                    _animator.SetTrigger("activate");
-                    interactable.Interact();
+                   
+                    potentialItem.Interact();
                 }
             }
-            else interactable.Interact();
-
+            else
+            {
+                _animator.SetTrigger("activate");
+                potentialItem.Interact();
+            }
 
         }
     }
@@ -439,9 +435,8 @@ public class playerController : MonoBehaviour
             equippedItem.HandleActivateItemState();
             equippedItem.transform.SetParent(handPos);
             Quaternion rotationOffset = Quaternion.Inverse(equippedItem.HandlePoint.rotation) * equippedItem.transform.rotation;
-            equippedItem.HandlePoint.rotation = handPos.rotation * rotationOffset;
-            equippedItem.transform.rotation = equippedItem.HandlePoint.rotation;
-            Vector3 offset = equippedItem.HandlePoint.position - equippedItem.transform.position;
+            equippedItem.transform.rotation = handPos.rotation*rotationOffset;
+            Vector3 offset = equippedItem.HandlePoint.position - equippedItem.transform.position; 
             equippedItem.transform.position = handPos.position - offset;
             objectInHand = equippedItem;
             playerLookAtTarget = null;
