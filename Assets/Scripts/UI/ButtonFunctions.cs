@@ -61,8 +61,14 @@ public class ButtonFunctions : MonoBehaviour
 
     public void CharacterSelectScreen()
     {
-        MainMenuManager.instance.DisplayCharSelect();
+        MainMenuManager.instance.DisplayCharSelect(true);
     }
+
+    public void BackToMainMenu()
+    {
+        MainMenuManager.instance.DisplayCharSelect(false);
+    }
+    
     public void PlayGame()
     {
         SceneManager.LoadScene(1);

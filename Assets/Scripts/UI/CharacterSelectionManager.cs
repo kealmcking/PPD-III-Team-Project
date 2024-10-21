@@ -41,6 +41,11 @@ public class CharacterSelectionManager : MonoBehaviour
         {
             toggleList[i].transform.Find("Background/Checkmark").GetComponent<Image>().gameObject.SetActive(false);
             toggleList[i].transform.Find("Background/Icon").GetComponent<RawImage>().texture = characterIcon[i];
+
+            if (!toggleList[i].interactable)
+            {
+                toggleList[i].transform.Find("Background/Icon").GetComponent<RawImage>().color = Color.black;
+            }
         }
 
     }

@@ -57,10 +57,10 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    public void DisplayCharSelect()
+    public void DisplayCharSelect(bool set)
     {
-        charSelect.SetActive(true);
-        contents.SetActive(false);
+        charSelect.SetActive(set);
+        contents.SetActive(!set);
     }
 
     // Update is called once per frame
