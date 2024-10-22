@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class ButtonFunctions : MonoBehaviour
 {
     public static ButtonFunctions instance;
-    //public AudioMixer audioMixer;
 
     public Slider masterVolume;
     public Slider musicVolume;
