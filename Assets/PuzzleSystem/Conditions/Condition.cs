@@ -33,6 +33,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     public Rigidbody RB => rb;
     public bool IsConditionMet => isConditionMet;
     public bool SetObjectFalseOnComplete => setObjectFalseOnComplete;
+    public bool isInteractedWith = false;
     public void Awake()
     {
         if (isInteractable)
@@ -92,8 +93,11 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Interact()
     {
-        if(isInteractable)
-        interactUI.ToggleCanvas();
+         if (isInteractable)
+            {
+            interactUI.ToggleCanvas();
+            isInteractedWith = true;
+            }
     }
     public GameObject GetObject()
     {

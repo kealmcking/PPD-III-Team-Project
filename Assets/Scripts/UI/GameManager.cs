@@ -70,6 +70,8 @@ public class GameManager : MonoBehaviour
     public bool wentToSleep;
     public int Day => _day;
 
+    public static event  Action onNPCDeath;
+
     float timeScaleOG;
 
     public int characterIndex;
@@ -109,6 +111,18 @@ public class GameManager : MonoBehaviour
         characterIndex = PlayerPrefs.GetInt("SelectedCharacter");
         playerController.UpdatePlayerCharacter(characterIndex);
     }
+
+    public void notifyNPCDeath()
+    {
+        onNPCDeath?.Invoke();
+    }
+
+    public void NPCDied()
+    {
+        notifyNPCDeath();
+    }
+
+
     private void UpdateToggleUI(Toggle toggle, BaseClueData data)
     {
         TextMeshProUGUI text = toggle.GetComponentInChildren<TextMeshProUGUI>();
@@ -412,7 +426,7 @@ public class GameManager : MonoBehaviour
 
         _day++;
         EventSheet.TodaysDayIndexIsThis.Invoke(_day);
-        
+        //NPCDied();
         isTimeToSleep = false;
         _coroutine = null;
 

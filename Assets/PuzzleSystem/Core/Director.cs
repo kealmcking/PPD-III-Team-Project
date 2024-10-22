@@ -116,7 +116,7 @@ public class Director : MonoBehaviour
     private void HandleDayChange(int day)
     {          
             Suspect suspect = Randomizer.GetRandomizedSuspectFromListAndRemove(ref sceneSuspects);
-            Destroy(suspect.gameObject);          
+            Destroy(suspect.gameObject);
             EventSheet.SpawnGhost?.Invoke(ghost, SpawnPointType.Ghost, true, null);
             EventSheet.RelocateSuspects?.Invoke(sceneSuspects, SpawnPointType.Suspect, true);
         if (day >= 5)
