@@ -66,6 +66,7 @@ namespace DialogueSystem
                 audioSource.volume = audioManager.instance.dialogueVol;
                 audioSource.outputAudioMixerGroup = audioManager.instance.GetSFXAudioMixer();
                 audioSource.loop = true;
+                audioSource.playOnAwake = false;
             }
         }
 

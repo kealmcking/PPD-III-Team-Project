@@ -80,6 +80,8 @@ public class audioManager : MonoBehaviour
     [Range(0, 1)] public float sleepVol;
     [SerializeField] public AudioClip flashlight;
     [Range(0, 1)] public float flashlightVol;
+    [SerializeField] public AudioClip[] ambiantNPCSFX;
+    [Range(0, 1)] public float ambiantNPCVol;
     [SerializeField] public AudioClip errorAudio;
 
     [Header("------------------------- Misc Variables")]
