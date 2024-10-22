@@ -119,7 +119,7 @@ public class Director : MonoBehaviour
             Destroy(suspect.gameObject);          
             EventSheet.SpawnGhost?.Invoke(ghost, SpawnPointType.Ghost, true, null);
             EventSheet.RelocateSuspects?.Invoke(sceneSuspects, SpawnPointType.Suspect, true);
-        if (day >= 5)
+        if (day >= 7)
         {          
             EventSheet.SpawnKiller?.Invoke(chosenKiller,SpawnPointType.Killer,true);
         }

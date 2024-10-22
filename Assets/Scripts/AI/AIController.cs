@@ -64,7 +64,7 @@ public class AIController : MonoBehaviour
 
     private void chasePlayer()
     {
-         if(suspect.IsKiller && GameManager.instance.Day == 5)
+         if(suspect.IsKiller && GameManager.instance.Day == 7)
          {
             if (!item.gameObject.activeSelf)
                 item.gameObject.SetActive(true);
