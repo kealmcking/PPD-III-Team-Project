@@ -12,14 +12,16 @@ public class AIController : MonoBehaviour
     Vector3 startingPos;
     [SerializeField] Animator anim;
     [SerializeField] int animSpeedTrans;
-    float stoppingDistanceOrig;
+    float stoppingDistanceOrig = .2f;
     bool isRoaming;
     bool playerInRange;
     bool isEnemyChasing = false;
+    bool isScared = false;
     [SerializeField] float attackDist = .5f;
     [SerializeField] float normSpeed = 1f;
     [SerializeField] float chaseSpeed = 2f;
     Coroutine someCo;
+    Coroutine scaredCo;
     [SerializeField] int roamDist = 15;
     [SerializeField] int roamTimer = 1;
     [SerializeField] int faceTargetSpeed = 1 ;
@@ -40,6 +42,7 @@ public class AIController : MonoBehaviour
         stoppingDistanceOrig = agent.stoppingDistance;
         startingPos = transform.position;
         agent.speed = normSpeed;
+
     }
 
     // Update is called once per frame
@@ -94,8 +97,11 @@ public class AIController : MonoBehaviour
         {
             yield return null;
         }
-        yield return new WaitForSeconds(roamTimer);
-
+        //if(isScared)
+        //    anim.SetBool("Scared", true);
+        //yield return new WaitForSeconds(roamTimer);
+        //if (isScared)
+        //    anim.SetBool("Scared", false);
         isRoaming = false;
         someCo = null;
     }
@@ -105,6 +111,22 @@ public class AIController : MonoBehaviour
         float xPos = Random.Range(roomCenter.x - roomSize.x / 2, roomCenter.x + roomSize.x / 2);
         float zPos = Random.Range(roomCenter.z - roomSize.z / 2, roomCenter.z + roomSize.z / 2);
         return new Vector3(xPos, transform.position.y, zPos);
+    }
+
+    void scaredState()
+    {
+        isScared = true;
+    }
+
+    void OnEnable()
+    {
+        GameManager.onNPCDeath += scaredState;
+        GameManager.instance.NPCDied();
+    }
+
+    void OnDisable()
+    {
+        GameManager.onNPCDeath -= scaredState;
     }
 
     void faceTarget()
