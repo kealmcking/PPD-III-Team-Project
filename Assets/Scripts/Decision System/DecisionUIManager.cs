@@ -57,7 +57,7 @@ public class DecisionUIManager : MonoBehaviour
     public void UpdateKillerSelection(int index)
     {
         if (index < 0
-            || index >= killerChoices.Count
+            || index > killerChoices.Count
             || index == killerChoices.IndexOf(selectedKiller))
             return;
 
