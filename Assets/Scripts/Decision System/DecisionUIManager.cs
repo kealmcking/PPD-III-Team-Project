@@ -118,14 +118,14 @@ public class DecisionUIManager : MonoBehaviour
     }
     private void UpdateChoices(List<BaseClueData> clues)
     {
-        foreach(BaseClueData clue in clues)
+        
+        foreach (BaseClueData clue in clues)
         {
             switch (clue)
             {
                 case KillerClueData suspect:
                     killerChoices.Add(suspect);
                     UpdateToggleUI(killerToggles.ElementAt(killerChoices.IndexOf(suspect)), suspect);
-
                     break;
                 case MotiveClueData motive:
                     motiveChoices.Add(motive);
@@ -153,7 +153,7 @@ public class DecisionUIManager : MonoBehaviour
 }   
     private void UpdateKiller(KillerClueData data)
     {
-        
+        Debug.Log(data.Name);
         killer = data;
         killerChoices.Add(data);
         UpdateToggleUI(killerToggles.ElementAt(killerChoices.IndexOf(data)), data);
@@ -163,6 +163,7 @@ public class DecisionUIManager : MonoBehaviour
         TextMeshProUGUI text = toggle.GetComponentInChildren<TextMeshProUGUI>();
         if(text != null) 
             text.text = data.Name;
+        if(data.Icon != null)
         toggle.image.sprite = data.Icon;
     }
     private void ValidateSubmissionReady()

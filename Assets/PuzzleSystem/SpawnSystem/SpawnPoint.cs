@@ -5,9 +5,9 @@ using UnityEngine.AI;
 /// </summary>
 public class SpawnPoint : MonoBehaviour
 {
-    [Tooltip("Used to determine the max distance to the navmesh each spawner should be in order for the spawn points to be moved to the navmesh")
-    ,SerializeField]
-    float maxDistanceToNavMesh = 7f;
+  //  [Tooltip("Used to determine the max distance to the navmesh each spawner should be in order for the spawn points to be moved to the navmesh")
+  //  ,SerializeField]
+//    float maxDistanceToNavMesh = 7f;
     [SerializeField] float sphereRadius = .5f;
     [SerializeField] SpawnPointType type;
     public SpawnPointType Type => type;
@@ -19,14 +19,14 @@ public class SpawnPoint : MonoBehaviour
     /// Sets the spawn points of each spawner to the navmesh useful for setting the AI directly on the navmesh
     /// </summary>
     /// <param name="spawnPoints"></param>
-    public void MoveSpawnPointToNavMesh()
+ /*   public void MoveSpawnPointToNavMesh()
     {
         NavMeshHit hit;
         if (NavMesh.SamplePosition(transform.position, out hit, maxDistanceToNavMesh, NavMesh.AllAreas))
         {
             transform.position = hit.position;
         }        
-    }
+    }*/
 
 
 #if UNITY_EDITOR

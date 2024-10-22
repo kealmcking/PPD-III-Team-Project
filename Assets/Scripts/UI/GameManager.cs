@@ -395,6 +395,7 @@ public class GameManager : MonoBehaviour
             timerText.text = "";
             UpdateObjectiveText("Go To Sleep");
             isTimeToSleep = true;
+            EventSheet.GateConditionStatus?.Invoke(false);
         }
         
     }
@@ -421,7 +422,7 @@ public class GameManager : MonoBehaviour
 
         _day++;
         EventSheet.TodaysDayIndexIsThis.Invoke(_day);
-        
+        EventSheet.GateConditionStatus?.Invoke(true);
         isTimeToSleep = false;
         _coroutine = null;
         timerOn = true;

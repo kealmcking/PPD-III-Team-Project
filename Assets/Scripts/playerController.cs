@@ -163,7 +163,6 @@ public class playerController : MonoBehaviour
 
         rotateTowardCamera();
         //toggleFlashlight();
-        audioManager.PlaySFX(audioManager.flashlight, audioManager.flashlightVol);
         //updateFlashlightDirection();
     }
     void movement()
@@ -311,13 +310,13 @@ public class playerController : MonoBehaviour
             potentialItem = interactable;
             Vector3 direction = collider.transform.position - transform.position;
             float angle = Vector3.Angle(transform.forward, direction);
-            if (angle > 90f || angle<0f) continue;
+            if (angle > 45f) continue;
             
             if (closestCollider == null)
                 closestCollider = collider;
 
             Debug.Log(closestCollider.name);
-            if (Vector3.Distance(transform.position,collider.transform.position) > Vector3.Distance(transform.position, closestCollider.transform.position))
+            if (Vector3.Distance(transform.position,collider.transform.position) < Vector3.Distance(transform.position, closestCollider.transform.position))
             {
                 closestCollider = collider;                  
             }
@@ -333,10 +332,12 @@ public class playerController : MonoBehaviour
                     _animator.SetTrigger("activate");
                     ValidateEquippedItem(itemData);
                     Destroy(item.gameObject);
+
+                    audioManager.PlaySFX(audioManager.pickUp, audioManager.pickUpVol);
                 }
                 else
                 {
-                   
+                    _animator.SetTrigger("activate");
                     potentialItem.Interact();
                 }
             }
