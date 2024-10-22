@@ -120,7 +120,7 @@ namespace DialogueSystem
 
             if (currentDialogueLine.unlockedMotive != null)
             {
-                EventSheet.SendFoundClue?.Invoke(currentDialogueLine.unlockedMotive);
+                EventSheet.SendClueToTracker?.Invoke(currentDialogueLine.unlockedMotive.Prefab);
             }
         }
 
