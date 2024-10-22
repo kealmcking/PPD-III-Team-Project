@@ -6057,8 +6057,10 @@ MonoBehaviour:
   _crouchCenter: {x: 0, y: 0.504, z: 0}
   interactDistance: 2
   gravity: -9.81
+  slipperyFactor: 1
+  isSlipping: 0
   handPos: {fileID: 6618836113252481888}
-  headPos: {fileID: 0}
+  headPos: {fileID: 5288626501997052305}
   isDead: 0
 --- !u!143 &8903992667986733635
 CharacterController:
@@ -6109,7 +6111,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7058200114144239472}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 814a702dfb2a1b74c8ea9d92053c2a30, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
