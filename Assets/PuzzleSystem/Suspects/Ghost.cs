@@ -49,7 +49,7 @@ public class Ghost : MonoBehaviour, IInteractable, ICustomizableComponent
         ghostMoaning = true;
         audioSource.PlayOneShot(audioManager.instance.ghostMoans, audioManager.instance.ghostDialogueVol);
 
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(Random.Range(10f, 15f));
 
         ghostMoaning = false;
     }

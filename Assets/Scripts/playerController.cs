@@ -333,6 +333,8 @@ public class playerController : MonoBehaviour
                     _animator.SetTrigger("activate");
                     ValidateEquippedItem(itemData);
                     Destroy(item.gameObject);
+
+                    audioManager.PlaySFX(audioManager.pickUp, audioManager.pickUpVol);
                 }
                 else
                 {
