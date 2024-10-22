@@ -95,20 +95,14 @@ public class Director : MonoBehaviour
 
         initializer.Initialize(killers, rooms, weapons, motives, activePuzzles);
 
-        List<Suspect> newSuspects = suspects
-            .Select(s => s.SuspectPrefab)
+        List<Suspect> newSuspects = killers
+            .Select(k => k.data.SuspectPrefab)
             .ToList();
         if (newSuspects.Count > 0)
         {
-            EventSheet.InitializeSuspectsToScene?.Invoke(newSuspects, SpawnPointType.Starting, true);
-            EventSheet.SendSuspects?.Invoke(suspects);
+            EventSheet.InitializeSuspectsToScene?.Invoke(gameSelection.GetKiller().data.SuspectPrefab,newSuspects, SpawnPointType.Starting, true);
         }
-        if (motives.Count > 0)
-            EventSheet.SendMotives?.Invoke(motives);
-        if (rooms.Count > 0)
-            EventSheet.SendRooms?.Invoke(rooms);
-        if (weapons.Count > 0)
-            EventSheet.SendWeapons?.Invoke(weapons);
+
         if (gameSelection != null)
             EventSheet.SendGameSelection?.Invoke(gameSelection);
         
@@ -119,7 +113,7 @@ public class Director : MonoBehaviour
             Destroy(suspect.gameObject);          
             EventSheet.SpawnGhost?.Invoke(ghost, SpawnPointType.Ghost, true, null);
             EventSheet.RelocateSuspects?.Invoke(sceneSuspects, SpawnPointType.Suspect, true);
-        if (day >= 5)
+        if (day >= 7)
         {          
             EventSheet.SpawnKiller?.Invoke(chosenKiller,SpawnPointType.Killer,true);
         }
@@ -130,24 +124,25 @@ public class Director : MonoBehaviour
     }
     private void SetSceneSuspects(List<Suspect> scene)
     {
+        
         sceneSuspects = scene;
-        chosenKiller = sceneSuspects[UnityEngine.Random.Range(0, sceneSuspects.Count)];
-        chosenKiller.IsKiller = true;
-        KillerClueData clueToSend = null;
-        foreach(var clue in clues)
+       
+
+
+        foreach(var suspect in scene)
         {
-            if(clue is KillerClueData killerData)
+
+            Debug.Log(gameSelection.GetKiller().Name);
+            Debug.Log(suspect.Data.Name);
+            if (suspect.Data.Name == gameSelection.GetKiller().Name )
             {
-                if(killerData != null)
-                {
-                    if(killerData.data.ID == chosenKiller.Data.ID && killerData.data.Description == chosenKiller.Data.Description && killerData.data.Name == chosenKiller.Data.Name)
-                    {
-                        clueToSend = killerData; 
-                    }
-                }
+                Debug.Log(suspect.name);
+              
+                chosenKiller = suspect;
+                break;
             }
         }
-        EventSheet.SendKillerClue?.Invoke(clueToSend);
+     
     }
     private void SetChosenKiller(Suspect value)
     {

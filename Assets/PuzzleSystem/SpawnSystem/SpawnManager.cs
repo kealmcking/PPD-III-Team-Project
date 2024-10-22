@@ -5,11 +5,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.VFX;
+using static UnityEditor.Progress;
 
 
 public class SpawnManager : MonoBehaviour 
 {
-    private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();  
+    [SerializeField] List<SpawnPoint> spawnPoints = new List<SpawnPoint>();  
     private void Awake()
     {
        spawnPoints = FindObjectsByType<SpawnPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList(); 
@@ -39,14 +40,14 @@ public class SpawnManager : MonoBehaviour
                 .Where(s => s.Type == type)
                 .ToList();
                 SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
-            Ghost instance = Instantiate(ghost.Prefab);
-            instance.transform.position = spawn.transform.position;
+            Ghost instance = Instantiate(ghost.Prefab, spawn.transform.position, spawn.transform.rotation);
+  
            // EventSheet.SendGhost?.Invoke(instance);
 
         }
         else if(spawnPoint != null)
         {
-            Ghost instance = Instantiate(ghost.Prefab);
+            Ghost instance = Instantiate(ghost.Prefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
             instance.gameObject.transform.position = spawnPoint.transform.position;
             EventSheet.SendGhost?.Invoke(instance);
         }
@@ -65,7 +66,7 @@ public class SpawnManager : MonoBehaviour
     }
     private void SpawnObjectByMono<T>(T obj, SpawnPointType type, SpawnPoint spawningPoint) where T : MonoBehaviour
     {           
-            Instantiate(obj).gameObject.transform.position = spawningPoint.transform.position;
+            Instantiate(obj, spawningPoint.transform.position, spawningPoint.transform.rotation);
     }
     private void RelocateRemainingSuspects(List<Suspect> group, SpawnPointType type, bool randomize = false)
     {
@@ -95,7 +96,7 @@ public class SpawnManager : MonoBehaviour
             }
         }
     }
-    private void SpawnGroupByMono(List<Suspect> group, SpawnPointType type, bool randomize = false) 
+    private void SpawnGroupByMono(Suspect killer,List<Suspect> group, SpawnPointType type, bool randomize = false) 
     {
         if (randomize)
         {
@@ -106,11 +107,14 @@ public class SpawnManager : MonoBehaviour
             foreach(var item in group)
             {
                 SpawnPoint spawn = Randomizer.GetRandomizedObjectFromListAndRemove(ref filteredSpawns);
-                Suspect sceneSuspect = Instantiate(item);
-                sceneSuspect.transform.position = spawn.transform.position;
+                Suspect sceneSuspect = Instantiate(item, spawn.transform.position, spawn.transform.rotation);
                 sus.Add(sceneSuspect);
 
             }
+            SpawnPoint spawnPoint = Randomizer.GetRandomizedObjectFromListAndRemove(ref filteredSpawns);
+            Suspect sceneS = Instantiate(killer, spawnPoint.transform.position, spawnPoint.transform.rotation);
+            sceneS.IsKiller = true;
+            sus.Add(sceneS);
             EventSheet.SendSceneSuspects?.Invoke(sus);
         }
         else
@@ -122,7 +126,7 @@ public class SpawnManager : MonoBehaviour
             for(int i = 0; i < group.Count; i++)
             {
                 SpawnPoint spawn = filteredSpawns.ElementAt(i);
-              //  Instantiate(group.ElementAt(i)).gameObject.transform.position = spawn.transform.position;
+                Instantiate(group.ElementAt(i), spawn.transform.position, spawn.transform.rotation);
             }
         }
     }
@@ -192,9 +196,8 @@ public class SpawnManager : MonoBehaviour
             {
                
                 SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
-                Clue prefab = Instantiate(item.Prefab);
+                Clue prefab = Instantiate(item.Prefab, spawn.transform.position, spawn.transform.rotation);
                
-                prefab.gameObject.transform.position = spawn.transform.position;
             }
         }
         else
@@ -206,7 +209,7 @@ public class SpawnManager : MonoBehaviour
             for (int i = 0; i < clues.Count; i++)
             {
                 SpawnPoint spawn = filteredSpawns.ElementAt(i);
-                Instantiate(clues.ElementAt(i).Prefab).gameObject.transform.position = spawn.transform.position;
+                Instantiate(clues.ElementAt(i).Prefab, spawn.transform.position, spawn.transform.rotation);
             }
         }
     }

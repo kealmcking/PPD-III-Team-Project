@@ -310,7 +310,7 @@ public class playerController : MonoBehaviour
             potentialItem = interactable;
             Vector3 direction = collider.transform.position - transform.position;
             float angle = Vector3.Angle(transform.forward, direction);
-            if (angle > 90f || angle<0f) continue;
+            if (angle > 90f) continue;
             
             if (closestCollider == null)
                 closestCollider = collider;
