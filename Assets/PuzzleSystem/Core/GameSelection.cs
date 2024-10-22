@@ -21,16 +21,16 @@ public class GameSelection
                 killers[i].SetIcon(suspects[i].Icon);
                 killers[i].data = suspects[i];
             }
-            killer = Randomizer.GetRandomizedObjectFromListAndRemove(ref killers);
+            killer = Randomizer.GetRandomizedObjectFromList(killers);
         }
         if (rooms.Count > 0)
-            room = Randomizer.GetRandomizedObjectFromListAndRemove(ref rooms);
+            room = Randomizer.GetRandomizedObjectFromList(rooms);
         if (weapons.Count > 0)
-            weapon = Randomizer.GetRandomizedObjectFromListAndRemove(ref weapons);
+            weapon = Randomizer.GetRandomizedObjectFromList(weapons);
         if (motives.Count > 0)
-            motive = Randomizer.GetRandomizedObjectFromListAndRemove(ref motives);
+            motive = Randomizer.GetRandomizedObjectFromList(motives);
         if (cases.Count > 0)
-        caseFile = Randomizer.GetRandomizedObjectFromListAndRemove( ref cases);
+        caseFile = Randomizer.GetRandomizedObjectFromList(cases);
      
     }
     public KillerClueData GetKiller() { return killer; }

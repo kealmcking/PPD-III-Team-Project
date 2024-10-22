@@ -93,7 +93,7 @@ public class Director : MonoBehaviour
 
         }
 
-        initializer.Initialize(killers, rooms, weapons, motives, activePuzzles);
+        initializer.Initialize(gameSelection,killers, rooms, weapons, motives, activePuzzles);
 
         List<Suspect> newSuspects = killers
             .Select(k => k.data.SuspectPrefab)
