@@ -11,7 +11,7 @@ public class playerController : MonoBehaviour
     [SerializeField] CharacterController charController;
     [SerializeField] LayerMask ignoreMask;
     [SerializeField] LayerMask killerLayer;
-    [SerializeField] private Animator _animator;
+    [SerializeField] internal Animator _animator;
     [SerializeField] private playerLookAtTarget playerLookAtTarget;
     public List<SkinnedMeshRenderer> playerModels = new List<SkinnedMeshRenderer>();
 
