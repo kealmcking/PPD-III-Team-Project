@@ -163,6 +163,7 @@ public class playerController : MonoBehaviour
 
         rotateTowardCamera();
         //toggleFlashlight();
+        audioManager.PlaySFX(audioManager.flashlight, audioManager.flashlightVol);
         //updateFlashlightDirection();
     }
     void movement()
@@ -435,8 +436,7 @@ public class playerController : MonoBehaviour
             equippedItem.HandleActivateItemState();
             equippedItem.transform.SetParent(handPos);
             Quaternion rotationOffset = Quaternion.Inverse(equippedItem.HandlePoint.rotation) * equippedItem.transform.rotation;
-            equippedItem.HandlePoint.rotation = handPos.rotation*rotationOffset;
-            equippedItem.transform.rotation =equippedItem.HandlePoint.rotation;
+            equippedItem.transform.rotation = handPos.rotation*rotationOffset;
             Vector3 offset = equippedItem.HandlePoint.position - equippedItem.transform.position; 
             equippedItem.transform.position = handPos.position - offset;
             objectInHand = equippedItem;

@@ -243,9 +243,7 @@ MonoBehaviour:
   UIClick: {fileID: 8300000, guid: c230389cdba1a4d47bda71c4d0e2b6f9, type: 3}
   UIWin: {fileID: 0}
   UILose: {fileID: 0}
-  UIMusic: {fileID: 8300000, guid: 69e4ce5d3e61aa24c96191f33a139496, type: 3}
   UIVol: 0.5
-  UIMusicVol: 0.5
   invOpen: {fileID: 8300000, guid: 8f829940876ff2d45bd0eaaa967edf2c, type: 3}
   invClose: {fileID: 8300000, guid: 523924e8918aa8e47a8e695ff5b7a463, type: 3}
   invPickup: {fileID: 8300000, guid: e5c0b5435124eee4a9bab0e4dc5c16b7, type: 3}
@@ -256,8 +254,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 400381e823835b742b1cb6c4213151f3, type: 3}
   - {fileID: 8300000, guid: 493903d06dc3b9c42b5873906ea1fc1b, type: 3}
   dialogueVol: 0.5
-  ghostMoans: {fileID: 0}
-  ghostDialogueVol: 0.5
+  ghostMoans: {fileID: 8300000, guid: d03cd243149ece64dafef6761cb6d746, type: 3}
+  ghostDialogueVol: 0.15
   killerChaseMusic: {fileID: 0}
   killerMusicVol: 0.5
   killerKill: []
@@ -268,6 +266,8 @@ MonoBehaviour:
   interactVol: 0.5
   sleeping: {fileID: 8300000, guid: 8d5797c37d0ce4d429e7a9134899e70e, type: 3}
   sleepVol: 0.5
+  flashlight: {fileID: 0}
+  flashlightVol: 0
   errorAudio: {fileID: 8300000, guid: 69e4ce5d3e61aa24c96191f33a139496, type: 3}
   Fadetime: 1
 --- !u!82 &2046236655223995155
