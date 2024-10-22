@@ -118,16 +118,16 @@ public class AIController : MonoBehaviour
         isScared = true;
     }
 
-    void OnEnable()
-    {
-        GameManager.onNPCDeath += scaredState;
-        GameManager.instance.NPCDied();
-    }
+    //void OnEnable()
+    //{
+    //    GameManager.onNPCDeath += scaredState;
+    //    GameManager.instance.NPCDied();
+    //}
 
-    void OnDisable()
-    {
-        GameManager.onNPCDeath -= scaredState;
-    }
+    //void OnDisable()
+    //{
+    //    GameManager.onNPCDeath -= scaredState;
+    //}
 
     void faceTarget()
     {
