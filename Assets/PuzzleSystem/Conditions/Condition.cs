@@ -31,7 +31,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
         "The transforms will be the potential spawning points for the components used to craft the item needed to complete the condition." +
         "It is recommended that their is more positions than components to allow for more unpredictable possible spawn points for the components.")]
     List<Transform> componentPositions = new List<Transform>();
-    [SerializeField] bool canConditionBeUsed;
+    [SerializeField] bool canConditionNotBeUsed = true;
     public Rigidbody RB => rb;
     public bool IsConditionMet => isConditionMet;
     public bool SetObjectFalseOnComplete => setObjectFalseOnComplete;
@@ -65,7 +65,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Update()
     {
-        if (config != null && canConditionBeUsed)
+        if (config != null && canConditionNotBeUsed == true)
             config.ConditionStatus(this);
     }
     public void SendStatusUpdate()
@@ -83,22 +83,22 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void OnTriggerEnter(Collider other)
     {
-        if (config != null && canConditionBeUsed)
+        if (config != null && canConditionNotBeUsed == true)
             config.TriggerEntered(this, other);
     }  
     public void OnTriggerStay(Collider other)
     {
-        if (config != null && canConditionBeUsed)
+        if (config != null && canConditionNotBeUsed == true)
             config.TriggerStayed(this, other);
     }
     public void OnTriggerExit(Collider other)
     {
-        if (config != null && canConditionBeUsed)
+        if (config != null && canConditionNotBeUsed == true)
             config.TriggerExited(this, other);
     }
     public void Interact()
     {
-        if(isInteractable && canConditionBeUsed)
+        if(isInteractable && canConditionNotBeUsed == true)
         interactUI.ToggleCanvas();
     }
     public GameObject GetObject()
@@ -107,6 +107,6 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void BlockCondition(bool value)
     {
-        canConditionBeUsed = value;
+        canConditionNotBeUsed = value;
     }
 }

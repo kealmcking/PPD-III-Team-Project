@@ -9,7 +9,7 @@ public class PuzzlePlatformActivation : MonoBehaviour
     [SerializeField] AudioClip activateSound;
     [SerializeField] AudioClip deactivateSound;
     [SerializeField] AudioSource source;
-    private bool isNotBlocked;
+    private bool setNonBlocked = true;
     private void OnEnable()
     {
   
@@ -31,7 +31,7 @@ public class PuzzlePlatformActivation : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         other.TryGetComponent(out playerController controller);
-        if(controller!= null && isNotBlocked)
+        if(controller!= null && setNonBlocked)
         {
             source.clip = activateSound;
             source.Play();
@@ -61,6 +61,6 @@ public class PuzzlePlatformActivation : MonoBehaviour
     }
     private void BlockPlatform(bool value)
     {
-        isNotBlocked = value;  
+        setNonBlocked = value;  
     }
 }

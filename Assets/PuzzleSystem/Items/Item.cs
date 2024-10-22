@@ -56,6 +56,10 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
     public void Interact()
     {
         interactUI.ToggleCanvas();
+        if (interactCol != null)
+        {
+            interactCol.enabled = false;
+        }
         EventSheet.SendItemToInventory?.Invoke(this);
     }
     public virtual void Use(){}
