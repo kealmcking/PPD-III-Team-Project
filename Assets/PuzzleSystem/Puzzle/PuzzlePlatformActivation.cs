@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class PuzzlePlatformActivation : MonoBehaviour
@@ -8,6 +9,17 @@ public class PuzzlePlatformActivation : MonoBehaviour
     [SerializeField] AudioClip activateSound;
     [SerializeField] AudioClip deactivateSound;
     [SerializeField] AudioSource source;
+    private bool isNotBlocked;
+    private void OnEnable()
+    {
+  
+        EventSheet.GateConditionStatus += BlockPlatform;
+    }
+    private void OnDisable()
+    {
+       
+        EventSheet.GateConditionStatus -= BlockPlatform;
+    }
     private void Start()
     {
         foreach (GameObject obj in objectsToSet)
@@ -19,7 +31,7 @@ public class PuzzlePlatformActivation : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         other.TryGetComponent(out playerController controller);
-        if(controller!= null)
+        if(controller!= null && isNotBlocked)
         {
             source.clip = activateSound;
             source.Play();
@@ -35,7 +47,7 @@ public class PuzzlePlatformActivation : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         other.TryGetComponent(out playerController controller);
-        if (controller != null)
+        if (controller != null )
         {
             foreach (GameObject obj in objectsToSet)
             {
@@ -46,5 +58,9 @@ public class PuzzlePlatformActivation : MonoBehaviour
             source.Play();
         }
 
+    }
+    private void BlockPlatform(bool value)
+    {
+        isNotBlocked = value;  
     }
 }

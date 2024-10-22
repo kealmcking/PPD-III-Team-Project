@@ -36,4 +36,5 @@ public static class EventSheet
     public static Action ThrowHeldItem;
     public static Action ThrowAnimationEvent;
     public static Action ItemColliderAnimationEvent;
+    public static Action<bool> GateConditionStatus;
 }

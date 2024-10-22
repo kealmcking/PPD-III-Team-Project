@@ -31,6 +31,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
         "The transforms will be the potential spawning points for the components used to craft the item needed to complete the condition." +
         "It is recommended that their is more positions than components to allow for more unpredictable possible spawn points for the components.")]
     List<Transform> componentPositions = new List<Transform>();
+    [SerializeField] bool canConditionBeUsed;
     public Rigidbody RB => rb;
     public bool IsConditionMet => isConditionMet;
     public bool SetObjectFalseOnComplete => setObjectFalseOnComplete;
@@ -50,10 +51,12 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
         if (components.Count > 0 && componentPositions.Count > 0)
             components.ForEach((c) => { Instantiate(c.Prefab).GameObject().transform.position = Randomizer.GetRandomizedObjectFromListAndRemove(ref componentPositions).position; });
         config.ConfigConditionMet += SendStatusUpdate;
+        EventSheet.GateConditionStatus += BlockCondition;
     }
     private void OnDisable()
     {
         config.ConfigConditionMet -= SendStatusUpdate;
+        EventSheet.GateConditionStatus -= BlockCondition;
     }
     public void Start()
     {
@@ -62,7 +65,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Update()
     {
-        if (config != null)
+        if (config != null && canConditionBeUsed)
             config.ConditionStatus(this);
     }
     public void SendStatusUpdate()
@@ -80,27 +83,30 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void OnTriggerEnter(Collider other)
     {
-        if (config != null)
+        if (config != null && canConditionBeUsed)
             config.TriggerEntered(this, other);
     }  
     public void OnTriggerStay(Collider other)
     {
-        if (config != null)
+        if (config != null && canConditionBeUsed)
             config.TriggerStayed(this, other);
     }
     public void OnTriggerExit(Collider other)
     {
-        if (config != null)
+        if (config != null && canConditionBeUsed)
             config.TriggerExited(this, other);
     }
     public void Interact()
     {
-        if(isInteractable)
+        if(isInteractable && canConditionBeUsed)
         interactUI.ToggleCanvas();
     }
     public GameObject GetObject()
     {
         return gameObject;
     }
-
+    public void BlockCondition(bool value)
+    {
+        canConditionBeUsed = value;
+    }
 }
