@@ -344,7 +344,7 @@ Shader "SyntyStudios/GlacierTriplanar"
 
 			sampler2D _Top;
 			sampler2D _Sides;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _TopNormal;
 			sampler2D _SidesNormal;
 			sampler2D _TopEmissive;
@@ -1576,7 +1576,7 @@ Shader "SyntyStudios/GlacierTriplanar"
 
 			sampler2D _Top;
 			sampler2D _Sides;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _TopEmissive;
 			sampler2D _SidesEmissive;
 
@@ -1924,7 +1924,7 @@ Shader "SyntyStudios/GlacierTriplanar"
 
 			sampler2D _Top;
 			sampler2D _Sides;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 
 
 			inline float4 TriplanarSampling5( sampler2D topTexMap, sampler2D midTexMap, sampler2D botTexMap, float3 worldPos, float3 worldNormal, float falloff, float2 tiling, float3 normalScale, float3 index )
@@ -2637,7 +2637,7 @@ Shader "SyntyStudios/GlacierTriplanar"
 
 			sampler2D _Top;
 			sampler2D _Sides;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _TopNormal;
 			sampler2D _SidesNormal;
 			sampler2D _TopEmissive;
