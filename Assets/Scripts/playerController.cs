@@ -127,8 +127,8 @@ public class playerController : MonoBehaviour
     {
          originalController = _animator.runtimeAnimatorController;
          audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
-         selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
-         _currentCharacterModel = playerModels[selectedOption].gameObject;
+        // selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
+         //_currentCharacterModel = playerModels[selectedOption].gameObject;
          SetCharacterModel(_currentCharacterModel);
     }
 
@@ -164,7 +164,6 @@ public class playerController : MonoBehaviour
 
         rotateTowardCamera();
         //toggleFlashlight();
-        audioManager.PlaySFX(audioManager.flashlight, audioManager.flashlightVol);
         //updateFlashlightDirection();
     }
     void movement()
@@ -386,6 +385,8 @@ public class playerController : MonoBehaviour
                 {
                     ValidateEquippedItem(itemData);
                     Destroy(item.gameObject);
+
+                    audioManager.PlaySFX(audioManager.pickUp, audioManager.pickUpVol);
                 }
                 else
                 {

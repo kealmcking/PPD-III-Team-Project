@@ -10,11 +10,14 @@ using UnityEngine.UI;
 
 namespace DialogueSystem
 {
+    [RequireComponent(typeof(AudioSource))]
+
     public class DialogueManager : MonoBehaviour
     {
         public static DialogueManager instance;
         private Suspect currentSuspect;
         private int currentDay;
+        AudioSource audioSource;
 
         [Header("Dialogue/Dialogue Trees")] 
         [SerializeField] private NPC currentNPC;
@@ -50,6 +53,20 @@ namespace DialogueSystem
             else
             {
                 Destroy(gameObject);
+            }
+
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                Debug.Log("Dialogue audio Error");
+            }
+            else
+            {
+                audioSource.clip = audioManager.instance.dialogueMutter[UnityEngine.Random.Range(0,audioManager.instance.dialogueMutter.Length)];
+                audioSource.volume = audioManager.instance.dialogueVol;
+                audioSource.outputAudioMixerGroup = audioManager.instance.GetSFXAudioMixer();
+                audioSource.loop = true;
+                audioSource.playOnAwake = false;
             }
         }
 
@@ -233,6 +250,8 @@ namespace DialogueSystem
 
         IEnumerator typeLine(string line)
         {
+            audioSource.Play();
+
             speakerText.text = currentNPC.name + ": ";
             bool insideTag = false;
             string currentText = "";
@@ -262,6 +281,9 @@ namespace DialogueSystem
 
             speakerText.text = currentText;
 
+            yield return new WaitForSeconds(2f);
+            audioSource.Stop();
+            
         }
         
    

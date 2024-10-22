@@ -224,7 +224,7 @@ MonoBehaviour:
   crouchUp:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
   crouchVol: 0.15
-  pickUp: {fileID: 0}
+  pickUp: {fileID: 8300000, guid: f12aed2015e62bd439d737cd9c7097f0, type: 3}
   pickUpVol: 0.5
   puzzleMove: []
   puzzleHit:
@@ -266,8 +266,16 @@ MonoBehaviour:
   interactVol: 0.5
   sleeping: {fileID: 8300000, guid: 8d5797c37d0ce4d429e7a9134899e70e, type: 3}
   sleepVol: 0.5
-  flashlight: {fileID: 0}
-  flashlightVol: 0
+  flashlight: {fileID: 8300000, guid: ebb4796045d7e844ebc4370117540d45, type: 3}
+  flashlightVol: 0.5
+  ambiantNPCSFX:
+  - {fileID: 8300000, guid: 6b3e267f7c9d8b94f82e5770d90b4d44, type: 3}
+  - {fileID: 8300000, guid: 2d6c4e498eb0e2b4c9f7471552cafe8f, type: 3}
+  - {fileID: 8300000, guid: ed39889fd8120d245b48ad2023cab8fe, type: 3}
+  - {fileID: 8300000, guid: 411f231a7b2bbe349be98287b6156cd1, type: 3}
+  - {fileID: 8300000, guid: 23433df93f7bab246b727b0b0b00c175, type: 3}
+  - {fileID: 8300000, guid: ce24315177df3b749930772a7ef4bbd1, type: 3}
+  ambiantNPCVol: 0.5
   errorAudio: {fileID: 8300000, guid: 69e4ce5d3e61aa24c96191f33a139496, type: 3}
   Fadetime: 1
 --- !u!82 &2046236655223995155

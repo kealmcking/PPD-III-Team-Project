@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,7 +11,6 @@ using UnityEngine.UI;
 public class ButtonFunctions : MonoBehaviour
 {
     public static ButtonFunctions instance;
-    //public AudioMixer audioMixer;
 
     public Slider masterVolume;
     public Slider musicVolume;
@@ -44,6 +44,7 @@ public class ButtonFunctions : MonoBehaviour
     public void OptionsButton()
     {
         GameManager.instance.OptionsMenu();
+        EventSystem.current.SetSelectedGameObject(masterVolume.gameObject);
     }
 
     public void SetMasterVolume(float volume)
