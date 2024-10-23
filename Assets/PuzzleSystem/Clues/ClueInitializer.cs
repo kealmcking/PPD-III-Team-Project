@@ -37,10 +37,12 @@ public class ClueInitializer : MonoBehaviour
         });
 
         EventSheet.SendAllClues(clues);
+
+
         BaseClueData killer = null;
         BaseClueData room = null;
         BaseClueData weapon = null;
-        /*BaseClueData motive = null;*/
+        BaseClueData motive = null;
         foreach (var clue in clues)
         {
             if(clue.Name == selection.GetKiller().Name)
@@ -55,18 +57,23 @@ public class ClueInitializer : MonoBehaviour
             {
                 weapon = clue;
             }
-            /*if(clue.Name == selection.GetMotive().Name)
+            if(clue.Name == selection.GetMotive().Name)
             {
                 motive = clue;
-            }   */                                
+            }                                   
         }
         clues.Remove(killer);
         clues.Remove(room);
         clues.Remove(weapon);
-        /*  clues.Remove(motive);*/
-        clues
-            .Where(c =>  c is MotiveClueData )
-            .Select(c => clues.Remove(c));
+        clues.Remove(motive);
+
+        for (int i = clues.Count - 1; i >= 0; i--)
+        {
+            if (clues[i] is MotiveClueData)
+            {
+                clues.RemoveAt(i);
+            }
+        }
         if (activePuzzles.Count > 0)
         {
             activePuzzles.ForEach(p =>

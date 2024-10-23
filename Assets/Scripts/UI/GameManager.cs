@@ -432,7 +432,7 @@ public class GameManager : MonoBehaviour
         UpdateObjectiveText("Solve The Case");
     }
 
-    
+
 
 
 }
