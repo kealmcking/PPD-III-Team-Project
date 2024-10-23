@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DialogueSystem;
 using UnityEngine;
 
 public class EnableInteractUI : MonoBehaviour
 {
-    [SerializeField] private GameObject interactCanvas;
+    [SerializeField] private List<GameObject> interactCanvas;
 
     public static Action<bool, EnableInteractUI> ImInInteractionZone;
 
@@ -25,14 +26,40 @@ public class EnableInteractUI : MonoBehaviour
         DialogueManager.DialogueMenuActive -= MenuActive;
     }
 
+    private void Awake()
+    {
+        foreach (GameObject canvas in interactCanvas)
+        {
+            if (canvas == null)
+            {
+                interactCanvas.Remove(canvas);
+            }
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+
+        
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.name == "InteractUI")
+            {
+                interactCanvas.Add(child.gameObject);
+            }
+
+            
+        }
         if (interactCanvas != null)
         {
-        
-            interactCanvas.SetActive(false);
+            foreach (GameObject canvas in interactCanvas)
+            {
+                canvas.SetActive(false);
+            }
         }
+
+        
  
     }
 
@@ -46,7 +73,13 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && interactCanvas!= null)
         {
-            interactCanvas.SetActive(true);
+            foreach (GameObject canvas in interactCanvas)
+            {
+                if (!canvas.activeSelf)
+                {
+                    canvas.SetActive(true);
+                }
+            }
             ImInInteractionZone.Invoke(true, this);
         }
     }
@@ -55,7 +88,13 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isInMenu && GetComponent<Suspect>() && interactCanvas != null)
         {
-            interactCanvas.SetActive(true);
+            foreach (GameObject canvas in interactCanvas)
+            {
+                if (!canvas.activeSelf)
+                {
+                    canvas.SetActive(true);
+                }
+            }
         }
     }
 
@@ -63,17 +102,25 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && interactCanvas != null)
         {
-            interactCanvas.SetActive(false);
+            foreach (GameObject canvas in interactCanvas)
+            {
+                canvas.SetActive(false);
+            }
             ImInInteractionZone.Invoke(false, this);
         }
     }
 
     public void ToggleCanvas()
     {
-        if (interactCanvas.activeSelf)
+        if (interactCanvas.Count == 0) return;
+        foreach (GameObject canvas in interactCanvas)
         {
-            interactCanvas.SetActive(false);
+            if (canvas.activeSelf)
+            {
+                canvas.SetActive(false);
+            }
         }
+
     }
 
     private void MenuActive(bool context)

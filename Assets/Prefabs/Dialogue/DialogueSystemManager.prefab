@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 32.8, y: 0}
-  m_SizeDelta: {x: 450, y: 50}
+  m_AnchoredPosition: {x: 129.5, y: 0}
+  m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1029041375227145599
 CanvasRenderer:
@@ -93,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.8
-  m_fontSizeBase: 28.8
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 2748884539703747090}
   - component: {fileID: 6487454245105378523}
   - component: {fileID: 1857862028780148978}
-  - component: {fileID: 5939646678093472821}
+  - component: {fileID: 1338052399273512824}
   m_Layer: 5
   m_Name: Dialogue_Text_Box.003
   m_TagString: Untagged
@@ -174,8 +174,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 464.75, y: -157.3}
-  m_SizeDelta: {x: 525.1, y: 91.9}
+  m_AnchoredPosition: {x: 624.6, y: -157.3}
+  m_SizeDelta: {x: 1000, y: 91.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2748884539703747090
 CanvasRenderer:
@@ -233,7 +233,7 @@ MonoBehaviour:
   selectedColor: {r: 0.33333334, g: 0.33333334, b: 0.33333334, a: 1}
   hoveredColor: {r: 0.7294118, g: 0.7294118, b: 0.7294118, a: 1}
   originalColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &5939646678093472821
+--- !u!114 &1338052399273512824
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -289,19 +289,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6305548000449114750}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: c230389cdba1a4d47bda71c4d0e2b6f9,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &2557004053332398448
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,6 +301,7 @@ GameObject:
   - component: {fileID: 2248507130356680917}
   - component: {fileID: 1048446768460951740}
   - component: {fileID: 5613434791423776058}
+  - component: {fileID: 6141976669508070875}
   m_Layer: 5
   m_Name: NextButton
   m_TagString: Untagged
@@ -337,8 +325,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 121.38989, y: 0}
-  m_SizeDelta: {x: 120, y: 120}
+  m_AnchoredPosition: {x: -11.599976, y: -82}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &2248507130356680917
 CanvasRenderer:
@@ -361,14 +349,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ecee3c8f721e45043881f383842581ba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3c7dc1e3f0fbe6244b379d47e425c499, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -434,6 +422,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6141976669508070875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2557004053332398448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8895ce9f24869a4bacc2658c7648fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pcButton_spr: {fileID: 21300000, guid: 3c7dc1e3f0fbe6244b379d47e425c499, type: 3}
+  xboxButton_spr: {fileID: 21300000, guid: 1e90dc71c20781a4e91d2c482ff7bac3, type: 3}
+  psButton_spr: {fileID: 21300000, guid: 31161aefaf735994e857400816067edd, type: 3}
+  switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
+  uiElement: {fileID: 1048446768460951740}
+  text: {fileID: 0}
 --- !u!1 &3457650054557102199
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,8 +474,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 22.7, y: 0}
-  m_SizeDelta: {x: 450, y: 50}
+  m_AnchoredPosition: {x: 129.5, y: 0}
+  m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2304202362968678295
 CanvasRenderer:
@@ -527,8 +533,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.8
-  m_fontSizeBase: 28.8
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -699,7 +705,7 @@ GameObject:
   - component: {fileID: 2472768145471233456}
   - component: {fileID: 2628453324903458303}
   - component: {fileID: 6460289635491807979}
-  - component: {fileID: 1227255508789728672}
+  - component: {fileID: 8814604195576962892}
   m_Layer: 5
   m_Name: Dialogue_Text_Box.004
   m_TagString: Untagged
@@ -724,8 +730,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 427.5, y: -220}
-  m_SizeDelta: {x: 600, y: 91.9}
+  m_AnchoredPosition: {x: 624.6, y: -220}
+  m_SizeDelta: {x: 1000, y: 91.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2472768145471233456
 CanvasRenderer:
@@ -783,7 +789,7 @@ MonoBehaviour:
   selectedColor: {r: 0.3333333, g: 0.3333333, b: 0.3333333, a: 1}
   hoveredColor: {r: 0.7294118, g: 0.7294118, b: 0.7294118, a: 1}
   originalColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &1227255508789728672
+--- !u!114 &8814604195576962892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -834,19 +840,6 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6305548000449114750}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: c230389cdba1a4d47bda71c4d0e2b6f9,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1016,6 +1009,7 @@ GameObject:
   - component: {fileID: 5664768951255089262}
   - component: {fileID: 52403205281829691}
   - component: {fileID: 2826327190551309987}
+  - component: {fileID: 5421034428966157327}
   m_Layer: 5
   m_Name: ExitDialogue
   m_TagString: Untagged
@@ -1070,7 +1064,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f03655fd9199df644ba92830d7084702, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6cca9770ba14997458ac75687f5b97af, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1149,6 +1143,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5421034428966157327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6280248563378267401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8895ce9f24869a4bacc2658c7648fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pcButton_spr: {fileID: 21300000, guid: 6cca9770ba14997458ac75687f5b97af, type: 3}
+  xboxButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
+  psButton_spr: {fileID: 21300000, guid: e76c9f8733a38cd40bee16c7ddc461db, type: 3}
+  switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
+  uiElement: {fileID: 52403205281829691}
+  text: {fileID: 0}
 --- !u!1 &6905788380974473041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,8 +1358,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 22.7, y: 0}
-  m_SizeDelta: {x: 450, y: 50}
+  m_AnchoredPosition: {x: 129.5, y: 0}
+  m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3180940452084354565
 CanvasRenderer:
@@ -1405,8 +1417,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.8
-  m_fontSizeBase: 28.8
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1620,8 +1632,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 32.8, y: 0}
-  m_SizeDelta: {x: 450, y: 50}
+  m_AnchoredPosition: {x: 129.5, y: 0}
+  m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8857045170233540999
 CanvasRenderer:
@@ -1679,8 +1691,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.8
-  m_fontSizeBase: 28.8
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1783,7 +1795,7 @@ GameObject:
   - component: {fileID: 3053072878202894810}
   - component: {fileID: 274282709029075471}
   - component: {fileID: 8086235172301178047}
-  - component: {fileID: 1467828788691374143}
+  - component: {fileID: 5097049644522201809}
   m_Layer: 5
   m_Name: Dialogue_Text_Box.001
   m_TagString: Untagged
@@ -1808,8 +1820,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 427.5, y: -29.9}
-  m_SizeDelta: {x: 600, y: 91.9}
+  m_AnchoredPosition: {x: 624.6, y: -29.9}
+  m_SizeDelta: {x: 1000, y: 91.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3053072878202894810
 CanvasRenderer:
@@ -1867,7 +1879,7 @@ MonoBehaviour:
   selectedColor: {r: 0.33333334, g: 0.33333334, b: 0.33333334, a: 1}
   hoveredColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
   originalColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &1467828788691374143
+--- !u!114 &5097049644522201809
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1918,19 +1930,6 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6305548000449114750}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: c230389cdba1a4d47bda71c4d0e2b6f9,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2023,7 +2022,7 @@ GameObject:
   - component: {fileID: 2222438531475780586}
   - component: {fileID: 1288087272923089796}
   - component: {fileID: 8447695601325841738}
-  - component: {fileID: 1257748042076225404}
+  - component: {fileID: 4581037287341859741}
   m_Layer: 5
   m_Name: Dialogue_Text_Box.002
   m_TagString: Untagged
@@ -2048,8 +2047,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 464.75, y: -93.4}
-  m_SizeDelta: {x: 525.1, y: 91.9}
+  m_AnchoredPosition: {x: 624.6, y: -93.4}
+  m_SizeDelta: {x: 1000, y: 91.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2222438531475780586
 CanvasRenderer:
@@ -2107,7 +2106,7 @@ MonoBehaviour:
   selectedColor: {r: 0.33333334, g: 0.33333334, b: 0.33333334, a: 1}
   hoveredColor: {r: 0.7294118, g: 0.7294118, b: 0.7294118, a: 1}
   originalColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &1257748042076225404
+--- !u!114 &4581037287341859741
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2158,19 +2157,6 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6305548000449114750}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: c230389cdba1a4d47bda71c4d0e2b6f9,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
