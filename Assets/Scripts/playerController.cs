@@ -5,6 +5,7 @@ using DialogueSystem;
 using UnityEngine;
 using Input;
 using Unity.Mathematics;
+using UnityEngine.Audio;
 
 public class playerController : MonoBehaviour
 {
@@ -81,7 +82,8 @@ public class playerController : MonoBehaviour
 
     private int selectedOption;
 
-
+    private AudioSource audioSource;
+    bool isRandSFX = false;
 
     public void killPlayer()
     {
@@ -131,6 +133,17 @@ public class playerController : MonoBehaviour
         // selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
          //_currentCharacterModel = playerModels[selectedOption].gameObject;
          SetCharacterModel(_currentCharacterModel);
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.Log("Ambiant NPC Error");
+        }
+        else
+        {
+            audioSource.playOnAwake = false;
+            audioSource.outputAudioMixerGroup = audioManager.instance.GetSFXAudioMixer();
+            audioSource.spatialBlend = 1f;
+        }
     }
 
     // Start is called before the first frame update
@@ -147,6 +160,15 @@ public class playerController : MonoBehaviour
 
         _playerVel = Vector3.zero;
     }
+
+    void Update()
+    {
+        if (!isRandSFX)
+        {
+            StartCoroutine(RandomAmbientSound());
+        }
+    }
+
     public void SetCharacterModel(GameObject characterModel)
     {
         _currentCharacterModel = characterModel;
@@ -518,5 +540,14 @@ public class playerController : MonoBehaviour
     public void UpdatePlayerCharacter(int index)
     {
         playerModels[index].enabled = true;
+    }
+    private IEnumerator RandomAmbientSound()   //Plays a random sound in random intervals
+    {
+        isRandSFX = true;
+
+        yield return new WaitForSeconds(UnityEngine.Random.Range(20, 50));
+        audioSource.PlayOneShot(audioManager.instance.ambiance[UnityEngine.Random.Range(0, audioManager.instance.ambiance.Length)], audioManager.instance.ambianceVol);
+
+        isRandSFX = false;
     }
 }
