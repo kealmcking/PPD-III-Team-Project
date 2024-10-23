@@ -62,7 +62,7 @@ namespace DialogueSystem
             }
             else
             {
-                audioSource.clip = audioManager.instance.dialogueMutter[UnityEngine.Random.Range(0,audioManager.instance.dialogueMutter.Length)];
+                //audioSource.clip = audioManager.instance.dialogueMutter[UnityEngine.Random.Range(0,audioManager.instance.dialogueMutter.Length)];
                 audioSource.volume = audioManager.instance.dialogueVol;
                 audioSource.outputAudioMixerGroup = audioManager.instance.GetSFXAudioMixer();
                 audioSource.loop = true;

@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ace237cbad0c40ab9499e1b7fa1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactCanvas: {fileID: 106240880129356883}
+  interactCanvas: []
 --- !u!54 &2620812408414465785
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -420,6 +420,7 @@ MonoBehaviour:
   isInteractable: 1
   components: []
   componentPositions: []
+  canConditionNotBeUsed: 1
   isInteractedWith: 0
 --- !u!1 &6729304176714970364
 GameObject:
