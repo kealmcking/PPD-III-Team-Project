@@ -33,6 +33,9 @@ public class audioManager : MonoBehaviour
     [SerializeField] public AudioClip pickUp;
     [Range(0, 1)] public float pickUpVol;
 
+    [SerializeField] public AudioClip[] Swing;
+    [Range(0, 1)] public float SwingVol;
+
     [Header("------------------------- Puzzle SFX")]
     [SerializeField] public AudioClip[] puzzleMove;
     [SerializeField] public AudioClip[] puzzleHit;
