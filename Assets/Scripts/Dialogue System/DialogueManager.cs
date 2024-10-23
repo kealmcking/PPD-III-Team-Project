@@ -221,7 +221,7 @@ namespace DialogueSystem
         public void enableDialogueUI(Suspect suspect)
         {
             currentSuspect = suspect;
-            currentNPC = currentSuspect.Npc;
+            currentNPC = currentSuspect.Data.Npc;
             currentTree = currentNPC.trees[currentDay];
             speakerImage.sprite = currentNPC.characterSprite_base;
             dialogueContainer.SetActive(true);
