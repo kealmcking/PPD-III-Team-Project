@@ -86,9 +86,9 @@ public class AIController : MonoBehaviour
     {
         isRoaming = true;
         setSpeed(normSpeed);
-        Vector3 randomPos = Random.insideUnitSphere * roamDist;
+        Vector3 randomPos = Random.insideUnitSphere * roamDist + startingPos;
         //Vector3 randomPos = getRandomRoomPos();
-        randomPos += startingPos;
+        //randomPos += startingPos;
 
         NavMeshHit hit;
         NavMesh.SamplePosition(randomPos, out hit, roamDist, 1);
@@ -102,6 +102,8 @@ public class AIController : MonoBehaviour
         //yield return new WaitForSeconds(roamTimer);
         //if (isScared)
         //    anim.SetBool("Scared", false);
+        anim.SetFloat("Blend", 0);
+        yield return new WaitForSeconds(Random.Range(2f, 3f));
         isRoaming = false;
         someCo = null;
     }
