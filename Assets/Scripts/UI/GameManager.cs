@@ -418,6 +418,8 @@ public class GameManager : MonoBehaviour
         ActivateSleepMenu();
         yield return new WaitForSeconds(1f);
         DeactivateSleepMenu();
+
+        audioManager.instance.PlaySFX(audioManager.instance.sleeping, audioManager.instance.sleepVol);
         //InputManager.instance.EnableCharacterInputs();
 
         _day++;

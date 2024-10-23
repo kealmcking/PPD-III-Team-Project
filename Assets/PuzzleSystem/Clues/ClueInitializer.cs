@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using UnityEngine;
 using UnityEngine.AI;
@@ -39,7 +40,7 @@ public class ClueInitializer : MonoBehaviour
         BaseClueData killer = null;
         BaseClueData room = null;
         BaseClueData weapon = null;
-        BaseClueData motive = null;
+        /*BaseClueData motive = null;*/
         foreach (var clue in clues)
         {
             if(clue.Name == selection.GetKiller().Name)
@@ -54,16 +55,19 @@ public class ClueInitializer : MonoBehaviour
             {
                 weapon = clue;
             }
-            if(clue.Name == selection.GetMotive().Name)
+            /*if(clue.Name == selection.GetMotive().Name)
             {
                 motive = clue;
-            }                                   
+            }   */                                
         }
         clues.Remove(killer);
         clues.Remove(room);
         clues.Remove(weapon);
-        clues.Remove(motive);
-        if(activePuzzles.Count > 0)
+        /*  clues.Remove(motive);*/
+        clues
+            .Where(c =>  c is MotiveClueData )
+            .Select(c => clues.Remove(c));
+        if (activePuzzles.Count > 0)
         {
             activePuzzles.ForEach(p =>
             {

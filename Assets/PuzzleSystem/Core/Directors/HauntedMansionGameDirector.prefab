@@ -10,13 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 8547859855598374174}
   - component: {fileID: 3641521872535798459}
+  - component: {fileID: 8337090364758556819}
   m_Layer: 0
   m_Name: HauntedMansionGameDirector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8547859855598374174
 Transform:
   m_ObjectHideFlags: 0
@@ -44,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6310292306c38464dbb6e8e2cb4c78c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initializer: {fileID: 8337090364758556819}
   rooms:
   - {fileID: 11400000, guid: be7f8b121f612a94b8ce283d73791bdc, type: 2}
   - {fileID: 11400000, guid: 893ebb96177887b4489f30f2b25d439f, type: 2}
@@ -66,7 +68,22 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7a92456ca3d43c54ebcf8ee9f1edf858, type: 2}
   - {fileID: 11400000, guid: ae561176af7598043ac70d84cab4d6a2, type: 2}
   - {fileID: 11400000, guid: ddef89f30362b6f46b64c179fdb6ee29, type: 2}
-  motives: []
+  motives:
+  - {fileID: 11400000, guid: 483a9b68953ad6648ae2632fc6e50297, type: 2}
+  - {fileID: 11400000, guid: 98c1c3db36de6334aa37a489e687b07e, type: 2}
+  - {fileID: 11400000, guid: 56cf3a07341746d47acbd66c97ada57f, type: 2}
+  - {fileID: 11400000, guid: f7ba4e6678af53f4486d6ca1c66657be, type: 2}
+  - {fileID: 11400000, guid: 1ba46109822eefb45b4119b9fc7159b8, type: 2}
+  - {fileID: 11400000, guid: 716a5d8da01f2e14ca6a7d3a4c755539, type: 2}
+  - {fileID: 11400000, guid: d255c7935b4169144922661d976dd905, type: 2}
+  killers:
+  - {fileID: 11400000, guid: 442cf5833b2f5e146b0bc3f1e66354b5, type: 2}
+  - {fileID: 11400000, guid: 3b6fc4b48a332404b9f58f1e563328b1, type: 2}
+  - {fileID: 11400000, guid: 531deda4f1b5e8c44a0c846bf47f2c3f, type: 2}
+  - {fileID: 11400000, guid: 6c0faddf1241d1042a11755bbd1e7d80, type: 2}
+  - {fileID: 11400000, guid: 36591d8c243d34744b4db9a3249bdac1, type: 2}
+  - {fileID: 11400000, guid: 84aabce00a10d1b4e9dbe590bb6ab842, type: 2}
+  - {fileID: 11400000, guid: 29ab37eddd868d14d96d8d870df8ccc8, type: 2}
   suspectPool:
   - {fileID: 11400000, guid: 2e2a8a219c155134997b3317ae129785, type: 2}
   - {fileID: 11400000, guid: 6bd135cbb8e9e114c9b3df9974f5562b, type: 2}
@@ -75,8 +92,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1069c8004e90b484bba056ccc65e4ae6, type: 2}
   - {fileID: 11400000, guid: ac0cf74776e5ad64aa011340562cabc9, type: 2}
   - {fileID: 11400000, guid: 6b3f6cd3e0fc09e4090cc2eeda323ef5, type: 2}
-  - {fileID: 11400000, guid: 66805b5526ac4564b89b43478dcdcf61, type: 2}
   cases:
-  - {fileID: 11400000, guid: f0943565884454f4c909e32217e02242, type: 2}
+  - {fileID: 11400000, guid: 2196388458882d7468446a4b68da0cef, type: 2}
   suspectCount: 7
   ghost: {fileID: 11400000, guid: d3bf54112b533f046ae7a1b71f2333f9, type: 2}
+  suspects: []
+  chosenKiller: {fileID: 0}
+  sceneSuspects: []
+  clues: []
+--- !u!114 &8337090364758556819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262484444681594429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518c82123f25c9d4e898241b9c704349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

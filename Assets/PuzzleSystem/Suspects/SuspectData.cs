@@ -13,6 +13,6 @@ public class SuspectData : ScriptableObject, ICustomizableComponent
     public string Name => suspectName;
     public Suspect SuspectPrefab => suspectPrefab;
     public Sprite Icon => icon;
-    public NPC Npc => npc;
+    public NPC Npc { get { return npc; } set { npc = value; } }
     public Description Description => description;  
 }
