@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa1ca0270ad91e40a392027fef8cd2a, type: 3}
   m_Name: Jealousy
   m_EditorClassIdentifier: 
-  trees: []
-  motive: {fileID: 0}
-  characterSprite_base: {fileID: 0}
+  trees:
+  - {fileID: 11400000, guid: ffe89426d32729a42a7bca93e0d9fffe, type: 2}
+  - {fileID: 11400000, guid: 58a6a815646a57045be12bcf0fb259c3, type: 2}
+  - {fileID: 11400000, guid: a58b12f4d0fa4bf428fb1de15f47bb9a, type: 2}
+  - {fileID: 11400000, guid: 69a99da28a68687458043b4f10d21bde, type: 2}
+  - {fileID: 11400000, guid: 9eaad7e47fac77e4fa8d7a629ea7b0e5, type: 2}
+  - {fileID: 11400000, guid: 887977ea8845e63438577af5db29c503, type: 2}
+  motive: {fileID: 11400000, guid: f7ba4e6678af53f4486d6ca1c66657be, type: 2}
+  characterSprite_base: {fileID: 21300000, guid: a440583c67cd93f49945b86033aaa361,
+    type: 3}
   characterSprite_happy: {fileID: 0}
   characterSprite_upset: {fileID: 0}
   characterSprite_mad: {fileID: 0}
