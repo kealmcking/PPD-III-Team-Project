@@ -217,8 +217,15 @@ namespace Input
         public void OnInventory(InputAction.CallbackContext context)
         {
             if (GameManager.instance.IsPauseActive || DialogueManager.instance.IsActive) return;
-            if (GameManager.instance.InventoryActive) GameManager.instance.DeactivateInventoryUI();
-            else GameManager.instance.ActivateInventoryUI();
+            if (GameManager.instance.InventoryActive)
+            {
+                GameManager.instance.DeactivateInventoryUI();
+                TooltipManager.instance.hide();
+            }
+            else
+            {
+                GameManager.instance.ActivateInventoryUI();
+            }
             Debug.Log("Inventory Button Pressed");
         }
 
