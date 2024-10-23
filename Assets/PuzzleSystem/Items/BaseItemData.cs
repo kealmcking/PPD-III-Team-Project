@@ -10,6 +10,8 @@ public abstract class BaseItemData : ScriptableObject, ICustomizableComponent
     [SerializeField] protected Description description;
     [SerializeField] protected Item itemPrefab;
     [SerializeField, Tooltip("represents the display icon")] protected Sprite icon;
+    bool isBeingHeld;
+    public bool IsBeingHeld { get {  return isBeingHeld; } set { isBeingHeld = value; } }
     private Guid id = new Guid();
     public Guid ID => id;
     public Item Prefab => itemPrefab;

@@ -63,6 +63,7 @@ public class playerController : MonoBehaviour
     [SerializeField] private Transform handPos;
     [SerializeField] Transform headPos;
     private IInteractable objectInHand;
+    public IInteractable ObjectInHand => objectInHand;  
     private bool hasTurned;
     private bool startTurning;
 
@@ -460,7 +461,7 @@ public class playerController : MonoBehaviour
     {
         if (obj == null) return;
     
-            //when an object is in the hand if its a condition object it will be thrown if not it will attempt to be readded to the player inventory
+          
             if(objectInHand != null)
             {
             if (objectInHand is Item item)
@@ -492,6 +493,7 @@ public class playerController : MonoBehaviour
             Vector3 offset = equippedItem.HandlePoint.position - equippedItem.transform.position; 
             equippedItem.transform.position = handPos.position - offset;
             objectInHand = equippedItem;
+   
             playerLookAtTarget = null;
         }
     }

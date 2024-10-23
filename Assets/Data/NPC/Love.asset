@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa1ca0270ad91e40a392027fef8cd2a, type: 3}
   m_Name: Love
   m_EditorClassIdentifier: 
-  trees: []
+  trees:
+  - {fileID: 11400000, guid: 8c4f63a2e42dbe543bf8ae391f1edda3, type: 2}
+  - {fileID: 11400000, guid: c12084d4460468c47a452b6670fee4ae, type: 2}
+  - {fileID: 11400000, guid: e77b3205ef92c7540a250df0f0c11ece, type: 2}
+  - {fileID: 11400000, guid: c959e99c5cde57041aea07cab75e1e1c, type: 2}
+  - {fileID: 11400000, guid: ef8d851101e97c04abe110b787bc176c, type: 2}
+  - {fileID: 11400000, guid: 537e4db570daa9d4fbb3f4bc6266f49f, type: 2}
   motive: {fileID: 11400000, guid: 1ba46109822eefb45b4119b9fc7159b8, type: 2}
-  characterSprite_base: {fileID: 0}
+  characterSprite_base: {fileID: 21300000, guid: a440583c67cd93f49945b86033aaa361,
+    type: 3}
   characterSprite_happy: {fileID: 0}
   characterSprite_upset: {fileID: 0}
   characterSprite_mad: {fileID: 0}
