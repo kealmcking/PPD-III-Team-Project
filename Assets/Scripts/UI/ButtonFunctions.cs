@@ -69,6 +69,11 @@ public class ButtonFunctions : MonoBehaviour
     {
         MainMenuManager.instance.DisplayCharSelect(false);
     }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
     
     public void PlayGame()
     {
