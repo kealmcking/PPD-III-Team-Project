@@ -21,7 +21,7 @@ GameObject:
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4329741853857698
 Transform:
@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1764705, y: 1.1764705, z: 1.1764704}
+  m_LocalScale: {x: 0.76009333, y: 0.76009274, z: 0.76009345}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ace237cbad0c40ab9499e1b7fa1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactCanvas: {fileID: 0}
+  interactCanvas: []
 --- !u!114 &7851275897846709209
 MonoBehaviour:
   m_ObjectHideFlags: 0
