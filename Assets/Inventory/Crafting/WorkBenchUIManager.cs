@@ -12,6 +12,8 @@ public class WorkBenchUIManager : MonoBehaviour
     [SerializeField] invSlot[] tableSlots;
     [SerializeField] GameObject generateButton;
     [SerializeField] GameObject vfx;
+    [SerializeField, Tooltip("set this to the crafting table")] AudioSource aud;
+    [SerializeField] AudioClip craftingCompleteSound;
 
     [Header("Cogs")]
     [SerializeField] Animator topCogAnimator;
@@ -61,6 +63,7 @@ public class WorkBenchUIManager : MonoBehaviour
         topCogAnimator.enabled = false;
         leftCogAnimator.enabled = false;
         rightCogAnimator.enabled = false;
+        aud.PlayOneShot(craftingCompleteSound);
         Item itemToDrop = Instantiate(matchedItem.Data.Prefab);
         matchedItem = null;
         foreach (var slot in tableSlots)
