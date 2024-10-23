@@ -42,6 +42,11 @@ public class AnimationEventCatcher : MonoBehaviour
             audioManager.PlaySFX(audioManager.footStepWood[UnityEngine.Random.Range(0, audioManager.footStepWood.Length)], audioManager.footStepWalkVol);
         }
     }
+
+    private void Swing()
+    {
+        audioManager.PlaySFX(audioManager.Swing[Random.Range(0, audioManager.Swing.Length)], audioManager.SwingVol);
+    }
 }
 
 

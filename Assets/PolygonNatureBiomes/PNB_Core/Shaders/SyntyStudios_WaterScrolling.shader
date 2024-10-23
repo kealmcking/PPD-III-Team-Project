@@ -388,7 +388,7 @@ Shader "SyntyStudios/WaterScrolling"
 				int _PassValue;
 			#endif
 
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _DistortionMap;
 			sampler2D _Foam_Texture;
 			sampler2D _Ripples;
@@ -1045,7 +1045,7 @@ Shader "SyntyStudios/WaterScrolling"
 				int _PassValue;
 			#endif
 
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _Foam_Texture;
 
 
@@ -1404,7 +1404,7 @@ Shader "SyntyStudios/WaterScrolling"
 				int _PassValue;
 			#endif
 
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _Foam_Texture;
 
 
@@ -1734,7 +1734,7 @@ Shader "SyntyStudios/WaterScrolling"
 				int _PassValue;
 			#endif
 
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _DistortionMap;
 			sampler2D _Foam_Texture;
 
@@ -2108,7 +2108,7 @@ Shader "SyntyStudios/WaterScrolling"
 				int _PassValue;
 			#endif
 
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _DistortionMap;
 			sampler2D _Foam_Texture;
 
@@ -2468,7 +2468,7 @@ Shader "SyntyStudios/WaterScrolling"
 			#endif
 
 			sampler2D _Ripples;
-			uniform float4 _CameraDepthTexture_TexelSize;
+			//uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _Foam_Texture;
 
 
@@ -2892,7 +2892,7 @@ Shader "SyntyStudios/WaterScrolling"
 				int _PassValue;
 			#endif
 
-			uniform float4 _CameraDepthTexture_TexelSize;
+			////uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _DistortionMap;
 			sampler2D _Foam_Texture;
 			sampler2D _Ripples;

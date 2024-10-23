@@ -43,13 +43,11 @@ public class DecisionUIManager : MonoBehaviour
     private void OnEnable()
     {
         EventSheet.SendAllClues += UpdateChoices;
-        EventSheet.SendKillerClue += UpdateKiller;
         EventSheet.SendGameSelection += UpdateCorrectChoices;
     }
     private void OnDisable()
     {
         EventSheet.SendAllClues -= UpdateChoices;
-        EventSheet.SendKillerClue -= UpdateKiller;
         EventSheet.SendGameSelection -= UpdateCorrectChoices;
     }
     private void Update()
@@ -147,17 +145,12 @@ public class DecisionUIManager : MonoBehaviour
     {
         gameSelection = selection;
       
-    motive = gameSelection.GetMotive();
-    weapon = gameSelection.GetWeapon();
-    room = gameSelection.GetRoom();
-}   
-    private void UpdateKiller(KillerClueData data)
-    {
-        Debug.Log(data.Name);
-        killer = data;
-        killerChoices.Add(data);
-        UpdateToggleUI(killerToggles.ElementAt(killerChoices.IndexOf(data)), data);
-    }
+        motive = gameSelection.GetMotive();
+        weapon = gameSelection.GetWeapon();
+        room = gameSelection.GetRoom();
+        killer = gameSelection.GetKiller();
+    }   
+  
     private void UpdateToggleUI(Toggle toggle, BaseClueData data)
     {
         TextMeshProUGUI text = toggle.GetComponentInChildren<TextMeshProUGUI>();

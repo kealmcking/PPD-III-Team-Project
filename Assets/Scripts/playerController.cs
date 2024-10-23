@@ -57,7 +57,8 @@ public class playerController : MonoBehaviour
 
     [Header("Player Stats - Gravity")]
     [SerializeField] private float gravity = -9.81f;
-
+    public float slipperyFactor = 1f;
+    public bool isSlipping;
 
     [SerializeField] private Transform handPos;
     [SerializeField] Transform headPos;
@@ -126,8 +127,8 @@ public class playerController : MonoBehaviour
     {
          originalController = _animator.runtimeAnimatorController;
          audioManager = GameObject.FindGameObjectWithTag("Audio Manager").GetComponent<audioManager>();
-         selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
-         _currentCharacterModel = playerModels[selectedOption].gameObject;
+        // selectedOption = PlayerPrefs.GetInt("selectedOption", 0);
+         //_currentCharacterModel = playerModels[selectedOption].gameObject;
          SetCharacterModel(_currentCharacterModel);
     }
 
@@ -163,7 +164,6 @@ public class playerController : MonoBehaviour
 
         rotateTowardCamera();
         //toggleFlashlight();
-        audioManager.PlaySFX(audioManager.flashlight, audioManager.flashlightVol);
         //updateFlashlightDirection();
     }
     void movement()
@@ -200,8 +200,18 @@ public class playerController : MonoBehaviour
         _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, Time.deltaTime * moveSmoothSpeed);
 
         // Apply movement
-        _moveDir = Vector3.Lerp(_moveDir, targetMoveDirection, 0.1f);
-        charController.Move(_moveDir * _currentSpeed * Time.deltaTime);
+        // Apply movement
+        if (isSlipping)
+        {
+            _moveDir = Vector3.Lerp(_moveDir, targetMoveDirection, 0.1f * slipperyFactor);
+            charController.Move(_moveDir * _currentSpeed * Time.deltaTime);
+        }
+        else
+        {
+            _moveDir = Vector3.Lerp(_moveDir, targetMoveDirection, 0.1f);
+            charController.Move(_moveDir * _currentSpeed * Time.deltaTime);
+        }
+
 
         sprint();
 
@@ -299,55 +309,97 @@ public class playerController : MonoBehaviour
 
     private void Interact()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
+        float maxAngle = 45f;
+        float minAngle = float.MaxValue;
+        float minDistance = float.MaxValue;
+        Collider targetCollider = null;
+        IInteractable targetInteractable = null;
 
-      
-        Collider closestCollider = null;
-        IInteractable potentialItem = null;
+        // Get all interactable colliders within the interaction distance
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
+        List<Collider> interactableColliders = new List<Collider>();
+
         foreach (var collider in colliders)
         {
-            collider.TryGetComponent(out IInteractable interactable);
-            if (interactable == null) continue;
-            potentialItem = interactable;
+            // Check if the collider has an IInteractable component
+            if (!collider.TryGetComponent<IInteractable>(out IInteractable interactable))
+                continue;
+
             Vector3 direction = collider.transform.position - transform.position;
             float angle = Vector3.Angle(transform.forward, direction);
-            if (angle > 45f) continue;
-            
-            if (closestCollider == null)
-                closestCollider = collider;
 
-            Debug.Log(closestCollider.name);
-            if (Vector3.Distance(transform.position,collider.transform.position) < Vector3.Distance(transform.position, closestCollider.transform.position))
+            // Skip if the object is outside the maximum interaction angle
+            if (angle > maxAngle)
+                continue;
+
+            float distance = direction.magnitude;
+
+            // Prioritize objects closest to the forward direction and then by distance
+            if (angle < minAngle || (Mathf.Approximately(angle, minAngle) && distance < minDistance))
             {
-                closestCollider = collider;                  
+                minAngle = angle;
+                minDistance = distance;
+                targetCollider = collider;
+                targetInteractable = interactable;
             }
+
+            // Add to list for potential blocking checks
+            interactableColliders.Add(collider);
         }
 
-        // Interact with the closest valid object
-        if (closestCollider != null )
+        // Proceed if a target collider was found
+        if (targetCollider != null)
         {
-            if (potentialItem is Item item)
+            Vector3 direction = targetCollider.transform.position - transform.position;
+            float distance = direction.magnitude;
+
+            // Check for line of sight using Raycast
+            if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, distance))
+            {
+                if (hit.collider != targetCollider)
+                {
+                    // Line of sight is blocked
+                    // Check if the blocking collider is an interactable
+                    if (hit.collider.TryGetComponent<IInteractable>(out IInteractable blockingInteractable))
+                    {
+                        // Update the target to the blocking interactable
+                        targetCollider = hit.collider;
+                        targetInteractable = blockingInteractable;
+                    }
+                    else
+                    {
+                        // Line of sight is blocked by a non-interactable object
+                        Debug.Log("Line of sight blocked by " + hit.collider.name);
+                        return;
+                    }
+                }
+            }
+
+            // Trigger interaction animation
+            _animator.SetTrigger("activate");
+
+            // Interact with the target interactable object
+            if (targetInteractable is Item item)
             {
                 if (item.Data is CraftableItemData itemData && objectInHand == null)
                 {
-                    _animator.SetTrigger("activate");
                     ValidateEquippedItem(itemData);
                     Destroy(item.gameObject);
+
+                    audioManager.PlaySFX(audioManager.pickUp, audioManager.pickUpVol);
                 }
                 else
                 {
-                    _animator.SetTrigger("activate");
-                    potentialItem.Interact();
+                    targetInteractable.Interact();
                 }
             }
             else
             {
-                _animator.SetTrigger("activate");
-                potentialItem.Interact();
+                targetInteractable.Interact();
             }
-
         }
     }
+
     private void Use()
     {
         if(objectInHand != null && objectInHand is Item item)

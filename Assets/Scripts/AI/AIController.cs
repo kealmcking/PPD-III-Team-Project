@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-[RequireComponent(typeof(CapsuleCollider),typeof(NavMeshAgent))]
+using UnityEngine.Audio;
+[RequireComponent(typeof(CapsuleCollider),typeof(NavMeshAgent),typeof(AudioSource))]
 public class AIController : MonoBehaviour
 {
     private Vector3 playerDir;
@@ -17,6 +18,7 @@ public class AIController : MonoBehaviour
     bool playerInRange;
     bool isEnemyChasing = false;
     bool isScared = false;
+    bool isRandSFX = false;
     [SerializeField] float attackDist = .5f;
     [SerializeField] float normSpeed = 1f;
     [SerializeField] float chaseSpeed = 2f;
@@ -30,12 +32,24 @@ public class AIController : MonoBehaviour
 
     [SerializeField] Suspect suspect;
     [SerializeField] Item item;
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
 
     private void Awake()
     {
         suspect ??= GetComponent<Suspect>();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.Log("Ambiant NPC Error");
+        }
+        else
+        {
+            audioSource.playOnAwake = false;
+            audioSource.outputAudioMixerGroup = audioManager.instance.GetSFXAudioMixer();
+            audioSource.spatialBlend = 1f;
+        }
     }
     void Start()
     {
@@ -63,11 +77,15 @@ public class AIController : MonoBehaviour
         if (!playerInRange && !isRoaming && agent.remainingDistance < 0.05f && someCo == null && !isEnemyChasing)
             someCo = StartCoroutine(roam());
 
+        if (!isRandSFX)
+        {
+            StartCoroutine(RandomSound());
+        }
     }
 
     private void chasePlayer()
     {
-         if(suspect.IsKiller && GameManager.instance.Day == 5)
+         if(suspect.IsKiller && GameManager.instance.Day == 7)
          {
             if (!item.gameObject.activeSelf)
                 item.gameObject.SetActive(true);
@@ -177,6 +195,16 @@ public class AIController : MonoBehaviour
     {
         item.BodyCol.enabled = false;
 
+    }
+
+    private IEnumerator RandomSound()   //Plays a random sound in random intervals
+    {
+        isRandSFX = true;
+
+        yield return new WaitForSeconds(UnityEngine.Random.Range(20, 50));
+        audioSource.PlayOneShot(audioManager.instance.ambiantNPCSFX[UnityEngine.Random.Range(0, audioManager.instance.ambiantNPCSFX.Length)], audioManager.instance.ambiantNPCVol);
+
+        isRandSFX = false;
     }
 }
    

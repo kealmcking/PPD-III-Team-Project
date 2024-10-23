@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,34 +10,64 @@ public class ClueInitializer : MonoBehaviour
  
    // SuspectData chosenKiller = null;
     
-    public void Initialize(List<KillerClueData> killers, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives,List<Puzzle> activePuzzles)
+    public void Initialize(GameSelection selection, List<KillerClueData> killers, List<RoomClueData> rooms, List<WeaponClueData> weapons, List<MotiveClueData> motives,List<Puzzle> activePuzzles)
     {
         List<BaseClueData> clues = new List<BaseClueData>();
        
         killers.ForEach(s =>
         {
-           // if (s.ID != selection.GetKiller().ID)
+           //  if (s.Name != selection.GetKiller().Name)
                 clues.Add(s);
         });
        
         rooms.ForEach(s => 
             {
-               // if (s.ID != selection.GetRoom().ID)
+               // if (s.Name != selection.GetRoom().Name)
                 clues.Add(s);
             });
         weapons.ForEach(s =>
         {
-           // if (s.ID != selection.GetWeapon().ID)
+            //if (s.Name != selection.GetWeapon().Name)
                 clues.Add(s);
         });
         motives.ForEach(s =>
         {
-           // if (s.ID != selection.GetMotive().ID)
+           // if (s.Name != selection.GetMotive().Name)
                 clues.Add(s);
         });
 
         EventSheet.SendAllClues(clues);
-        if(activePuzzles.Count > 0)
+        BaseClueData killer = null;
+        BaseClueData room = null;
+        BaseClueData weapon = null;
+        /*BaseClueData motive = null;*/
+        foreach (var clue in clues)
+        {
+            if(clue.Name == selection.GetKiller().Name)
+            {
+                killer = clue;
+            }
+            if( clue.Name == selection.GetRoom().Name)
+            {
+                room = clue;
+            }
+           if( clue.Name == selection.GetWeapon().Name)
+            {
+                weapon = clue;
+            }
+            /*if(clue.Name == selection.GetMotive().Name)
+            {
+                motive = clue;
+            }   */                                
+        }
+        clues.Remove(killer);
+        clues.Remove(room);
+        clues.Remove(weapon);
+        /*  clues.Remove(motive);*/
+        clues
+            .Where(c =>  c is MotiveClueData )
+            .Select(c => clues.Remove(c));
+        if (activePuzzles.Count > 0)
         {
             activePuzzles.ForEach(p =>
             {

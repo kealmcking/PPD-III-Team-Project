@@ -33,6 +33,9 @@ public class audioManager : MonoBehaviour
     [SerializeField] public AudioClip pickUp;
     [Range(0, 1)] public float pickUpVol;
 
+    [SerializeField] public AudioClip[] Swing;
+    [Range(0, 1)] public float SwingVol;
+
     [Header("------------------------- Puzzle SFX")]
     [SerializeField] public AudioClip[] puzzleMove;
     [SerializeField] public AudioClip[] puzzleHit;
@@ -80,6 +83,8 @@ public class audioManager : MonoBehaviour
     [Range(0, 1)] public float sleepVol;
     [SerializeField] public AudioClip flashlight;
     [Range(0, 1)] public float flashlightVol;
+    [SerializeField] public AudioClip[] ambiantNPCSFX;
+    [Range(0, 1)] public float ambiantNPCVol;
     [SerializeField] public AudioClip errorAudio;
 
     [Header("------------------------- Misc Variables")]

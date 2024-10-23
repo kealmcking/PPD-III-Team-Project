@@ -55,12 +55,14 @@ public class Puzzle : MonoBehaviour, ICustomizableComponent
         if (conditionSets.Count > 0)
         {
             setIndex++;
-           if(conditionSets.Count > setIndex)
+           if (conditionSets.Count > setIndex)
            {
                 if(conditionSets[setIndex].DeactivateSetAfterCompletion == true)
                 conditionSets[setIndex].gameObject.SetActive(false);
                 conditionSets[setIndex].gameObject.SetActive(true);
+                return;
             }
+
             //Fire off events for various updates when puzzle complete
             //sfx/vfx/etc
             if (vfx != null)

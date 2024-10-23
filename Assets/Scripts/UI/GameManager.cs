@@ -51,6 +51,11 @@ public class GameManager : MonoBehaviour
     public List<Toggle> weaponToggles = new List<Toggle>();
     public List<Toggle> roomToggles = new List<Toggle>();
 
+    [Header("Selected Game Objects UI")]
+    [SerializeField] GameObject pauseQuitGameButton;
+    [SerializeField] GameObject loseQuitGameButton;
+    [SerializeField] GameObject winQuitGameButton;
+
     private int suspectListIndex;
     private int weaponListIndex;
     private int roomListIndex;
@@ -91,9 +96,9 @@ public class GameManager : MonoBehaviour
 
         menuActive = null;
 
-        
 
-        objectivesText.text = "";
+
+        UpdateObjectiveText("Solve The Case");
         daySystemText.text = "Day " + _day;
         timerText.text = _time.ToString();
 
@@ -225,7 +230,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
-        
+        EventSystem.current.SetSelectedGameObject(pauseQuitGameButton);
         audioManager.instance.PauseSounds();
     }
     public void ActivatePauseMenu()
@@ -234,6 +239,7 @@ public class GameManager : MonoBehaviour
         menuActive = pauseUI;
         menuActive.SetActive(true);
         audioManager.instance.PlaySFX(audioManager.instance.UIOpen, audioManager.instance.UIVol);
+        
     }
     public void UnpauseGame()
     {
@@ -337,7 +343,7 @@ public class GameManager : MonoBehaviour
 
         menuActive = winUI;
         menuActive.SetActive(true);
-
+        EventSystem.current.SetSelectedGameObject(winQuitGameButton);
         audioManager.instance.PlaySFX(audioManager.instance.UIWin, audioManager.instance.UIVol);
     }
 
@@ -346,7 +352,7 @@ public class GameManager : MonoBehaviour
         PauseGame();
         menuActive = loseUI;
         menuActive.SetActive(true);
-
+        EventSystem.current.SetSelectedGameObject(loseQuitGameButton);
         audioManager.instance.PlaySFX(audioManager.instance.UILose, audioManager.instance.UIVol);
     }
 
@@ -381,12 +387,13 @@ public class GameManager : MonoBehaviour
             float seconds = Mathf.FloorToInt(_time % 60);
 
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        }
+        }   
         else
         {
             _time = 0;
             timerOn = false;
-            timerText.text = "Go To Sleep";
+            timerText.text = "";
+            UpdateObjectiveText("Go To Sleep");
             isTimeToSleep = true;
             EventSheet.GateConditionStatus?.Invoke(false);
         }
@@ -411,6 +418,8 @@ public class GameManager : MonoBehaviour
         ActivateSleepMenu();
         yield return new WaitForSeconds(1f);
         DeactivateSleepMenu();
+
+        audioManager.instance.PlaySFX(audioManager.instance.sleeping, audioManager.instance.sleepVol);
         //InputManager.instance.EnableCharacterInputs();
 
         _day++;
@@ -418,9 +427,9 @@ public class GameManager : MonoBehaviour
         EventSheet.GateConditionStatus?.Invoke(true);
         isTimeToSleep = false;
         _coroutine = null;
-
-
-
+        timerOn = true;
+        UpdateTimer(15);
+        UpdateObjectiveText("Solve The Case");
     }
 
     

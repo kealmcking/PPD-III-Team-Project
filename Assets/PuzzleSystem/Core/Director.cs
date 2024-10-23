@@ -19,6 +19,7 @@ public class Director : MonoBehaviour
     [SerializeField, Tooltip("This contains the list of the motives. " +
      "It is also used to update the UI for instance when guessing the motive which was used for the murder")]
     List<KillerClueData> killers;
+    [SerializeField] List<NPC> dialogues;
     [SerializeField, Tooltip("Add all potential suspects here")] List<SuspectData> suspectPool;
     [SerializeField, Tooltip("This represents all the possible cases available for this level")] List<Case> cases;
 
@@ -57,6 +58,12 @@ public class Director : MonoBehaviour
     public void Start()
     {
         suspects = Randomizer.GetRandomizedGroupFromList(suspectPool, suspectCount);
+        foreach(var suspect in suspects)
+        {
+            suspect.Npc = Randomizer.GetRandomizedObjectFromListAndRemove(ref dialogues);
+        }
+
+
         scenePuzzles = FindObjectsByType<Puzzle>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
         sceneLore = FindObjectsByType<Lore>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
         gameSelection = new GameSelection(suspects, killers, rooms, weapons, cases, motives);
@@ -93,7 +100,7 @@ public class Director : MonoBehaviour
 
         }
 
-        initializer.Initialize(killers, rooms, weapons, motives, activePuzzles);
+        initializer.Initialize(gameSelection,killers, rooms, weapons, motives, activePuzzles);
 
         List<Suspect> newSuspects = killers
             .Select(k => k.data.SuspectPrefab)
@@ -102,7 +109,6 @@ public class Director : MonoBehaviour
         {
             EventSheet.InitializeSuspectsToScene?.Invoke(gameSelection.GetKiller().data.SuspectPrefab,newSuspects, SpawnPointType.Starting, true);
         }
-
         if (gameSelection != null)
             EventSheet.SendGameSelection?.Invoke(gameSelection);
         
