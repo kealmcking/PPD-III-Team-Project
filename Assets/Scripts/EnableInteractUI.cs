@@ -28,12 +28,18 @@ public class EnableInteractUI : MonoBehaviour
 
     private void Awake()
     {
+        List<GameObject> toRemove = new List<GameObject>();
         foreach (GameObject canvas in interactCanvas)
         {
             if (canvas == null)
             {
-                interactCanvas.Remove(canvas);
+                toRemove.Remove(canvas);
             }
+        }
+
+        foreach (GameObject canvas in toRemove)
+        {
+            interactCanvas.Remove(canvas);
         }
     }
 
