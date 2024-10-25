@@ -71,7 +71,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OptionsMainMenu()
     {
-        ButtonFunctions.instance.LoadOptions();
+        
         if (menuActive == mainMenu)
         {
             contents.SetActive(false);

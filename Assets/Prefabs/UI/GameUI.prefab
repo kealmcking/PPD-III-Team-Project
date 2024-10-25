@@ -2321,10 +2321,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6862548297051911550}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 110, y: -45}
+  m_SizeDelta: {x: 168.6, y: 62.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7894469670041785044
 CanvasRenderer:
@@ -8173,7 +8173,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6586408343073778052}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: CharacterSelectScreen
+        m_MethodName: ReplayGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14119,10 +14119,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4403924540551332975}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 230, y: -45}
+  m_SizeDelta: {x: 204.74, y: 66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &687209623690979622
 CanvasRenderer:
@@ -19112,7 +19112,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6586408343073778052}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: MainMenu
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
