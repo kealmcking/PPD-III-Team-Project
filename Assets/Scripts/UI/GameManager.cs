@@ -232,6 +232,8 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         EventSystem.current.SetSelectedGameObject(pauseQuitGameButton);
         audioManager.instance.PauseSounds();
+
+       
     }
     public void ActivatePauseMenu()
     {
@@ -239,7 +241,7 @@ public class GameManager : MonoBehaviour
         menuActive = pauseUI;
         menuActive.SetActive(true);
         audioManager.instance.PlaySFX(audioManager.instance.UIOpen, audioManager.instance.UIVol);
-        
+        optionsUI.SetActive(false);
     }
     public void UnpauseGame()
     {

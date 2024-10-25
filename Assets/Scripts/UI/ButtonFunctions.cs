@@ -96,6 +96,14 @@ public class ButtonFunctions : MonoBehaviour
 
     }
 
+    public void SaveGameOptions()
+    {
+        PlayerPrefs.SetFloat("MasterVolume", masterVolume.value);
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolume.value);
+        GameManager.instance.ActivatePauseMenu();
+    }
+
     public void LoadOptions()
     {
         masterVolume.value = PlayerPrefs.GetFloat("MasterVolume");
