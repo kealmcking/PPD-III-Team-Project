@@ -267,6 +267,8 @@ namespace Input
             {
                 inventoryAction.Disable();
             }
+
+            aimAmount = Vector2.zero;
             
             cancelAction.Enable();
             useAction.Disable();
