@@ -235,13 +235,13 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
+        if (decisionUI.activeInHierarchy) return;
         isPauseActive = true;
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         EventSystem.current.SetSelectedGameObject(pauseQuitGameButton);
         audioManager.instance.PauseSounds();
-
        
     }
     public void ActivatePauseMenu()
@@ -254,6 +254,7 @@ public class GameManager : MonoBehaviour
     }
     public void UnpauseGame()
     {
+        if (decisionUI.activeInHierarchy) return;
         isPauseActive = false;
         Time.timeScale = timeScaleOG;
         Cursor.visible = false;
