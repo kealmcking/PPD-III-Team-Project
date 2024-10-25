@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DialogueSystem;
 using UnityEngine;
 using Input;
-using Unity.Mathematics;
-using UnityEngine.Audio;
 
 public class playerController : MonoBehaviour
 {
@@ -339,13 +336,13 @@ public class playerController : MonoBehaviour
         IInteractable targetInteractable = null;
 
         // Get all interactable colliders within the interaction distance
-        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance+1);
         List<Collider> interactableColliders = new List<Collider>();
 
         foreach (var collider in colliders)
         {
             // Check if the collider has an IInteractable component
-            if (!collider.TryGetComponent<IInteractable>(out IInteractable interactable))
+            if (!collider.TryGetComponent(out IInteractable interactable))
                 continue;
 
             Vector3 direction = collider.transform.position - transform.position;

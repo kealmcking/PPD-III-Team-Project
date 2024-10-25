@@ -22,12 +22,56 @@ public class CollideAndActivateConditionConfig : ConditionConfig
 
     public override void TriggerEntered(Condition conditionObject, Collider other)
     {
-        other.TryGetComponent(out Item item);
-        if (item != null)
-        {
-            if (item.Data.Name == triggerCheck.Name)
-                canBeInteractedWith = true;
+        if(other.TryGetComponent(out playerController controller)){
+
+            if(controller.ObjectInHand == null)
+            {
+                if (conditionObject.ChildToUpdate != null)
+                {
+                    Material mat = conditionObject.ChildToUpdate.GetComponent<Renderer>().materials[1];
+                    mat.SetColor("_Color", Color.red);
+                    mat.SetFloat("_Scale", 1.01f);
+                }
+                conditionObject.DenyMaterial.SetColor("_Color", Color.red);
+                conditionObject.DenyMaterial.SetFloat("_Scale", 1.01f);
+                AudioSource source = conditionObject.GetComponent<AudioSource>();
+                source.clip = conditionObject.DenyAudioClip;
+                source.Play();
+            }
+            else
+            {
+                if(controller.objectInHand.GetObject().TryGetComponent(out Item item)){
+                    if (item.Data.Name == triggerCheck.Name)
+                    {
+                        if (conditionObject.ChildToUpdate != null)
+                        {
+                            Material mat = conditionObject.ChildToUpdate.GetComponent<Renderer>().materials[1];
+                            mat.SetColor("_Color", Color.green);
+                            mat.SetFloat("_Scale", 1.01f);
+                        }
+                        conditionObject.DenyMaterial.SetColor("_Color", Color.green);
+                        conditionObject.DenyMaterial.SetFloat("_Scale", 1.01f);
+                        canBeInteractedWith = true;
+
+                    }
+                    else
+                    {
+                        if (conditionObject.ChildToUpdate != null)
+                        {
+                            Material mat = conditionObject.ChildToUpdate.GetComponent<Renderer>().materials[1];
+                            mat.SetColor("_Color", Color.red);
+                            mat.SetFloat("_Scale", 1.01f);
+                        }
+                        conditionObject.DenyMaterial.SetColor("_Color", Color.red);
+                        conditionObject.DenyMaterial.SetFloat("_Scale", 1.01f);
+                        AudioSource source = conditionObject.GetComponent<AudioSource>();
+                        source.clip = conditionObject.DenyAudioClip;
+                        source.Play();
+                    }
+                }
+            }
         }
+       
     }
     public override void TriggerExited(Condition conditionObject, Collider other)
     {
@@ -37,5 +81,11 @@ public class CollideAndActivateConditionConfig : ConditionConfig
             if (item.Data.Name == triggerCheck.Name)
                 canBeInteractedWith = false;
         }
+        if (conditionObject.ChildToUpdate != null)
+        {
+            Material mat = conditionObject.ChildToUpdate.GetComponent<Renderer>().materials[1];
+            mat.SetFloat("_Scale", 0f);
+        }
+        conditionObject.DenyMaterial.SetFloat("_Scale", 0f);
     }
 }

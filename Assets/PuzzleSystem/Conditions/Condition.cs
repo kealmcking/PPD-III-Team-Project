@@ -20,12 +20,19 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     "Action Config. For instance to play an animation like if you want the Condition to slide over or open up add the AnimationActionConfig " +
     "Scriptable Object here You can stack multiple for multiple effects.")]
     List<ActionConfig> actions = new List<ActionConfig>();
-    [SerializeField] EnableInteractUI interactUI;
-  
+   
     [SerializeField] bool isConditionMet = false;
     [SerializeField,Tooltip("When this condition is met do you want to set this conditions active state to false?")] bool setObjectFalseOnComplete = false;
     [SerializeField] Rigidbody rb;
+
     [SerializeField] bool isInteractable;
+    [SerializeField] EnableInteractUI interactUI;
+    Material denyMaterial;
+    public Material DenyMaterial => denyMaterial;   
+    [SerializeField] AudioClip denyAudioClip;
+    public AudioClip DenyAudioClip => denyAudioClip;
+    [SerializeField] GameObject childToUpdate;
+    public GameObject ChildToUpdate => childToUpdate;
     [SerializeField, Tooltip("List of all the craftable components required to create the items to finish this condition")] List<CraftableComponentData> components = new List<CraftableComponentData>(3);
     [SerializeField, Tooltip("create an empty transform and make it a child of the condition inside this field add the transform." +
         "The transforms will be the potential spawning points for the components used to craft the item needed to complete the condition." +
@@ -46,7 +53,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
         }    
         interactCol ??= GetComponent<SphereCollider>();
         rb??= GetComponent<Rigidbody>();
-       
+       denyMaterial = GetComponent<Renderer>().materials[1]; 
         
     }
     private void OnEnable()
