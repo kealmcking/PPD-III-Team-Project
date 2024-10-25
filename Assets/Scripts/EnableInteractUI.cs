@@ -80,14 +80,14 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && interactCanvas!= null)
         {
-            foreach (GameObject canvas in interactCanvas)
-            {
-                if (!canvas.activeSelf)
+                foreach (GameObject canvas in interactCanvas)
                 {
-                    canvas.SetActive(true);
+                    if (!canvas.activeSelf)
+                    {
+                        canvas.SetActive(true);
+                    }
                 }
-            }
-            ImInInteractionZone.Invoke(true, this);
+                ImInInteractionZone.Invoke(true, this);          
         }
     }
 

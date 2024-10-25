@@ -273,7 +273,10 @@ public class GameManager : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        GetComponent<invManager>().IsUIActive = false;
+        invManager manager = GetComponent<invManager>();
+        manager.IsUIActive = false;
+        manager.UnsetDraggableData();
+        TooltipManager.instance.hide();
         menuActive.SetActive(false);
         menuActive = null;       
         InventoryActive = false;
@@ -287,6 +290,9 @@ public class GameManager : MonoBehaviour
     public void DeactivateInventoryUISecondary()
     {
         menuInventory.SetActive(false);
+        invManager manager = GetComponent<invManager>();
+        manager.IsUIActive = false;
+        manager.UnsetDraggableData();
         InventoryActive = false;
     }
     public void ActivateCraftTableUI()
@@ -306,6 +312,10 @@ public class GameManager : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        invManager manager = GetComponent<invManager>();
+        manager.IsUIActive = false;
+        manager.UnsetDraggableData();
+        TooltipManager.instance.hide();
         menuActive.SetActive(false);
         menuActive = null;
         CraftTableActive = false;

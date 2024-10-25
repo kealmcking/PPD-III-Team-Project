@@ -8,11 +8,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 712025884521087361, guid: b22fad70159b9974d87b35dc2bd05820,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1590842566684659289, guid: b22fad70159b9974d87b35dc2bd05820,
         type: 3}
       propertyPath: interactCanvas.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1590842566684659289, guid: b22fad70159b9974d87b35dc2bd05820,
+        type: 3}
+      propertyPath: 'interactCanvas.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3904506691780186408}
     - target: {fileID: 3435895518434815727, guid: b22fad70159b9974d87b35dc2bd05820,
         type: 3}
       propertyPath: m_Radius
@@ -105,3 +115,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b22fad70159b9974d87b35dc2bd05820, type: 3}
+--- !u!1 &3904506691780186408 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1317640957877721595, guid: b22fad70159b9974d87b35dc2bd05820,
+    type: 3}
+  m_PrefabInstance: {fileID: 2622972254840883411}
+  m_PrefabAsset: {fileID: 0}

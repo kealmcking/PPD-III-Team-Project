@@ -63,7 +63,7 @@ public class playerController : MonoBehaviour
 
     [SerializeField] private Transform handPos;
     [SerializeField] Transform headPos;
-    private IInteractable objectInHand;
+    public IInteractable objectInHand;
     public IInteractable ObjectInHand => objectInHand;  
     private bool hasTurned;
     private bool startTurning;
@@ -453,6 +453,7 @@ public class playerController : MonoBehaviour
 
        
             item.ItemPulse(transform.forward);
+            item.InteractUI.enabled = true;
             objectInHand = null;
         }   
     }
@@ -465,6 +466,7 @@ public class playerController : MonoBehaviour
             {
                 RemoveOverrideController(item);
             }
+            item.InteractUI.enabled = true;
             item.HandleDeactivateItemState();
             item.transform.SetParent(null);
             objectInHand = null;
@@ -493,6 +495,7 @@ public class playerController : MonoBehaviour
                     RemoveOverrideController(item);
                 }
                 item.HandleDeactivateItemState();
+                item.InteractUI.enabled = true;
                 objectInHand.Interact();
                 objectInHand = null;
             }
@@ -515,7 +518,7 @@ public class playerController : MonoBehaviour
             Vector3 offset = equippedItem.HandlePoint.position - equippedItem.transform.position; 
             equippedItem.transform.position = handPos.position - offset;
             objectInHand = equippedItem;
-   
+            equippedItem.InteractUI.enabled = false;
             playerLookAtTarget = null;
         }
     }

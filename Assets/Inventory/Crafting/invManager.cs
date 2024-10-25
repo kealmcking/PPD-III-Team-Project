@@ -15,6 +15,7 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] invSlot[] craftTableSlots = new invSlot[3];
     [SerializeField] invItem itemPrefab;
     invItem draggedItem;
+
     invSlot lastItemSlot;
     invSlot clickedSlot;
     bool isRightClick = false;
@@ -38,16 +39,25 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (isUIActive) { 
             if (!GameManager.instance.InventoryActive)
             {
-                lastItemSlot.setCurItem(draggedItem);
-                draggedItem = null;
-                TooltipManager.instance.hide();
+                UnsetDraggableData();
                 return;
             }
+        }
+        if (GameManager.instance.IsPauseActive)
+        {
+            UnsetDraggableData();
+            return;
         }
         if (draggedItem != null && isLeftClick)
         {
             draggedItem.transform.position = UnityEngine.Input.mousePosition;
         }
+    }
+    public void UnsetDraggableData()
+    {
+        lastItemSlot.setCurItem(draggedItem);
+        draggedItem = null;
+        TooltipManager.instance.hide();
     }
     public void OnPointerDown(PointerEventData eventData)
     {

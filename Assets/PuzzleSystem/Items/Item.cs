@@ -24,6 +24,8 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
     private Guid id = new Guid();
     public Guid ID => id;
     public Collider BodyCol => bodyCol;
+    public EnableInteractUI InteractUI => interactUI;
+
     private void Awake()
     {
         
