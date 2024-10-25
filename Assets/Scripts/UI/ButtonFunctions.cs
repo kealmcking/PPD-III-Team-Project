@@ -138,4 +138,9 @@ public class ButtonFunctions : MonoBehaviour
         MainMenuManager.instance.DisplayCredits();
     }
     
+    public void ReplayGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.instance.UnpauseGame();
+    }
 }
