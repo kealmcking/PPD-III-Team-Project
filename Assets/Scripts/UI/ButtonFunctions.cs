@@ -15,6 +15,8 @@ public class ButtonFunctions : MonoBehaviour
     public Slider masterVolume;
     public Slider musicVolume;
     public Slider sfxVolume;
+
+    [SerializeField] AudioMixer audioMixer;
     
     // Start is called before the first frame update
     void Awake()
@@ -49,15 +51,15 @@ public class ButtonFunctions : MonoBehaviour
 
     public void SetMasterVolume(float volume)
     {
-        //audioMixer.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("MasterVolume", volume);
     }
     public void SetMusicVolume(float volume)
     {
-        //audioMixer.SetFloat("MusicVolume", volume);
+        audioMixer.SetFloat("MusicVolume", volume);
     }
     public void SetSfxVolume(float volume)
     {
-        //audioMixer.SetFloat("SFXVolume", volume);
+        audioMixer.SetFloat("SFXVolume", volume);
     }
 
     public void CharacterSelectScreen()
