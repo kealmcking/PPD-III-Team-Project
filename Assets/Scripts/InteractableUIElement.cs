@@ -42,7 +42,10 @@ public class InteractableUIElement : MonoBehaviour
     {
         if (device is Keyboard || device is Mouse)
         {
-            uiElement.sprite = pcButton_spr;
+            if (pcButton_spr != null)
+            {
+                uiElement.sprite = pcButton_spr;
+            }
             
             if (text != null)
             {
