@@ -151,15 +151,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  offset: {x: 0.5, y: 1.2, z: 1.25}
-  smoothSpeed: 0.5
-  sensitivity: 100
+  offset: {x: 0.25, y: 0.6, z: 0.5}
+  smoothSpeed: 200
+  sensitivity: 200
   mouseSensitivity: 200
   controllerSensitivity: 100
   collisionLayers:
     serializedVersion: 2
     m_Bits: 1
-  collisionBuffer: 0.2
+  collisionBuffer: 0.05
   cameraComponent: {fileID: 807150604314532135}
   normalFOV: 60
   sprintFOV: 75
