@@ -220,6 +220,10 @@ namespace DialogueSystem
         // For enabling the overall dialogue UI
         public void enableDialogueUI(Suspect suspect)
         {
+            if (!TutorialUIManager.Instance.DisplayDialogue)
+            {
+                TutorialUIManager.Instance.DisplayDialogueTutorial();
+            }
             currentSuspect = suspect;
             currentNPC = currentSuspect.Data.Npc;
             currentTree = currentNPC.trees[currentDay];

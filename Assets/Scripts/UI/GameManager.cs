@@ -133,6 +133,7 @@ public class GameManager : MonoBehaviour
         EventSheet.SendAllClues += HandleClues;
         EventSheet.SendKillerClue += HandleKillerClue;
         EventSheet.SendClueToTracker += HandleNewClue;
+     
     }
     public void OnDisable()
     {
@@ -295,6 +296,10 @@ public class GameManager : MonoBehaviour
         menuActive = craftTableUI;
         menuActive.SetActive(true);
         CraftTableActive = true;
+        if (!TutorialUIManager.Instance.DisplayCraft)
+        {
+            TutorialUIManager.Instance.DisplayCraftTutorial();
+        }
         InputManager.instance.DisableCharacterInputs();
     }
     public void DeactivateCraftTableUI()
@@ -310,6 +315,10 @@ public class GameManager : MonoBehaviour
     public void ActivateSleepMenu()
     {
         menuActive = sleepUI;
+        if (!TutorialUIManager.Instance.DisplaySleeping)
+        {
+            TutorialUIManager.Instance.DisplaySleepingTutorial();
+        }
         sleepUI.SetActive(true);
         //characterUI.SetActive(false);
     }
@@ -325,6 +334,10 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         menuActive = decisionUI;
+        if (!TutorialUIManager.Instance.DisplayVote)
+        {
+            TutorialUIManager.Instance.DisplayVotingTutorial();
+        }
         menuActive.SetActive(true);
         DecisionActive = true;
     }

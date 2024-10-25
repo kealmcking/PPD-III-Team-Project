@@ -10,15 +10,17 @@ public class InteractableGlow : MonoBehaviour
        
         if (other.TryGetComponent(out IInteractable interactable))
         {
-            Debug.Log("Collided with interactable");
-            Renderer renderer = interactable.GetObject().GetComponent<Renderer>();
-            if (renderer != null)
+            if(interactable.GetObject().transform.parent == null)
             {
-                Debug.Log("Setting material");
-                Material material = renderer.materials[1];
-                if (material != null)
-                    material.SetFloat("_Scale", 1.02f);
-            }
+              
+                Renderer renderer = interactable.GetObject().GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    Material material = renderer.materials[1];
+                    if (material != null)
+                        material.SetFloat("_Scale", 1.02f);
+                }
+            }         
         }
     }
     private void OnTriggerExit(Collider other)
@@ -26,11 +28,9 @@ public class InteractableGlow : MonoBehaviour
     
         if (other.TryGetComponent(out IInteractable interactable))
         {
-            Debug.Log("leaving interactable");
             Renderer renderer = interactable.GetObject().GetComponent<Renderer>();
             if (renderer != null)
             {
-                Debug.Log("Setting material");
                 Material material = renderer.materials[1];
                 if (material != null)
                 material.SetFloat("_Scale", 0f);

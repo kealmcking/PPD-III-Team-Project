@@ -37,6 +37,7 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
             Debug.Log("You forgot to add the interact collider");
         }
         rb ??= GetComponent<Rigidbody>();
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         interactUI ??= GetComponent<EnableInteractUI>();
         if(bodyCol != null)
         {
