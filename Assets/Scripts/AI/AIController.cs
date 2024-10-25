@@ -13,7 +13,7 @@ public class AIController : MonoBehaviour
     Vector3 startingPos;
     [SerializeField] Animator anim;
     [SerializeField] int animSpeedTrans;
-    float stoppingDistanceOrig = .2f;
+    float stoppingDistanceOrig = .5f;
     bool isRoaming;
     bool playerInRange;
     bool isEnemyChasing = false;
@@ -53,7 +53,7 @@ public class AIController : MonoBehaviour
     }
     void Start()
     {
-        stoppingDistanceOrig = agent.stoppingDistance;
+        agent.stoppingDistance = stoppingDistanceOrig;
         startingPos = transform.position;
         agent.speed = normSpeed;
 
@@ -74,7 +74,7 @@ public class AIController : MonoBehaviour
         {
             faceTarget();
         }
-        if (!playerInRange && !isRoaming && agent.remainingDistance < 0.05f && someCo == null && !isEnemyChasing)
+        if (!playerInRange && !isRoaming && agent.remainingDistance < 0.5f && someCo == null && !isEnemyChasing)
             someCo = StartCoroutine(roam());
 
         if (!isRandSFX)
@@ -103,7 +103,7 @@ public class AIController : MonoBehaviour
     IEnumerator roam()
     {
         isRoaming = true;
-        setSpeed(normSpeed);
+       // setSpeed(normSpeed);
         Vector3 randomPos = Random.insideUnitSphere * roamDist + startingPos;
         //Vector3 randomPos = getRandomRoomPos();
         //randomPos += startingPos;
@@ -120,7 +120,7 @@ public class AIController : MonoBehaviour
         //yield return new WaitForSeconds(roamTimer);
         //if (isScared)
         //    anim.SetBool("Scared", false);
-        anim.SetFloat("Blend", 0);
+       // anim.SetFloat("Blend", 0);
         yield return new WaitForSeconds(Random.Range(2f, 3f));
         isRoaming = false;
         someCo = null;
@@ -168,7 +168,7 @@ public class AIController : MonoBehaviour
             }
             playerInRange = true;
             agent.SetDestination(transform.position);
-            Debug.Log("Trigger Enter" + playerInRange + "   " + other.gameObject.tag.ToString());
+           // Debug.Log("Trigger Enter" + playerInRange + "   " + other.gameObject.tag.ToString());
         }
     }
 
@@ -177,7 +177,7 @@ public class AIController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            Debug.Log("Trigger Exit" + playerInRange + "   " + other.gameObject.tag.ToString());
+           // Debug.Log("Trigger Exit" + playerInRange + "   " + other.gameObject.tag.ToString());
         }
     }
 
