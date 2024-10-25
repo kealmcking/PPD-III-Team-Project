@@ -9,6 +9,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
+
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -35,6 +38,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject craftTableUI;
     [SerializeField] private GameObject decisionUI;
     [SerializeField] private GameObject menuActive;
+
+    
     public GameObject MenuInventory => menuInventory;
     public GameObject MenuActive => menuActive;
     private bool isPauseActive;
@@ -60,6 +65,8 @@ public class GameManager : MonoBehaviour
     private int weaponListIndex;
     private int roomListIndex;
     private int motiveListIndex;
+
+    
 
     public bool InventoryActive { get; private set; }
     public bool CraftTableActive { get; private set; }
@@ -222,7 +229,9 @@ public class GameManager : MonoBehaviour
     {
         UpdateTimer(_time);  
         UpdateDayText(_day);
+        
     }
+    
 
     public void PauseGame()
     {
