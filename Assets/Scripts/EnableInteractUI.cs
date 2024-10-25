@@ -62,6 +62,7 @@ public class EnableInteractUI : MonoBehaviour
             foreach (GameObject canvas in interactCanvas)
             {
                 canvas.SetActive(false);
+                canvas.transform.position += new Vector3(0,.5f,0);
             }
         }
 

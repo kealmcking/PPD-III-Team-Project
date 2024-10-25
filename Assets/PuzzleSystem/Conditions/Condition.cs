@@ -37,6 +37,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     public bool SetObjectFalseOnComplete => setObjectFalseOnComplete;
 
     public bool isInteractedWith = false;
+    public Collider BodyCol => bodyCol;
     public void Awake()
     {
         if (isInteractable)
