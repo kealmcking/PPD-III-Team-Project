@@ -12,7 +12,7 @@ public static class EventSheet
     public static Action<List<WeaponClueData>> SendWeapons;
     public static Action<List<MotiveClueData>> SendMotives;
     public static Action<List<SuspectData>> SendSuspects;
-    public static Action<Suspect,List<Suspect>, SpawnPointType, bool> InitializeSuspectsToScene;
+    public static Action<List<Suspect>, SpawnPointType, bool> InitializeSuspectsToScene;
     public static Action<GameSelection> SendGameSelection;
     public static Action<int> SendDay;
     public static Action NewDay;

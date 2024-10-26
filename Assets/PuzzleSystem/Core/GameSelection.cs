@@ -11,7 +11,7 @@ public class GameSelection
     private Case caseFile;
     public GameSelection(List<SuspectData> suspects,List<KillerClueData> killers,List<RoomClueData> rooms, List<WeaponClueData> weapons, List<Case> cases, List<MotiveClueData> motives)
     {
-        if (killers.Count > 0 && suspects.Count > 0)
+        if (suspects.Count > 0)
         {
             
             for (int i = 0; i < suspects.Count; i++)
@@ -22,6 +22,7 @@ public class GameSelection
                 killers[i].data = suspects[i];
             }
             killer = Randomizer.GetRandomizedObjectFromList(killers);
+            killer.data.SuspectPrefab.IsKiller = true;
         }
         if (rooms.Count > 0)
             room = Randomizer.GetRandomizedObjectFromList(rooms);

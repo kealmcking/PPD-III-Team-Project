@@ -95,8 +95,9 @@ public class SpawnManager : MonoBehaviour
             }
         }
     }
-    private void SpawnGroupByMono(Suspect killer,List<Suspect> group, SpawnPointType type, bool randomize = false) 
+    private void SpawnGroupByMono(List<Suspect> group, SpawnPointType type, bool randomize = false) 
     {
+      
         if (randomize)
         {
             List<Suspect> sus = new List<Suspect>();
@@ -110,10 +111,7 @@ public class SpawnManager : MonoBehaviour
                 sus.Add(sceneSuspect);
 
             }
-            SpawnPoint spawnPoint = Randomizer.GetRandomizedObjectFromListAndRemove(ref filteredSpawns);
-            Suspect sceneS = Instantiate(killer, spawnPoint.transform.position, spawnPoint.transform.rotation);
-            sceneS.IsKiller = true;
-            sus.Add(sceneS);
+
             EventSheet.SendSceneSuspects?.Invoke(sus);
         }
         else

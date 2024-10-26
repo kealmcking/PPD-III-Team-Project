@@ -23,7 +23,10 @@ public class CollideAndActivateConditionConfig : ConditionConfig
     public override void TriggerEntered(Condition conditionObject, Collider other)
     {
         if(other.TryGetComponent(out playerController controller)){
-
+            if (!TutorialUIManager.Instance.DisplayBlocked)
+            {
+                TutorialUIManager.Instance.DisplayBlockedArea();
+            }
             if(controller.ObjectInHand == null)
             {
                 if (conditionObject.ChildToUpdate != null)

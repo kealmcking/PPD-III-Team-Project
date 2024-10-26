@@ -302,11 +302,11 @@ public class GameManager : MonoBehaviour
         menuActive = craftTableUI;
         menuActive.SetActive(true);
         CraftTableActive = true;
+        InputManager.instance.DisableCharacterInputs();
         if (!TutorialUIManager.Instance.DisplayCraft)
         {
             TutorialUIManager.Instance.DisplayCraftTutorial();
         }
-        InputManager.instance.DisableCharacterInputs();
     }
     public void DeactivateCraftTableUI()
     {

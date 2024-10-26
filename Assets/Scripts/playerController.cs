@@ -329,7 +329,7 @@ public class playerController : MonoBehaviour
 
     private void Interact()
     {
-        float maxAngle = 45f;
+        float maxAngle = 70f;
         float minAngle = float.MaxValue;
         float minDistance = float.MaxValue;
         Collider targetCollider = null;
@@ -372,15 +372,15 @@ public class playerController : MonoBehaviour
         {
             Vector3 direction = targetCollider.transform.position - transform.position;
             float distance = direction.magnitude;
-
+            Vector3 fineTunedPosition = transform.position + new Vector3(0, 1, 0);
             // Check for line of sight using Raycast
-            if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, distance))
+            if (Physics.Raycast(fineTunedPosition, direction.normalized, out RaycastHit hit, distance))
             {
                 if (hit.collider != targetCollider)
                 {
                     // Line of sight is blocked
                     // Check if the blocking collider is an interactable
-                    if (hit.collider.TryGetComponent<IInteractable>(out IInteractable blockingInteractable))
+                    if (hit.collider.TryGetComponent(out IInteractable blockingInteractable))
                     {
                         // Update the target to the blocking interactable
                         targetCollider = hit.collider;

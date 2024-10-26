@@ -5,12 +5,14 @@ public class TutorialUIManager : MonoBehaviour
 {
     public static TutorialUIManager Instance;
     [SerializeField] GameObject craftingTable;
+    [SerializeField] GameObject blockedArea;
     [SerializeField] GameObject voting;
     [SerializeField] GameObject dialogue;
     [SerializeField] GameObject sleeping;
     [SerializeField] GameObject gameplay;
     
     public bool DisplayCraft { get; set; } = false;
+    public bool DisplayBlocked { get; set; } = false;
     public bool DisplayVote { get; set; } = false;
     public bool DisplayDialogue { get; set; } = false;
     public bool DisplaySleeping { get; set; } = false;
@@ -26,10 +28,8 @@ public class TutorialUIManager : MonoBehaviour
         }
     }
     public void Start()
-    {
-    
-          DisplayGameplayTutorial();
-        
+    {    
+          DisplayGameplayTutorial();     
     }
     public void DisplayCraftTutorial()
     {
@@ -37,6 +37,15 @@ public class TutorialUIManager : MonoBehaviour
         {           
             craftingTable.SetActive(true);
             DisplayCraft = true;
+        }
+    }
+    public void DisplayBlockedArea()
+    {
+        if (!DisplayBlocked)
+        {
+            InputManager.instance.DisableCharacterInputs();
+            blockedArea.SetActive(true);
+            DisplayBlocked = true;
         }
     }
     public void DisplayDialogueTutorial()
@@ -79,6 +88,11 @@ public class TutorialUIManager : MonoBehaviour
                     
         }
         
+    }
+    public void CloseBlocked()
+    {
+        blockedArea.SetActive(false);
+        InputManager.instance.EnableCharacterInputs();
     }
     public void CloseGameplay()
     {
