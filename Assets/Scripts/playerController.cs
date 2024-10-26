@@ -84,18 +84,15 @@ public class playerController : MonoBehaviour
 
     public void killPlayer()
     {
-        Debug.Log("Enter kill player");
         Destroy(gameObject);
         GameManager.instance.LoseGame();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Enter trigger " + other.gameObject.layer.ToString());
-        Debug.Log("Enter trigger " + other);
+
         if (other.CompareTag("Weapon"))
         {
-            Debug.Log("passed layer check");
             killPlayer();
         }
         

@@ -138,9 +138,6 @@ public class Director : MonoBehaviour
 
         foreach(var suspect in scene)
         {
-
-            Debug.Log(gameSelection.GetKiller().Name);
-            Debug.Log(suspect.Data.Name);
             if (suspect.Data.Name == gameSelection.GetKiller().Name )
             {
                 Debug.Log(suspect.name);

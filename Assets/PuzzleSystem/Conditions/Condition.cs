@@ -26,6 +26,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] Rigidbody rb;
 
     [SerializeField] bool isInteractable;
+    [SerializeField] bool isGate = false;
     [SerializeField] EnableInteractUI interactUI;
     Material denyMaterial;
     public Material DenyMaterial => denyMaterial;   
@@ -53,6 +54,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
         }    
         interactCol ??= GetComponent<SphereCollider>();
         rb??= GetComponent<Rigidbody>();
+      if(isGate)
        denyMaterial = GetComponent<Renderer>().materials[1]; 
         
     }
