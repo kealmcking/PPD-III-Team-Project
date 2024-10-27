@@ -24,8 +24,8 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] bool isConditionMet = false;
     [SerializeField,Tooltip("When this condition is met do you want to set this conditions active state to false?")] bool setObjectFalseOnComplete = false;
     [SerializeField] Rigidbody rb;
-
-    [SerializeField] bool isInteractable;
+    public bool IsInteractable { get; set; } = false;
+ 
     [SerializeField] bool isGate = false;
     public bool IsGate => isGate;
     [SerializeField] EnableInteractUI interactUI;
@@ -42,7 +42,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
         "The transforms will be the potential spawning points for the components used to craft the item needed to complete the condition." +
         "It is recommended that their is more positions than components to allow for more unpredictable possible spawn points for the components.")]
     List<Transform> componentPositions = new List<Transform>();
-    [SerializeField] bool canConditionNotBeUsed = true;
+    [SerializeField] bool canConditionBeUsed = true;
     public Rigidbody RB => rb;
     public bool IsConditionMet => isConditionMet;
     public bool SetObjectFalseOnComplete => setObjectFalseOnComplete;
@@ -51,10 +51,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     public Collider BodyCol => bodyCol;
     public void Awake()
     {
-        if (isInteractable)
-        {
-            interactUI ??= GetComponent<EnableInteractUI>();
-        }    
+  
         interactCol ??= GetComponent<SphereCollider>();
         rb??= GetComponent<Rigidbody>();
         if(isGate)
@@ -103,10 +100,14 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     {
         if (config != null)
             config.EnterSetup(this);
+        if (IsInteractable)
+        {
+            interactUI ??= GetComponent<EnableInteractUI>();
+        }
     }
     public void Update()
     {
-        if (config != null && canConditionNotBeUsed == true)
+        if (config != null && canConditionBeUsed == true)
             config.ConditionStatus(this);
     }
     public void SendStatusUpdate()
@@ -124,24 +125,24 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void OnTriggerEnter(Collider other)
     {
-        if (config != null && canConditionNotBeUsed == true)
+        if (config != null && canConditionBeUsed == true)
             config.TriggerEntered(this, other);
     }  
     public void OnTriggerStay(Collider other)
     {
-        if (config != null && canConditionNotBeUsed == true)
+        if (config != null && canConditionBeUsed == true)
             config.TriggerStayed(this, other);
     }
     public void OnTriggerExit(Collider other)
     {
-        if (config != null && canConditionNotBeUsed == true)
+        if (config != null && canConditionBeUsed == true)
             config.TriggerExited(this, other);
     }
     public void Interact()
     {
-        if(isInteractable && canConditionNotBeUsed == true)
+        if(IsInteractable && canConditionBeUsed == true)
         {
-            interactUI.ToggleCanvas();
+            interactUI.ToggleCanvasOff(true);
             isInteractedWith = true;
         }
        
@@ -152,6 +153,6 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void BlockCondition(bool value)
     {
-        canConditionNotBeUsed = value;
+        canConditionBeUsed = value;
     }
 }

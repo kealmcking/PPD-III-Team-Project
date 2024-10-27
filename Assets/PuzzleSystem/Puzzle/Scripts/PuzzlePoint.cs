@@ -9,7 +9,7 @@ public class PuzzlePoint : MonoBehaviour
     public BoxCollider Col => col;
     private void Awake()
     {
-        col ??= GetComponent<BoxCollider>();
+        col = GetComponent<BoxCollider>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -22,13 +22,16 @@ public class PuzzlePoint : MonoBehaviour
             }
             else if (type == PuzzlePointType.Restart)
             {
-               other.gameObject.transform.position = IcePuzzleManager.Instance.RestartPoint.position;
+                CharacterController controller = other.GetComponent<CharacterController>();
+                controller.enabled = false;
+                other.gameObject.transform.position = IcePuzzleManager.Instance.RestartPoint.position;
                 other.gameObject.transform.rotation = IcePuzzleManager.Instance.RestartPoint.rotation;
-               IcePuzzleManager.Instance.ResetPuzzle();
+                controller.enabled = true;
+                IcePuzzleManager.Instance.ResetPuzzle();
             }
             else if(type == PuzzlePointType.End)
             {
-                IcePuzzleManager.Instance.ResetPuzzle();
+                IcePuzzleManager.Instance.WinGame();
             }
         }
     }

@@ -10,7 +10,7 @@ public class InteractableGlow : MonoBehaviour
        
         if (other.TryGetComponent(out IInteractable interactable))
         {
-            if(interactable != null)
+            if(interactable != null && interactable.IsInteractable)
             {
               
                 Renderer renderer = interactable.GetObject().GetComponent<Renderer>();

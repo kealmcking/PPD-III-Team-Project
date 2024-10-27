@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1381536728407168449}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.46, y: -0.16183662, z: -0.17418098}
+  m_LocalPosition: {x: 0.464, y: 1.298, z: 1.418}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -242,6 +242,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Sink_02
       objectReference: {fileID: 0}
+    - target: {fileID: 5450155488541745739, guid: e821ec0548446a0448c2457c77d9e1a4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.826
+      objectReference: {fileID: 0}
+    - target: {fileID: 5450155488541745739, guid: e821ec0548446a0448c2457c77d9e1a4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.049
+      objectReference: {fileID: 0}
+    - target: {fileID: 5450155488541745739, guid: e821ec0548446a0448c2457c77d9e1a4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.667
+      objectReference: {fileID: 0}
     - target: {fileID: 5960537907233146443, guid: e821ec0548446a0448c2457c77d9e1a4,
         type: 3}
       propertyPath: m_IsTrigger
@@ -256,6 +271,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7589457823675214673, guid: e821ec0548446a0448c2457c77d9e1a4,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8439008597930536685, guid: e821ec0548446a0448c2457c77d9e1a4,
         type: 3}

@@ -10,19 +10,19 @@ public class EnableInteractUI : MonoBehaviour
     [SerializeField] private GameObject interactCanvas;
     private Material glowMaterial;
     public static Action<bool, EnableInteractUI> ImInInteractionZone;
-
+    bool isCanvasOffManually = false;
     private bool isInMenu;
-    
+    public GameObject InteractCanvas => interactCanvas;
 
     private void OnEnable()
     {
-        playerController.INeedToTurnOffTheInteractUI += ToggleCanvas;
+        playerController.INeedToTurnOffTheInteractUI += ToggleCanvasOff;
         DialogueManager.DialogueMenuActive += MenuActive;
     }
 
     private void OnDisable()
     {
-        playerController.INeedToTurnOffTheInteractUI -= ToggleCanvas;
+        playerController.INeedToTurnOffTheInteractUI -= ToggleCanvasOff;
         DialogueManager.DialogueMenuActive -= MenuActive;
     }
 
@@ -47,18 +47,18 @@ public class EnableInteractUI : MonoBehaviour
         if (interactCanvas != null)
         {
             interactCanvas.transform.position = transform.position;
-            Renderer parentRenderer = GetComponent<Renderer>();
+            Renderer renderer = GetComponent<Renderer>();
             Vector3 parentCenter = transform.position; // Default to parent position
 
-            if (parentRenderer != null)
+            if (renderer != null)
             {
-                parentCenter = parentRenderer.bounds.center;
+                parentCenter = renderer.bounds.center;
                 interactCanvas.transform.position = parentCenter;
-                interactCanvas.transform.position += new Vector3(0, .5f, .2f);
+                interactCanvas.transform.position += new Vector3(0, 0.5f, 0) + transform.forward * 0.3f;
             }
             else
             {
-                interactCanvas.transform.position += new Vector3(0, 1.8f, 0);
+                interactCanvas.transform.position += new Vector3(0, 1.8f, 0) + transform.forward * 0.3f;
             }
            
             
@@ -67,17 +67,11 @@ public class EnableInteractUI : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && interactCanvas!= null)
         {
-            if (!interactCanvas.activeSelf)
+            if (!interactCanvas.activeSelf && !isCanvasOffManually)
             {
                 interactCanvas.SetActive(true);
             }
@@ -90,7 +84,7 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isInMenu && GetComponent<Suspect>() && interactCanvas != null)
         {
-            if (!interactCanvas.activeSelf)
+            if (!interactCanvas.activeSelf && !isCanvasOffManually)
             {
                 interactCanvas.SetActive(true);
             }
@@ -109,16 +103,17 @@ public class EnableInteractUI : MonoBehaviour
         }
     }
 
-    public void ToggleCanvas()
+    public void ToggleCanvasOff(bool setCanvasOffManually = false)
     {
         if (interactCanvas == null) return;
-        if (interactCanvas.activeSelf)
-        {
             interactCanvas.SetActive(false);
-        }
-
+        if (setCanvasOffManually) isCanvasOffManually = true;
     }
-
+    public void ToggleCanvasOn()
+    {
+        if (interactCanvas == null) return;
+        if (isCanvasOffManually) isCanvasOffManually = false;
+    }
     private void MenuActive(bool context)
     {
         isInMenu = context;

@@ -74,7 +74,7 @@ public class AIController : MonoBehaviour
         {
             faceTarget();
         }
-        if (!playerInRange && !isRoaming && agent.remainingDistance < 0.5f && someCo == null && !isEnemyChasing)
+        if (!playerInRange && !isRoaming && agent.remainingDistance <= 0.5f && someCo == null && !isEnemyChasing)
             someCo = StartCoroutine(roam());
 
         if (!isRandSFX)

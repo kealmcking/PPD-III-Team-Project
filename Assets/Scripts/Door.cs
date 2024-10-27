@@ -16,9 +16,9 @@ public class Door : EnvironmentInteractable
     private bool isDoorOpen = false;
     private void Awake()
     {
-        animator ??= GetComponent<Animator>();
-        source ??= GetComponent<AudioSource>();
-        obstacle ??= GetComponent<NavMeshObstacle>();
+        animator = GetComponent<Animator>();
+        source = GetComponent<AudioSource>();
+        obstacle = GetComponent<NavMeshObstacle>();
         obstacle.carving = true;
         source.spatialBlend = 1f;
         source.spread = 360f;

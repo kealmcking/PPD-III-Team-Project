@@ -9,10 +9,10 @@ public class IcePuzzleManager : MonoBehaviour
     [SerializeField] AudioSource source;
     [SerializeField] AudioClip tickSound;
     [SerializeField] AudioClip resetSound;
-    [SerializeField] bool isEndReached = false;
     [SerializeField] Transform restartPoint;
     [SerializeField] float timeBetweenBlockDrops = .8f;
     [SerializeField] PuzzlePoint startPoint;
+    public bool PuzzleComplete { get; set; } = false;
     Coroutine blockRoutine;
     public Transform RestartPoint => restartPoint;
     public float TimeBetweenBlockDrops => timeBetweenBlockDrops;
@@ -33,6 +33,7 @@ public class IcePuzzleManager : MonoBehaviour
     {
         source.loop = true;
         source.clip = tickSound;
+        source.spatialBlend = 0f;
         source.Play();
         if(blockRoutine == null)
         blockRoutine = StartCoroutine(DropBlocks());
@@ -64,5 +65,9 @@ public class IcePuzzleManager : MonoBehaviour
             block.ResetBlock();
         }
         startPoint.Col.enabled = true;
+    }
+    public void WinGame()
+    {
+        PuzzleComplete = true;  
     }
 }

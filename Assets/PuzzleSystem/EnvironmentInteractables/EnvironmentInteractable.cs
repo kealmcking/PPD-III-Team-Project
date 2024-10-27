@@ -7,6 +7,7 @@ public abstract class EnvironmentInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] protected EnableInteractUI interactUI;
     [SerializeField] SphereCollider col;
+    public bool IsInteractable { get; set; } = true;
     public virtual void OnEnable()
     {
         if (col == null)
@@ -28,6 +29,6 @@ public abstract class EnvironmentInteractable : MonoBehaviour, IInteractable
 
     public virtual void Interact()
     {
-        interactUI.ToggleCanvas();
+        interactUI.ToggleCanvasOff();
     }
 }

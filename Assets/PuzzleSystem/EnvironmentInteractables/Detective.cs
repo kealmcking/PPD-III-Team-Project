@@ -17,7 +17,7 @@ public class Detective : EnvironmentInteractable
         else if (GameManager.instance.InventoryActive) GameManager.instance.DeactivateInventoryUI();
 
         if (GameManager.instance.CraftTableActive) GameManager.instance.DeactivateCraftTableUI();
-        interactUI.ToggleCanvas();
+        interactUI.ToggleCanvasOff();
         GameManager.instance.ActivateDecisionUI();
     }
 }

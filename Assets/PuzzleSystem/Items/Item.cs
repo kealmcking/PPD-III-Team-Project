@@ -17,7 +17,7 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField, Tooltip("Used specifically for turning the collider of the body of the item off and on when using it.")]Collider bodyCol;
     [SerializeField,Tooltip("Only add an override controller here if you want the item to have unique animations when being used")] AnimatorOverrideController overrideController;
     [SerializeField] Transform handlePoint;
-    
+    public bool IsInteractable { get; set; } = true;   
     public Transform HandlePoint => handlePoint;
     public BaseItemData Data => data;
     public AnimatorOverrideController OverrideController => overrideController;
@@ -45,10 +45,6 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
         {
             bodyCol.enabled = true;
         }
-        else
-        {
-            Debug.Log("You forgot to add the body collider");
-        }
     }
     public void ItemPulse(Vector3 startPosition) 
     {    
@@ -56,7 +52,7 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Interact()
     {
-        interactUI.ToggleCanvas();
+        interactUI.ToggleCanvasOff();
         if (interactCol != null)
         {
             interactCol.enabled = false;
@@ -74,16 +70,14 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
         rb.useGravity = false;
         rb.isKinematic = true;
         interactCol.enabled = false;
-        interactUI.ToggleCanvas();
-        interactUI.enabled = false;
+        IsInteractable = false;
     }
     public void HandleDeactivateItemState()
     {
         rb.isKinematic = false;
         rb.useGravity = true;
         interactCol.enabled = true;
-        interactUI.enabled = true;
-        interactUI.ToggleCanvas();
+        IsInteractable = true;
     }
    
       

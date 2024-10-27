@@ -597,7 +597,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 271}
-  m_SizeDelta: {x: 546.9, y: 535.9}
+  m_SizeDelta: {x: 744.36, y: 535.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1875340518326847911
 CanvasRenderer:
@@ -963,7 +963,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -225}
-  m_SizeDelta: {x: 563.5, y: 141.59998}
+  m_SizeDelta: {x: 755.9, y: 141.59998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1791476617130792591
 CanvasRenderer:
@@ -1405,7 +1405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 273.44995, y: 268.95}
+  m_AnchoredPosition: {x: 372, y: 268.95}
   m_SizeDelta: {x: 37.8, y: 34.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3036996891307044134
@@ -1537,7 +1537,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 268}
-  m_SizeDelta: {x: 537, y: 535.37}
+  m_SizeDelta: {x: 744.2, y: 535.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7551117408333092740
 CanvasRenderer:
@@ -1699,7 +1699,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7582650847532992162}
         m_TargetAssemblyTypeName: TutorialUIManager, Assembly-CSharp
-        m_MethodName: CloseCraft
+        m_MethodName: CloseBlocked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2643,9 +2643,9 @@ MonoBehaviour:
   m_text: 'To progress through the game you must uncover clues through dialogue,
     completing puzzles, or by finding them around the estate. When a clue is found
     it will be marked off on the tracker indicating that this object is not one of
-    the answers (Think Clue Rules). Sleep once the day is over to uncover more secrets,
-    including dialogue and other clues. Once you think you have gathered enough evidence
-    return to the detective to try and solve the case. '
+    the answers (Think "Clue" rules). Sleep once the day is over to uncover more
+    secrets, including dialogue and other clues. Once you think you have gathered
+    enough evidence return to the detective to try and solve the case. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d10a2c4b67b4adc4088ef3445a4b6562, type: 2}
   m_sharedMaterial: {fileID: 6254369423063020181, guid: d10a2c4b67b4adc4088ef3445a4b6562,
@@ -3937,9 +3937,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 8 hours of sleep is very important for a sharp mind. Use this time to rest
-    and reengage with the investigation. You may see or hear things that you didnt
-    before. But be careful once their are no more suspects left your life may be
-    in danger next!
+    and reengage with the investigation the next day. You may see  things that you
+    didnt before. Some puzzles/ gates can no longer be complete or accessed once
+    its time to sleep. But be careful once their are no more suspects left your life
+    may be in danger next!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d10a2c4b67b4adc4088ef3445a4b6562, type: 2}
   m_sharedMaterial: {fileID: 6254369423063020181, guid: d10a2c4b67b4adc4088ef3445a4b6562,
@@ -4005,7 +4006,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -157.02808, y: -147.20032, z: -145.6925, w: -221.71149}
+  m_margin: {x: -249.35016, y: -147.20032, z: -251.9541, w: -221.71149}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

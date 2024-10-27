@@ -7,23 +7,28 @@ using UnityEngine.UIElements;
 public class CollideAndActivateConditionConfig : ConditionConfig
 {
     [SerializeField] CraftableItemData triggerCheck;
-    bool canBeInteractedWith = false;
 
     public override void EnterSetup(Condition conditionObject)
     {
-
+        
     }
     public override void ConditionStatus(Condition conditionObject)
     {
-        if (conditionObject != null&& canBeInteractedWith == true && conditionObject.isInteractedWith)
+        if (conditionObject != null && conditionObject.IsInteractable && conditionObject.isInteractedWith)
+        {
+            
+            conditionObject.IsInteractable = false;
             ConfigConditionMet?.Invoke();
+        }
+     
     }
 
     
 
     public override void TriggerEntered(Condition conditionObject, Collider other)
     {
-        if(other.TryGetComponent(out playerController controller)){
+        if(other.TryGetComponent(out playerController controller) && !conditionObject.IsConditionMet)
+        {
             if (!TutorialUIManager.Instance.DisplayBlocked)
             {
                 TutorialUIManager.Instance.DisplayBlockedArea();
@@ -44,7 +49,7 @@ public class CollideAndActivateConditionConfig : ConditionConfig
             else
             {
                 if(controller.objectInHand.GetObject().TryGetComponent(out Item item)){
-                    if (item.Data.Name == triggerCheck.Name)
+                    if (item.Data.Name == triggerCheck.Name && !item.IsInteractable)
                     {
                         if (conditionObject.ChildDenyMaterial != null)
                         {
@@ -53,7 +58,7 @@ public class CollideAndActivateConditionConfig : ConditionConfig
                         }
                         conditionObject.DenyMaterial.SetColor("_Color", Color.green);
                         conditionObject.DenyMaterial.SetFloat("_Scale", 1.02f);
-                        canBeInteractedWith = true;
+                        conditionObject.IsInteractable = true;
                     }
                     else
                     {
@@ -75,16 +80,15 @@ public class CollideAndActivateConditionConfig : ConditionConfig
     }
     public override void TriggerExited(Condition conditionObject, Collider other)
     {
-        other.TryGetComponent(out Item item);
-        if (item != null)
+     
+        if (other.TryGetComponent(out playerController controller))
         {
-            if (item.Data.Name == triggerCheck.Name)
-                canBeInteractedWith = false;
+            if (conditionObject.ChildDenyMaterial != null)
+            {
+                conditionObject.ChildDenyMaterial.SetFloat("_Scale", 0f);
+            }
+            conditionObject.DenyMaterial.SetFloat("_Scale", 0f);
+            conditionObject.IsInteractable = false;
         }
-        if (conditionObject.ChildDenyMaterial != null)
-        {
-            conditionObject.ChildDenyMaterial.SetFloat("_Scale", 0f);
-        }
-        conditionObject.DenyMaterial.SetFloat("_Scale", 0f);
     }
 }
