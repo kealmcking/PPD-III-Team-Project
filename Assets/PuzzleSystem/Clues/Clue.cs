@@ -10,6 +10,7 @@ public class Clue : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] Rigidbody rb;
     [SerializeField] EnableInteractUI interactUI;
     [SerializeField] Collider col;
+    public bool IsInteractable { get; set; } = true;
     public BaseClueData Data => data;
     private Guid id = new Guid();
     public Guid ID => id;
@@ -20,7 +21,7 @@ public class Clue : MonoBehaviour, IInteractable, ICustomizableComponent
         rb ??= GetComponent<Rigidbody>();
         interactUI ??= GetComponent<EnableInteractUI>();
 
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
     }
     public void ItemPulse(Vector3 startPosition)
     {
@@ -28,7 +29,7 @@ public class Clue : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Interact()
     {
-        interactUI.ToggleCanvas();
+        interactUI.ToggleCanvasOff();
         EventSheet.SendClueToTracker?.Invoke(this);
     }
     public GameObject GetObject()

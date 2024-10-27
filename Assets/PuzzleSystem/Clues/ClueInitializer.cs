@@ -48,18 +48,22 @@ public class ClueInitializer : MonoBehaviour
             if(clue.Name == selection.GetKiller().Name)
             {
                 killer = clue;
+                continue;
             }
             if( clue.Name == selection.GetRoom().Name)
             {
                 room = clue;
+                continue;
             }
            if( clue.Name == selection.GetWeapon().Name)
             {
                 weapon = clue;
+                continue;
             }
             if(clue.Name == selection.GetMotive().Name)
             {
                 motive = clue;
+                continue;
             }                                   
         }
         clues.Remove(killer);

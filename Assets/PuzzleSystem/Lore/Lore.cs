@@ -13,7 +13,7 @@ public class Lore : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] TextMeshProUGUI body;
     [SerializeField] EnableInteractUI interactUI;
     [SerializeField] Collider col;
-
+    public bool IsInteractable { get; set; } = true;
     private Guid id = new Guid();
     public Guid ID => id;
     void Awake()

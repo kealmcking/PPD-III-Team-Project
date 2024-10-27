@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DialogueSystem;
 using UnityEngine;
 using Input;
-using Unity.Mathematics;
-using UnityEngine.Audio;
 
 public class playerController : MonoBehaviour
 {
@@ -16,7 +13,7 @@ public class playerController : MonoBehaviour
     [SerializeField] private playerLookAtTarget playerLookAtTarget;
     public List<SkinnedMeshRenderer> playerModels = new List<SkinnedMeshRenderer>();
 
-    public static Action INeedToTurnOffTheInteractUI;
+    public static Action<bool> INeedToTurnOffTheInteractUI;
 
     private Camera _mainCam;
     private audioManager audioManager;
@@ -63,7 +60,7 @@ public class playerController : MonoBehaviour
 
     [SerializeField] private Transform handPos;
     [SerializeField] Transform headPos;
-    private IInteractable objectInHand;
+    public IInteractable objectInHand;
     public IInteractable ObjectInHand => objectInHand;  
     private bool hasTurned;
     private bool startTurning;
@@ -87,18 +84,15 @@ public class playerController : MonoBehaviour
 
     public void killPlayer()
     {
-        Debug.Log("Enter kill player");
         Destroy(gameObject);
         GameManager.instance.LoseGame();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Enter trigger " + other.gameObject.layer.ToString());
-        Debug.Log("Enter trigger " + other);
+
         if (other.CompareTag("Weapon"))
         {
-            Debug.Log("passed layer check");
             killPlayer();
         }
         
@@ -332,32 +326,28 @@ public class playerController : MonoBehaviour
 
     private void Interact()
     {
-        float maxAngle = 45f;
+        float maxAngle = 70f;
         float minAngle = float.MaxValue;
         float minDistance = float.MaxValue;
         Collider targetCollider = null;
         IInteractable targetInteractable = null;
 
-        // Get all interactable colliders within the interaction distance
-        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
-        List<Collider> interactableColliders = new List<Collider>();
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance+1);
 
         foreach (var collider in colliders)
         {
-            // Check if the collider has an IInteractable component
-            if (!collider.TryGetComponent<IInteractable>(out IInteractable interactable))
+            if (!collider.TryGetComponent(out IInteractable interactable))
                 continue;
 
             Vector3 direction = collider.transform.position - transform.position;
-            float angle = Vector3.Angle(transform.forward, direction);
+            Vector3 localDirection = transform.InverseTransformDirection(direction);
+            float angle = Vector3.Angle(Vector3.forward, localDirection);
 
-            // Skip if the object is outside the maximum interaction angle
             if (angle > maxAngle)
                 continue;
 
             float distance = direction.magnitude;
-
-            // Prioritize objects closest to the forward direction and then by distance
+       
             if (angle < minAngle || (Mathf.Approximately(angle, minAngle) && distance < minDistance))
             {
                 minAngle = angle;
@@ -365,43 +355,12 @@ public class playerController : MonoBehaviour
                 targetCollider = collider;
                 targetInteractable = interactable;
             }
-
-            // Add to list for potential blocking checks
-            interactableColliders.Add(collider);
         }
-
-        // Proceed if a target collider was found
         if (targetCollider != null)
         {
-            Vector3 direction = targetCollider.transform.position - transform.position;
-            float distance = direction.magnitude;
-
-            // Check for line of sight using Raycast
-            if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, distance))
-            {
-                if (hit.collider != targetCollider)
-                {
-                    // Line of sight is blocked
-                    // Check if the blocking collider is an interactable
-                    if (hit.collider.TryGetComponent<IInteractable>(out IInteractable blockingInteractable))
-                    {
-                        // Update the target to the blocking interactable
-                        targetCollider = hit.collider;
-                        targetInteractable = blockingInteractable;
-                    }
-                    else
-                    {
-                        // Line of sight is blocked by a non-interactable object
-                        Debug.Log("Line of sight blocked by " + hit.collider.name);
-                        return;
-                    }
-                }
-            }
-
-            // Trigger interaction animation
+        
             _animator.SetTrigger("activate");
 
-            // Interact with the target interactable object
             if (targetInteractable is Item item)
             {
                 if (item.Data is CraftableItemData itemData && objectInHand == null)
@@ -453,6 +412,7 @@ public class playerController : MonoBehaviour
 
        
             item.ItemPulse(transform.forward);
+            item.InteractUI.ToggleCanvasOn();
             objectInHand = null;
         }   
     }
@@ -465,7 +425,9 @@ public class playerController : MonoBehaviour
             {
                 RemoveOverrideController(item);
             }
+            
             item.HandleDeactivateItemState();
+            item.InteractUI.ToggleCanvasOn();
             item.transform.SetParent(null);
             objectInHand = null;
         }
@@ -484,8 +446,8 @@ public class playerController : MonoBehaviour
         if (obj == null) return;
     
           
-            if(objectInHand != null)
-            {
+        if(objectInHand != null)
+        {
             if (objectInHand is Item item)
             {
                 if (item.OverrideController != null)
@@ -493,6 +455,7 @@ public class playerController : MonoBehaviour
                     RemoveOverrideController(item);
                 }
                 item.HandleDeactivateItemState();
+                item.InteractUI.ToggleCanvasOn();
                 objectInHand.Interact();
                 objectInHand = null;
             }
@@ -503,7 +466,6 @@ public class playerController : MonoBehaviour
         //should be replaced with the override controller
         if (obj is Item equippedItem)
         {
-            //override controller add here
             if (equippedItem.OverrideController != null)
             {
                 SetAnimationOverride(equippedItem);
@@ -515,7 +477,7 @@ public class playerController : MonoBehaviour
             Vector3 offset = equippedItem.HandlePoint.position - equippedItem.transform.position; 
             equippedItem.transform.position = handPos.position - offset;
             objectInHand = equippedItem;
-   
+            equippedItem.InteractUI.ToggleCanvasOff(true);
             playerLookAtTarget = null;
         }
     }

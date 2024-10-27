@@ -20,32 +20,68 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     "Action Config. For instance to play an animation like if you want the Condition to slide over or open up add the AnimationActionConfig " +
     "Scriptable Object here You can stack multiple for multiple effects.")]
     List<ActionConfig> actions = new List<ActionConfig>();
-    [SerializeField] EnableInteractUI interactUI;
-  
+   
     [SerializeField] bool isConditionMet = false;
     [SerializeField,Tooltip("When this condition is met do you want to set this conditions active state to false?")] bool setObjectFalseOnComplete = false;
     [SerializeField] Rigidbody rb;
-    [SerializeField] bool isInteractable;
+    public bool IsInteractable { get; set; } = false;
+ 
+    [SerializeField] bool isGate = false;
+    public bool IsGate => isGate;
+    [SerializeField] EnableInteractUI interactUI;
+    Material denyMaterial;
+    Material childDenyMaterial;
+    public Material DenyMaterial => denyMaterial;  
+    public Material ChildDenyMaterial => childDenyMaterial; 
+    [SerializeField] AudioClip denyAudioClip;
+    public AudioClip DenyAudioClip => denyAudioClip;
+    [SerializeField] GameObject childToUpdate;
+    public GameObject ChildToUpdate => childToUpdate;
     [SerializeField, Tooltip("List of all the craftable components required to create the items to finish this condition")] List<CraftableComponentData> components = new List<CraftableComponentData>(3);
     [SerializeField, Tooltip("create an empty transform and make it a child of the condition inside this field add the transform." +
         "The transforms will be the potential spawning points for the components used to craft the item needed to complete the condition." +
         "It is recommended that their is more positions than components to allow for more unpredictable possible spawn points for the components.")]
     List<Transform> componentPositions = new List<Transform>();
-    [SerializeField] bool canConditionNotBeUsed = true;
+    [SerializeField] bool canConditionBeUsed = true;
     public Rigidbody RB => rb;
     public bool IsConditionMet => isConditionMet;
     public bool SetObjectFalseOnComplete => setObjectFalseOnComplete;
 
     public bool isInteractedWith = false;
+    public Collider BodyCol => bodyCol;
     public void Awake()
     {
-        if (isInteractable)
-        {
-            interactUI ??= GetComponent<EnableInteractUI>();
-        }    
+  
         interactCol ??= GetComponent<SphereCollider>();
         rb??= GetComponent<Rigidbody>();
-       
+        if(isGate)
+        {
+                foreach (var mat in GetComponent<Renderer>().materials)
+                {
+                    if (mat.name.Contains("OutlineTest"))
+                    {
+                        denyMaterial = mat;
+                        break;
+                    }
+                
+                }
+
+            if (ChildToUpdate != null)
+            {
+               
+                foreach (var mat in ChildToUpdate.GetComponent<Renderer>().materials)
+                {
+
+                    if (mat.name.Contains("OutlineTest"))
+                    {
+                        childDenyMaterial = mat;
+                        break;
+                    }
+                }
+            }
+
+        }
+   
         
     }
     private void OnEnable()
@@ -64,10 +100,14 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     {
         if (config != null)
             config.EnterSetup(this);
+        if (IsInteractable)
+        {
+            interactUI ??= GetComponent<EnableInteractUI>();
+        }
     }
     public void Update()
     {
-        if (config != null && canConditionNotBeUsed == true)
+        if (config != null && canConditionBeUsed == true)
             config.ConditionStatus(this);
     }
     public void SendStatusUpdate()
@@ -85,24 +125,24 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void OnTriggerEnter(Collider other)
     {
-        if (config != null && canConditionNotBeUsed == true)
+        if (config != null && canConditionBeUsed == true)
             config.TriggerEntered(this, other);
     }  
     public void OnTriggerStay(Collider other)
     {
-        if (config != null && canConditionNotBeUsed == true)
+        if (config != null && canConditionBeUsed == true)
             config.TriggerStayed(this, other);
     }
     public void OnTriggerExit(Collider other)
     {
-        if (config != null && canConditionNotBeUsed == true)
+        if (config != null && canConditionBeUsed == true)
             config.TriggerExited(this, other);
     }
     public void Interact()
     {
-        if(isInteractable && canConditionNotBeUsed == true)
+        if(IsInteractable && canConditionBeUsed == true)
         {
-            interactUI.ToggleCanvas();
+            interactUI.ToggleCanvasOff(true);
             isInteractedWith = true;
         }
        
@@ -113,6 +153,6 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void BlockCondition(bool value)
     {
-        canConditionNotBeUsed = value;
+        canConditionBeUsed = value;
     }
 }

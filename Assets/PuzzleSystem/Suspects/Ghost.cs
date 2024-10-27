@@ -14,7 +14,7 @@ public class Ghost : MonoBehaviour, IInteractable, ICustomizableComponent
 
     [SerializeField] EnableInteractUI interactUI;
     [SerializeField] Collider col;
-    
+    public bool IsInteractable { get; set; } = true;
     bool ghostMoaning = false;
 
     public virtual void Awake()
@@ -62,7 +62,7 @@ public class Ghost : MonoBehaviour, IInteractable, ICustomizableComponent
     public virtual void Interact()
     {
 
-        interactUI.ToggleCanvas();
+        interactUI.ToggleCanvasOff();
     }
 
  

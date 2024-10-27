@@ -21,7 +21,7 @@ public class WorkBench : EnvironmentInteractable
         {
             GameManager.instance.ActivateInventoryUISecondary();
         }
-        interactUI.ToggleCanvas();
+        interactUI.ToggleCanvasOff();
         GameManager.instance.ActivateCraftTableUI();
     }
 

@@ -70,7 +70,7 @@ public class Director : MonoBehaviour
         gameSelection = new GameSelection(suspects, killers, rooms, weapons, cases, motives);
 
 
-        if (scenePuzzles.Count > 0)
+     /*   if (scenePuzzles.Count > 0)
         {
             foreach (Puzzle puzzle in gameSelection.GetCase().Puzzles)
             {
@@ -85,8 +85,8 @@ public class Director : MonoBehaviour
 
 
             }
-        }
-        if (sceneLore.Count > 0)
+        }*/
+       /* if (sceneLore.Count > 0)
         {
             foreach (Lore lore in gameSelection.GetCase().Lore)
             {
@@ -99,16 +99,16 @@ public class Director : MonoBehaviour
                 }
             }
 
-        }
+        }*/
 
-        initializer.Initialize(gameSelection,killers, rooms, weapons, motives, activePuzzles);
+        initializer.Initialize(gameSelection,killers, rooms, weapons, motives, scenePuzzles);
 
         List<Suspect> newSuspects = killers
             .Select(k => k.data.SuspectPrefab)
             .ToList();
         if (newSuspects.Count > 0)
         {
-            EventSheet.InitializeSuspectsToScene?.Invoke(gameSelection.GetKiller().data.SuspectPrefab,newSuspects, SpawnPointType.Starting, true);
+            EventSheet.InitializeSuspectsToScene?.Invoke(newSuspects, SpawnPointType.Starting, true);
         }
         if (gameSelection != null)
             EventSheet.SendGameSelection?.Invoke(gameSelection);
@@ -138,13 +138,8 @@ public class Director : MonoBehaviour
 
         foreach(var suspect in scene)
         {
-
-            Debug.Log(gameSelection.GetKiller().Name);
-            Debug.Log(suspect.Data.Name);
             if (suspect.Data.Name == gameSelection.GetKiller().Name )
-            {
-                Debug.Log(suspect.name);
-              
+            { 
                 chosenKiller = suspect;
                 break;
             }

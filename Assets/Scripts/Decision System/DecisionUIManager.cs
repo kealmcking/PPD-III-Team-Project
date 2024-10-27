@@ -34,10 +34,10 @@ public class DecisionUIManager : MonoBehaviour
     public RoomClueData room;
     void Awake()
     {
-        killerToggles.ForEach(t => { t.isOn = false;});
-        motiveToggles.ForEach(t => { t.isOn = false;});
-        weaponToggles.ForEach(t => { t.isOn = false;});
-        roomToggles.ForEach(t => { t.isOn = false;});
+        killerToggles.ForEach(t => { t.isOn = false; });
+        motiveToggles.ForEach(t => { t.isOn = false; });
+        weaponToggles.ForEach(t => { t.isOn = false; });
+        roomToggles.ForEach(t => { t.isOn = false; });
         generateButton.SetActive(false);
     }
     private void OnEnable()
@@ -50,16 +50,17 @@ public class DecisionUIManager : MonoBehaviour
         EventSheet.SendAllClues -= UpdateChoices;
         EventSheet.SendGameSelection -= UpdateCorrectChoices;
     }
-    private void Update()
-    {
-        ValidateSubmissionReady();
-    }
+
     public void UpdateKillerSelection(int index)
     {
-        if (index < 0
-            || index > killerChoices.Count
-            || index == killerChoices.IndexOf(selectedKiller))
+        if (index < 0 || index > killerChoices.Count || (index == killerChoices.IndexOf(selectedKiller) && selectedKiller != null))
+        {
+            selectedKiller = null;
+            generateButton.SetActive(false);
+
             return;
+        }
+           
 
         Debug.Log("obj" + index + "selected");
         selectedKiller = null;
@@ -67,14 +68,17 @@ public class DecisionUIManager : MonoBehaviour
 
         selectedKiller = killerChoices[index];
         killerToggles.ElementAt(index).isOn = true;
+        ValidateSubmissionReady();
 
     }
     public void UpdateMotiveSelection(int index)
     {
-        if (index < 0
-        || index > motiveChoices.Count
-        || index == motiveChoices.IndexOf(selectedMotive))
+        if (index < 0 || index > motiveChoices.Count|| (index == motiveChoices.IndexOf(selectedMotive) && selectedMotive != null))
+        {
+            selectedMotive = null;
+            generateButton.SetActive(false);
             return;
+        }
 
         Debug.Log("obj" + index + "selected");
         selectedMotive = null;
@@ -82,14 +86,18 @@ public class DecisionUIManager : MonoBehaviour
 
         selectedMotive = motiveChoices[index];
         motiveToggles.ElementAt(index).isOn = true;
+        ValidateSubmissionReady();
 
     }
     public void UpdateWeaponSelection(int index)
     {
-        if (index < 0
-         || index > weaponChoices.Count
-         || index == weaponChoices.IndexOf(selectedWeapon))
+        if (index < 0 || index > weaponChoices.Count|| (index == weaponChoices.IndexOf(selectedWeapon) && selectedWeapon != null))
+        {
+            selectedWeapon = null;
+            generateButton.SetActive(false);
+
             return;
+        }
 
         Debug.Log("obj" + index + "selected");
         selectedWeapon = null;
@@ -97,14 +105,17 @@ public class DecisionUIManager : MonoBehaviour
 
         selectedWeapon = weaponChoices[index];
         weaponToggles.ElementAt(index).isOn = true;
-
+        ValidateSubmissionReady();
     }
     public void UpdateRoomSelection(int index)
     {
-        if (index < 0
-           || index > roomChoices.Count
-           || index == roomChoices.IndexOf(selectedRoom))
+        if (index < 0 || index > roomChoices.Count|| (index == roomChoices.IndexOf(selectedRoom)&&selectedRoom!=null))
+        {
+            selectedRoom = null;
+            generateButton.SetActive(false);
+
             return;
+        }
 
         Debug.Log("obj" + index + "selected");
         selectedRoom = null;
@@ -112,7 +123,7 @@ public class DecisionUIManager : MonoBehaviour
 
         selectedRoom = roomChoices[index];
         roomToggles.ElementAt(index).isOn = true;
-
+        ValidateSubmissionReady();
     }
     private void UpdateChoices(List<BaseClueData> clues)
     {
@@ -167,7 +178,7 @@ public class DecisionUIManager : MonoBehaviour
         }
         else 
         {
-          //  generateButton.SetActive(false);
+          generateButton.SetActive(false);
            
         }
 

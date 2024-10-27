@@ -224,7 +224,7 @@ Transform:
   m_GameObject: {fileID: 7672369040962194837}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.37, y: -0.45, z: -0.14}
+  m_LocalPosition: {x: -0.41, y: 0.609, z: 0.535}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -241,14 +241,40 @@ PrefabInstance:
     - target: {fileID: 573046875619650689, guid: 45da4259ee8d4fa45954cad5baa5e4c2,
         type: 3}
       propertyPath: actions.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 573046875619650689, guid: 45da4259ee8d4fa45954cad5baa5e4c2,
         type: 3}
       propertyPath: 'actions.Array.data[0]'
       value: 
+      objectReference: {fileID: 11400000, guid: 8900646a56996e2438889c4689ddba53,
+        type: 2}
+    - target: {fileID: 573046875619650689, guid: 45da4259ee8d4fa45954cad5baa5e4c2,
+        type: 3}
+      propertyPath: 'actions.Array.data[1]'
+      value: 
       objectReference: {fileID: 11400000, guid: 1c3883157dc45db4ea8e5c0252010d8a,
         type: 2}
+    - target: {fileID: 1850469564882442003, guid: 45da4259ee8d4fa45954cad5baa5e4c2,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.985
+      objectReference: {fileID: 0}
+    - target: {fileID: 2620812408414465785, guid: 45da4259ee8d4fa45954cad5baa5e4c2,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2620812408414465785, guid: 45da4259ee8d4fa45954cad5baa5e4c2,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3862521008873542762, guid: 45da4259ee8d4fa45954cad5baa5e4c2,
+        type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4551139888235104032, guid: 45da4259ee8d4fa45954cad5baa5e4c2,
         type: 3}
       propertyPath: m_Controller

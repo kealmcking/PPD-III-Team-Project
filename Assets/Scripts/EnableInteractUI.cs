@@ -8,86 +8,76 @@ using UnityEngine.UI;
 
 public class EnableInteractUI : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> interactCanvas;
-
+    [SerializeField] private GameObject interactCanvas;
+    private Material glowMaterial;
     public static Action<bool, EnableInteractUI> ImInInteractionZone;
-
-    internal bool isInMenu;
-    
+    bool isCanvasOffManually = false;
+    private bool isInMenu;
+    public GameObject InteractCanvas => interactCanvas;
 
     private void OnEnable()
     {
-        playerController.INeedToTurnOffTheInteractUI += ToggleCanvas;
+        playerController.INeedToTurnOffTheInteractUI += ToggleCanvasOff;
         DialogueManager.DialogueMenuActive += MenuActive;
     }
 
     private void OnDisable()
     {
-        playerController.INeedToTurnOffTheInteractUI -= ToggleCanvas;
+        playerController.INeedToTurnOffTheInteractUI -= ToggleCanvasOff;
         DialogueManager.DialogueMenuActive -= MenuActive;
     }
 
     private void Awake()
     {
-        List<GameObject> toRemove = new List<GameObject>();
-        foreach (GameObject canvas in interactCanvas)
-        {
-            if (canvas == null)
-            {
-                toRemove.Remove(canvas);
-            }
-        }
-
-        foreach (GameObject canvas in toRemove)
-        {
-            interactCanvas.Remove(canvas);
-        }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-        
         foreach (Transform child in transform)
         {
-            if (child.gameObject.name == "InteractUI")
+            if (child.gameObject.name.Contains("InteractUI"))
             {
-                interactCanvas.Add(child.gameObject);
+                interactCanvas = child.gameObject;
+                break;
             }
 
-            
-        }
-        if (interactCanvas != null)
-        {
-            foreach (GameObject canvas in interactCanvas)
-            {
-                canvas.SetActive(false);
-            }
-        }
 
-        
- 
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+       
+     
+        if (interactCanvas != null)
+        {
+            interactCanvas.transform.position = transform.position;
+            Renderer renderer = GetComponent<Renderer>();
+            Vector3 parentCenter = transform.position; // Default to parent position
+
+            if (renderer != null)
+            {
+                parentCenter = renderer.bounds.center;
+                interactCanvas.transform.position = parentCenter;
+                interactCanvas.transform.position += new Vector3(0, 0.5f, 0) + transform.forward * 0.3f;
+            }
+            else
+            {
+                interactCanvas.transform.position += new Vector3(0, 1.8f, 0) + transform.forward * 0.3f;
+            }
+           
+            
+            interactCanvas.SetActive(false);             
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && interactCanvas!= null)
         {
-            foreach (GameObject canvas in interactCanvas)
+            if (!interactCanvas.activeSelf && !isCanvasOffManually)
             {
-                if (!canvas.activeSelf)
-                {
-                    canvas.SetActive(true);
-                }
+                interactCanvas.SetActive(true);
             }
-            ImInInteractionZone.Invoke(true, this);
+
+            ImInInteractionZone.Invoke(true, this);          
         }
     }
 
@@ -95,12 +85,9 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isInMenu && (GetComponent<Suspect>() || GetComponent<EnvironmentInteractable>()) && interactCanvas != null)
         {
-            foreach (GameObject canvas in interactCanvas)
+            if (!interactCanvas.activeSelf && !isCanvasOffManually)
             {
-                if (!canvas.activeSelf)
-                {
-                    canvas.SetActive(true);
-                }
+                interactCanvas.SetActive(true);
             }
         }
     }
@@ -109,33 +96,25 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && interactCanvas != null)
         {
-            foreach (GameObject canvas in interactCanvas)
+            if (interactCanvas.activeSelf)
             {
-                canvas.SetActive(false);
+                interactCanvas.SetActive(false);
             }
             ImInInteractionZone.Invoke(false, this);
         }
     }
 
-    public void ToggleCanvas()
+    public void ToggleCanvasOff(bool setCanvasOffManually = false)
     {
-        if (interactCanvas.Count == 0) return;
-        foreach (GameObject canvas in interactCanvas)
-        {
-            if (canvas.activeSelf)
-            {
-                canvas.SetActive(false);
-                MenuActive(false);
-            }
-            else
-            {
-                canvas.SetActive(true);
-                MenuActive(true);
-            }
-        }
-
+        if (interactCanvas == null) return;
+            interactCanvas.SetActive(false);
+        if (setCanvasOffManually) isCanvasOffManually = true;
     }
-
+    public void ToggleCanvasOn()
+    {
+        if (interactCanvas == null) return;
+        if (isCanvasOffManually) isCanvasOffManually = false;
+    }
     private void MenuActive(bool context)
     {
         isInMenu = context;

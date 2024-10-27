@@ -12,7 +12,7 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
 {
     [SerializeField] SuspectData data;
     [SerializeField] GameObject mask;
-
+    public bool IsInteractable { get; set; } = true;
     [SerializeField] EnableInteractUI interactUI;
     [SerializeField] Collider col;
     [SerializeField] Animator anim;
@@ -47,7 +47,7 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
     }
     public void Interact()
     {
-        interactUI.ToggleCanvas();
+        interactUI.ToggleCanvasOff();
         DialogueManager.instance.enableDialogueUI(this);     
     }
     public GameObject GetObject()

@@ -2475,8 +2475,8 @@ NavMeshAgent:
   m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_AngularSpeed: 260
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2542,7 +2542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ace237cbad0c40ab9499e1b7fa1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactCanvas: []
+  interactCanvas: {fileID: 0}
 --- !u!114 &9152572602359265264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2560,7 +2560,7 @@ MonoBehaviour:
   interactUI: {fileID: 4714206369551222414}
   col: {fileID: 5439316726206444385}
   anim: {fileID: 8146767463495282934}
-  IsKiller: 0
+  IsKiller: 1
 --- !u!114 &6530181565131275025
 MonoBehaviour:
   m_ObjectHideFlags: 0

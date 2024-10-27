@@ -140,6 +140,7 @@ public class GameManager : MonoBehaviour
         EventSheet.SendAllClues += HandleClues;
         EventSheet.SendKillerClue += HandleKillerClue;
         EventSheet.SendClueToTracker += HandleNewClue;
+     
     }
     public void OnDisable()
     {
@@ -284,7 +285,10 @@ public class GameManager : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        GetComponent<invManager>().IsUIActive = false;
+        invManager manager = GetComponent<invManager>();
+        manager.IsUIActive = false;
+        manager.UnsetDraggableData();
+        TooltipManager.instance.hide();
         menuActive.SetActive(false);
         menuActive = null;       
         InventoryActive = false;
@@ -298,6 +302,9 @@ public class GameManager : MonoBehaviour
     public void DeactivateInventoryUISecondary()
     {
         menuInventory.SetActive(false);
+        invManager manager = GetComponent<invManager>();
+        manager.IsUIActive = false;
+        manager.UnsetDraggableData();
         InventoryActive = false;
     }
     public void ActivateCraftTableUI()
@@ -308,11 +315,19 @@ public class GameManager : MonoBehaviour
         menuActive.SetActive(true);
         CraftTableActive = true;
         InputManager.instance.DisableCharacterInputs();
+        if (!TutorialUIManager.Instance.DisplayCraft)
+        {
+            TutorialUIManager.Instance.DisplayCraftTutorial();
+        }
     }
     public void DeactivateCraftTableUI()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        invManager manager = GetComponent<invManager>();
+        manager.IsUIActive = false;
+        manager.UnsetDraggableData();
+        TooltipManager.instance.hide();
         menuActive.SetActive(false);
         menuActive = null;
         CraftTableActive = false;
@@ -322,6 +337,10 @@ public class GameManager : MonoBehaviour
     public void ActivateSleepMenu()
     {
         menuActive = sleepUI;
+        if (!TutorialUIManager.Instance.DisplaySleeping)
+        {
+            TutorialUIManager.Instance.DisplaySleepingTutorial();
+        }
         sleepUI.SetActive(true);
         //characterUI.SetActive(false);
     }
@@ -337,6 +356,10 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         menuActive = decisionUI;
+        if (!TutorialUIManager.Instance.DisplayVote)
+        {
+            TutorialUIManager.Instance.DisplayVotingTutorial();
+        }
         menuActive.SetActive(true);
         DecisionActive = true;
     }
