@@ -351,6 +351,31 @@ MonoBehaviour:
       m_Action: Throw
       m_Flags: 0
     m_Flags: 0
+  skipCutSceneAction:
+    m_Name: Skip Cut Scene
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 6bce41e2-ecf7-4043-abeb-55c05ffcbc5b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 0829a3fb-7aa5-426c-9fc9-3344c77d1f9e
+      m_Path: <Keyboard>/x
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Skip Cut Scene
+      m_Flags: 0
+    - m_Name: 
+      m_Id: e110da33-4b36-4287-a148-0587f7343150
+      m_Path: <Gamepad>/select
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Skip Cut Scene
+      m_Flags: 0
+    m_Flags: 0
   moveAmount: {x: 0, y: 0}
   aimAmount: {x: 0, y: 0}
   isSprint: 0

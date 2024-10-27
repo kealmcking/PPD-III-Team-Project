@@ -24,6 +24,7 @@ namespace Input
         public InputAction useAction;
         public InputAction dropAction;
         public InputAction throwAction;
+        public InputAction skipCutSceneAction;
         [Header("VISIBLE FOR DEBUG PURPOSES")]
         [SerializeField] private Vector2 moveAmount;
         [SerializeField] private Vector2 aimAmount;
@@ -67,6 +68,7 @@ namespace Input
             useAction.performed += ctx => { OnUse(ctx); };
             dropAction.performed += ctx => { OnDrop(ctx); };
             throwAction.performed += ctx => { OnThrow(ctx); };
+            skipCutSceneAction.performed += ctx => { OnSkipCutScene(ctx); };
         }
 
       
@@ -109,6 +111,13 @@ namespace Input
         
         #region Input System Callbacks
         
+        //Controls skipping cutscene for main menu
+        public void OnSkipCutScene(InputAction.CallbackContext context)
+        {
+            PlayerableDirectorManager.instance.SkipCutScene();
+            skipCutSceneAction.Disable();
+        }
+
         // Controls interaction input
         public void OnInteract(InputAction.CallbackContext context)
         {
@@ -281,6 +290,7 @@ namespace Input
         {
            
             cancelAction.Disable();
+            skipCutSceneAction.Disable();
             moveAction.Enable();
             aimAction.Enable();
             crouchAction.Enable();
@@ -311,6 +321,7 @@ namespace Input
             useAction.Enable();
             dropAction.Enable();
             throwAction.Enable();
+            skipCutSceneAction.Enable();
             EnableInteractUI.ImInInteractionZone += SetInteractable;
         }
 
@@ -327,6 +338,7 @@ namespace Input
             useAction.Disable();
             dropAction.Disable();
             throwAction.Disable();
+            skipCutSceneAction.Disable();
             EnableInteractUI.ImInInteractionZone -= SetInteractable;
         }
         
