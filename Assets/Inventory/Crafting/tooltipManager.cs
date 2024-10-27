@@ -7,6 +7,7 @@ public class TooltipManager : MonoBehaviour
 {
     public static TooltipManager instance;
     [SerializeField] GameObject toolTip;
+    public GameObject Tooltip => toolTip;
     public TextMeshProUGUI textComp;
 
     private void Awake()

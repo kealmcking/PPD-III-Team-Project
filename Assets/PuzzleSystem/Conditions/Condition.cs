@@ -27,9 +27,12 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
 
     [SerializeField] bool isInteractable;
     [SerializeField] bool isGate = false;
+    public bool IsGate => isGate;
     [SerializeField] EnableInteractUI interactUI;
     Material denyMaterial;
-    public Material DenyMaterial => denyMaterial;   
+    Material childDenyMaterial;
+    public Material DenyMaterial => denyMaterial;  
+    public Material ChildDenyMaterial => childDenyMaterial; 
     [SerializeField] AudioClip denyAudioClip;
     public AudioClip DenyAudioClip => denyAudioClip;
     [SerializeField] GameObject childToUpdate;
@@ -54,8 +57,34 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
         }    
         interactCol ??= GetComponent<SphereCollider>();
         rb??= GetComponent<Rigidbody>();
-      if(isGate)
-       denyMaterial = GetComponent<Renderer>().materials[1]; 
+        if(isGate)
+        {
+                foreach (var mat in GetComponent<Renderer>().materials)
+                {
+                    if (mat.name.Contains("OutlineTest"))
+                    {
+                        denyMaterial = mat;
+                        break;
+                    }
+                
+                }
+
+            if (ChildToUpdate != null)
+            {
+               
+                foreach (var mat in ChildToUpdate.GetComponent<Renderer>().materials)
+                {
+
+                    if (mat.name.Contains("OutlineTest"))
+                    {
+                        childDenyMaterial = mat;
+                        break;
+                    }
+                }
+            }
+
+        }
+   
         
     }
     private void OnEnable()

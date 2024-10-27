@@ -55,8 +55,11 @@ public class invManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
     public void UnsetDraggableData()
     {
+        if (lastItemSlot != null)
         lastItemSlot.setCurItem(draggedItem);
+        if(draggedItem != null)
         draggedItem = null;
+        if(TooltipManager.instance.Tooltip.activeSelf)
         TooltipManager.instance.hide();
     }
     public void OnPointerDown(PointerEventData eventData)

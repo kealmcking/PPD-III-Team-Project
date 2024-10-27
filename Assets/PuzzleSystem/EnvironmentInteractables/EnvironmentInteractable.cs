@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(SphereCollider),typeof(EnableInteractUI))]
 public abstract class EnvironmentInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] protected EnableInteractUI interactUI;
-    [SerializeField] Collider col;
+    [SerializeField] SphereCollider col;
     public virtual void OnEnable()
     {
         if (col == null)
@@ -15,7 +15,7 @@ public abstract class EnvironmentInteractable : MonoBehaviour, IInteractable
         }
 
         col.isTrigger = true;
-
+        col.radius = 1.5f;
         if (interactUI == null)
         {
             interactUI = GetComponent<EnableInteractUI>();
@@ -28,6 +28,6 @@ public abstract class EnvironmentInteractable : MonoBehaviour, IInteractable
 
     public virtual void Interact()
     {
-        
+        interactUI.ToggleCanvas();
     }
 }

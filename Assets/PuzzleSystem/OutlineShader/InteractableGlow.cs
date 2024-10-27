@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.ProBuilder;
+
 
 public class InteractableGlow : MonoBehaviour
 {
@@ -10,15 +10,21 @@ public class InteractableGlow : MonoBehaviour
        
         if (other.TryGetComponent(out IInteractable interactable))
         {
-            if(interactable.GetObject().transform.parent == null)
+            if(interactable != null)
             {
               
                 Renderer renderer = interactable.GetObject().GetComponent<Renderer>();
                 if (renderer != null)
                 {
-                    Material material = renderer.materials[1];
-                    if (material != null)
-                        material.SetFloat("_Scale", 1.02f);
+                    Material matCopy;
+                    foreach(var mat in renderer.materials)
+                    {
+                        matCopy = mat;
+                        if (matCopy.name.Contains("OutlineTest"))
+                        {
+                            matCopy.SetFloat("_Scale", 1.02f);
+                        }
+                    } 
                 }
             }         
         }
@@ -31,9 +37,15 @@ public class InteractableGlow : MonoBehaviour
             Renderer renderer = interactable.GetObject().GetComponent<Renderer>();
             if (renderer != null)
             {
-                Material material = renderer.materials[1];
-                if (material != null)
-                material.SetFloat("_Scale", 0f);
+                Material matCopy;
+                foreach (var mat in renderer.materials)
+                {
+                    matCopy = mat;
+                    if (matCopy.name.Contains("OutlineTest"))
+                    {
+                        matCopy.SetFloat("_Scale", 0f);
+                    }
+                }
             }
         }
     }

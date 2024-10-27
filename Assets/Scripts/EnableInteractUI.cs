@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class EnableInteractUI : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> interactCanvas;
-
+    [SerializeField] private GameObject interactCanvas;
+    private Material glowMaterial;
     public static Action<bool, EnableInteractUI> ImInInteractionZone;
 
     private bool isInMenu;
@@ -28,48 +28,43 @@ public class EnableInteractUI : MonoBehaviour
 
     private void Awake()
     {
-        List<GameObject> toRemove = new List<GameObject>();
-        foreach (GameObject canvas in interactCanvas)
+        foreach (Transform child in transform)
         {
-            if (canvas == null)
+            if (child.gameObject.name.Contains("InteractUI"))
             {
-                toRemove.Remove(canvas);
+                interactCanvas = child.gameObject;
+                break;
             }
-        }
 
-        foreach (GameObject canvas in toRemove)
-        {
-            interactCanvas.Remove(canvas);
+
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-
-        
-        foreach (Transform child in transform)
-        {
-            if (child.gameObject.name == "InteractUI")
-            {
-                interactCanvas.Add(child.gameObject);
-            }
-
-            
-        }
+       
+     
         if (interactCanvas != null)
         {
-            foreach (GameObject canvas in interactCanvas)
+            interactCanvas.transform.position = transform.position;
+            Renderer parentRenderer = GetComponent<Renderer>();
+            Vector3 parentCenter = transform.position; // Default to parent position
+
+            if (parentRenderer != null)
             {
-                canvas.SetActive(false);
-                Vector3 worldUp = new Vector3(0, .2f, 0);
-                Vector3 localForward = canvas.transform.TransformDirection(new Vector3(0, 0, 0.18f));
-                canvas.transform.position += worldUp+localForward;
+                parentCenter = parentRenderer.bounds.center;
+                interactCanvas.transform.position = parentCenter;
+                interactCanvas.transform.position += new Vector3(0, .5f, .2f);
             }
+            else
+            {
+                interactCanvas.transform.position += new Vector3(0, 1.8f, 0);
+            }
+           
+            
+            interactCanvas.SetActive(false);             
         }
 
-        
- 
     }
 
     // Update is called once per frame
@@ -82,14 +77,12 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && interactCanvas!= null)
         {
-                foreach (GameObject canvas in interactCanvas)
-                {
-                    if (!canvas.activeSelf)
-                    {
-                        canvas.SetActive(true);
-                    }
-                }
-                ImInInteractionZone.Invoke(true, this);          
+            if (!interactCanvas.activeSelf)
+            {
+                interactCanvas.SetActive(true);
+            }
+
+            ImInInteractionZone.Invoke(true, this);          
         }
     }
 
@@ -97,12 +90,9 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isInMenu && GetComponent<Suspect>() && interactCanvas != null)
         {
-            foreach (GameObject canvas in interactCanvas)
+            if (!interactCanvas.activeSelf)
             {
-                if (!canvas.activeSelf)
-                {
-                    canvas.SetActive(true);
-                }
+                interactCanvas.SetActive(true);
             }
         }
     }
@@ -111,9 +101,9 @@ public class EnableInteractUI : MonoBehaviour
     {
         if (other.CompareTag("Player") && interactCanvas != null)
         {
-            foreach (GameObject canvas in interactCanvas)
+            if (interactCanvas.activeSelf)
             {
-                canvas.SetActive(false);
+                interactCanvas.SetActive(false);
             }
             ImInInteractionZone.Invoke(false, this);
         }
@@ -121,13 +111,10 @@ public class EnableInteractUI : MonoBehaviour
 
     public void ToggleCanvas()
     {
-        if (interactCanvas.Count == 0) return;
-        foreach (GameObject canvas in interactCanvas)
+        if (interactCanvas == null) return;
+        if (interactCanvas.activeSelf)
         {
-            if (canvas.activeSelf)
-            {
-                canvas.SetActive(false);
-            }
+            interactCanvas.SetActive(false);
         }
 
     }
