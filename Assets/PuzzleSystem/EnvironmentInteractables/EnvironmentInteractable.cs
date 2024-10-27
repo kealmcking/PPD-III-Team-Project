@@ -2,15 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EnvironmentInteractable : MonoBehaviour,IInteractable
+[RequireComponent(typeof(SphereCollider))]
+public abstract class EnvironmentInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] protected EnableInteractUI interactUI;
     [SerializeField] Collider col;
-    public virtual void Awake()
+    public virtual void OnEnable()
     {
-        col ??= GetComponent<SphereCollider>();
+        if (col == null)
+        {
+            col = GetComponent<SphereCollider>();
+        }
+
         col.isTrigger = true;
-        interactUI ??= GetComponent<EnableInteractUI>();
+
+        if (interactUI == null)
+        {
+            interactUI = GetComponent<EnableInteractUI>();
+        }
     }
     public GameObject GetObject()
     {
@@ -21,6 +30,4 @@ public abstract class EnvironmentInteractable : MonoBehaviour,IInteractable
     {
         
     }
-
-  
 }

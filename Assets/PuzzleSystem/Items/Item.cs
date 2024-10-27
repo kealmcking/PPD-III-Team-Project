@@ -12,14 +12,12 @@ public class Item : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] Rigidbody rb;
     [SerializeField] EnableInteractUI interactUI;
     [SerializeField] float forceMultiplier = 5;
-  
-
-
-        
+          
     [SerializeField,Tooltip("Used specifically to handle interactions")] SphereCollider interactCol;
     [SerializeField, Tooltip("Used specifically for turning the collider of the body of the item off and on when using it.")]Collider bodyCol;
     [SerializeField,Tooltip("Only add an override controller here if you want the item to have unique animations when being used")] AnimatorOverrideController overrideController;
     [SerializeField] Transform handlePoint;
+    
     public Transform HandlePoint => handlePoint;
     public BaseItemData Data => data;
     public AnimatorOverrideController OverrideController => overrideController;

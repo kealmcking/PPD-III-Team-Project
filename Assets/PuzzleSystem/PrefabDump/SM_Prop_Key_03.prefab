@@ -239,6 +239,7 @@ MonoBehaviour:
   psButton_spr: {fileID: 21300000, guid: c95c61292129ffe4ea2383042abfb242, type: 3}
   switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
   uiElement: {fileID: 0}
+  text: {fileID: 0}
 --- !u!1 &8234601556378289573
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ace237cbad0c40ab9499e1b7fa1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactCanvas: {fileID: 3828820557078333798}
+  interactCanvas: []
 --- !u!114 &976124005616000110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +409,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: dfcd8bcc63bf6f24191f895ad3d3bf8f, type: 2}
   rb: {fileID: 1704997809770371665}
   interactUI: {fileID: 2637154273075148130}
+  forceMultiplier: 5
   interactCol: {fileID: 8026054910748674497}
   bodyCol: {fileID: 8765387732002147834}
   overrideController: {fileID: 0}

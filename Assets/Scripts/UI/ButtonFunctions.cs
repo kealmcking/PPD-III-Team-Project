@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class ButtonFunctions : MonoBehaviour
 {
@@ -15,6 +16,15 @@ public class ButtonFunctions : MonoBehaviour
     public Slider masterVolume;
     public Slider musicVolume;
     public Slider sfxVolume;
+    public Slider mouseSensitivity;
+    public Slider controllerSensitivity;
+
+    private float mouseSensitivityValue;
+    private float controllerSensitivityValue;
+
+    InputDevice activeDevice;
+
+    [SerializeField] AudioMixer audioMixer;
     
     // Start is called before the first frame update
     void Awake()
@@ -23,6 +33,25 @@ public class ButtonFunctions : MonoBehaviour
 
         if (masterVolume == null) return;
         LoadOptions();
+    }
+    private void Update()
+    {
+        activeDevice = InputSystem.GetDevice<InputDevice>();
+
+        UpdateSensitivity(activeDevice);
+    }
+    private void UpdateSensitivity(InputDevice activeDevice)
+    {
+        if (activeDevice is Keyboard || activeDevice is Mouse)
+        {
+            mouseSensitivity.interactable = true;
+            controllerSensitivity.interactable = false;
+        }
+        else if (activeDevice is Gamepad)
+        {
+            mouseSensitivity.interactable = false;
+            controllerSensitivity.interactable = true;
+        }
     }
 
     public void ResumeGame()
@@ -49,15 +78,23 @@ public class ButtonFunctions : MonoBehaviour
 
     public void SetMasterVolume(float volume)
     {
-        //audioMixer.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("MasterVolume", volume);
     }
     public void SetMusicVolume(float volume)
     {
-        //audioMixer.SetFloat("MusicVolume", volume);
+        audioMixer.SetFloat("MusicVolume", volume);
     }
     public void SetSfxVolume(float volume)
     {
-        //audioMixer.SetFloat("SFXVolume", volume);
+        audioMixer.SetFloat("SFXVolume", volume);
+    }
+    public void SetMouseSensitivity(float value)
+    {
+        mouseSensitivityValue = value;
+    }
+    public void SetControllerSensitivity(float value)
+    {
+        controllerSensitivityValue = value;
     }
 
     public void CharacterSelectScreen()
@@ -68,6 +105,11 @@ public class ButtonFunctions : MonoBehaviour
     public void BackToMainMenu()
     {
         MainMenuManager.instance.DisplayCharSelect(false);
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
     
     public void PlayGame()
@@ -85,8 +127,20 @@ public class ButtonFunctions : MonoBehaviour
         PlayerPrefs.SetFloat("MasterVolume", masterVolume.value);
         PlayerPrefs.SetFloat("MusicVolume", musicVolume.value);
         PlayerPrefs.SetFloat("SFXVolume", sfxVolume.value);
+        PlayerPrefs.SetFloat("MouseSensitivity", mouseSensitivityValue);
+        PlayerPrefs.SetFloat("ControllerSensitivity", controllerSensitivityValue);
         MainMenuOptions();
 
+    }
+
+    public void SaveGameOptions()
+    {
+        PlayerPrefs.SetFloat("MasterVolume", masterVolume.value);
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolume.value);
+        PlayerPrefs.SetFloat("MouseSensitivity", mouseSensitivityValue);
+        PlayerPrefs.SetFloat("ControllerSensitivity", controllerSensitivityValue);
+        GameManager.instance.ActivatePauseMenu();
     }
 
     public void LoadOptions()
@@ -94,6 +148,8 @@ public class ButtonFunctions : MonoBehaviour
         masterVolume.value = PlayerPrefs.GetFloat("MasterVolume");
         musicVolume.value = PlayerPrefs.GetFloat("MusicVolume");
         sfxVolume.value = PlayerPrefs.GetFloat("SFXVolume");
+        mouseSensitivity.value = PlayerPrefs.GetFloat("MouseSensitivity");
+        controllerSensitivity.value = PlayerPrefs.GetFloat("ControllerSensitivity");
     }
 
     public void StartCharacterSelect()
@@ -131,4 +187,9 @@ public class ButtonFunctions : MonoBehaviour
         MainMenuManager.instance.DisplayCredits();
     }
     
+    public void ReplayGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.instance.UnpauseGame();
+    }
 }

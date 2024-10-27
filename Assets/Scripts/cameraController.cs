@@ -48,7 +48,7 @@ public class CustomCameraController : MonoBehaviour
     {
         HandleCameraRotation();
         HandleCameraMovement();
-        //HandleCameraCollision();
+        HandleCameraCollision();
     }
 
     // Allow full camera rotation with the mouse or joystick

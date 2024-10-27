@@ -973,9 +973,10 @@ GameObject:
   - component: {fileID: 1182119956132340504}
   - component: {fileID: 7656439774534450915}
   - component: {fileID: 9208681259454078102}
+  - component: {fileID: 2847306923357447958}
   m_Layer: 7
   m_Name: AI
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1132,7 +1133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ace237cbad0c40ab9499e1b7fa1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactCanvas: {fileID: 2013727663452987062}
+  interactCanvas: []
 --- !u!114 &7656439774534450915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1147,7 +1148,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 6b3f6cd3e0fc09e4090cc2eeda323ef5, type: 2}
   mask: {fileID: 0}
-  npc: {fileID: 0}
   interactUI: {fileID: 1182119956132340504}
   col: {fileID: 7249031089446548089}
   anim: {fileID: 5076482428882091273}
@@ -1159,7 +1159,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3276857637663900796}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 537d1a5e6b2caae4d8a102c01c91d489, type: 3}
   m_Name: 
@@ -1169,6 +1169,103 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   distanceToGround: 0.05
+--- !u!82 &2847306923357447958
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276857637663900796}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3404009389555488711
 GameObject:
   m_ObjectHideFlags: 0
@@ -3206,10 +3303,35 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1980284906162230257, guid: 200f650431621e645821b48c22823b79,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3983822601758548981, guid: 200f650431621e645821b48c22823b79,
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530222949056920972, guid: 200f650431621e645821b48c22823b79,
+        type: 3}
+      propertyPath: color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530222949056920972, guid: 200f650431621e645821b48c22823b79,
+        type: 3}
+      propertyPath: color.b
+      value: 0.9779874
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530222949056920972, guid: 200f650431621e645821b48c22823b79,
+        type: 3}
+      propertyPath: color.g
+      value: 0.9779874
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530222949056920972, guid: 200f650431621e645821b48c22823b79,
+        type: 3}
+      propertyPath: color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8546003795476385186, guid: 200f650431621e645821b48c22823b79,
         type: 3}
@@ -3294,7 +3416,7 @@ PrefabInstance:
     - target: {fileID: 8546003795476385186, guid: 200f650431621e645821b48c22823b79,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 2.15
       objectReference: {fileID: 0}
     - target: {fileID: 8546003795476385186, guid: 200f650431621e645821b48c22823b79,
         type: 3}
@@ -3316,12 +3438,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 200f650431621e645821b48c22823b79, type: 3}
---- !u!1 &2013727663452987062 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 59617848327392139, guid: 200f650431621e645821b48c22823b79,
-    type: 3}
-  m_PrefabInstance: {fileID: 1955121588943574333}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7906207227557402783 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8546003795476385186, guid: 200f650431621e645821b48c22823b79,
@@ -3473,7 +3589,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ace237cbad0c40ab9499e1b7fa1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactCanvas: {fileID: 0}
+  interactCanvas:
+  - {fileID: 0}
 --- !u!114 &8159290995598395097
 MonoBehaviour:
   m_ObjectHideFlags: 0

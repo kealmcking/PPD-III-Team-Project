@@ -61,6 +61,7 @@ public class Director : MonoBehaviour
         foreach(var suspect in suspects)
         {
             suspect.Npc = Randomizer.GetRandomizedObjectFromListAndRemove(ref dialogues);
+            suspect.Npc.characterSprite_base = suspect.Icon;
         }
 
 

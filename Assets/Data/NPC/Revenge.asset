@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa1ca0270ad91e40a392027fef8cd2a, type: 3}
   m_Name: Revenge
   m_EditorClassIdentifier: 
-  trees: []
-  motive: {fileID: 0}
-  characterSprite_base: {fileID: 0}
+  trees:
+  - {fileID: 11400000, guid: 5b490318934ede142a35ad3509e3ba62, type: 2}
+  - {fileID: 11400000, guid: 44a4eeed89ec4cd4a9b43d783d993cd9, type: 2}
+  - {fileID: 11400000, guid: 42e0b9b4ee13f7a46be7d1a05c9cbeb4, type: 2}
+  - {fileID: 11400000, guid: 45852c3d1a019af40835f749320ccf03, type: 2}
+  - {fileID: 11400000, guid: c4f6f0a082edb2640b8b397d571468fe, type: 2}
+  - {fileID: 11400000, guid: 6b46a5aa8f670bc449dfb535749dc2c4, type: 2}
+  motive: {fileID: 11400000, guid: d255c7935b4169144922661d976dd905, type: 2}
+  characterSprite_base: {fileID: 21300000, guid: a440583c67cd93f49945b86033aaa361,
+    type: 3}
   characterSprite_happy: {fileID: 0}
   characterSprite_upset: {fileID: 0}
   characterSprite_mad: {fileID: 0}

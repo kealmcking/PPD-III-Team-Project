@@ -186,7 +186,7 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: ea62f6e2-188a-485c-a97b-99ffa4d4b01e
-      m_Path: <Keyboard>/leftCtrl
+      m_Path: <Keyboard>/c
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -212,7 +212,7 @@ MonoBehaviour:
     - m_Name: 
       m_Id: f392ca30-e1ca-4f1b-a944-ea7ce1ae28e3
       m_Path: <Keyboard>/shift
-      m_Interactions: Hold
+      m_Interactions: Hold(duration=0.2)
       m_Processors: 
       m_Groups: 
       m_Action: Sprint
@@ -220,7 +220,7 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 5f561b98-93ac-4181-9459-9f5073d14a00
       m_Path: <Gamepad>/buttonEast
-      m_Interactions: Hold
+      m_Interactions: Hold(duration=0.2)
       m_Processors: 
       m_Groups: 
       m_Action: Sprint
@@ -285,16 +285,8 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: c2887c35-a2f1-4838-b0a2-7dd1c24a629c
+      m_Id: 79f8c460-a7ea-47d1-b395-9f8c4037411b
       m_Path: <Mouse>/leftButton
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Use
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 1c82a0e4-73c1-4d38-bb5d-8ec79baa9d1e
-      m_Path: <Gamepad>/rightTrigger
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -310,7 +302,7 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: e242828a-6c77-4148-a441-90af21f2a0c0
+      m_Id: c08e7256-f3c0-44b2-bb35-a28b9e3f5358
       m_Path: <Keyboard>/q
       m_Interactions: 
       m_Processors: 
@@ -327,28 +319,37 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: a0464286-3e7f-4d73-b7e1-29657ffdeb88
+      m_Id: fb890e81-dbd3-4b4a-a5ca-c6100aaed884
       m_Path: <Mouse>/rightButton
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Throw
       m_Flags: 0
+    m_Flags: 0
+  skipCutSceneAction:
+    m_Name: Skip Cut Scene
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 6bce41e2-ecf7-4043-abeb-55c05ffcbc5b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 230a8063-8b9d-448f-a626-18b117ed536e
-      m_Path: <Gamepad>/rightShoulder
+      m_Id: 0829a3fb-7aa5-426c-9fc9-3344c77d1f9e
+      m_Path: <Keyboard>/x
       m_Interactions: 
       m_Processors: 
       m_Groups: 
-      m_Action: Throw
+      m_Action: Skip Cut Scene
       m_Flags: 0
     - m_Name: 
-      m_Id: bdbe0b2e-3f2f-477c-b08e-437645300737
-      m_Path: <Keyboard>/z
+      m_Id: e110da33-4b36-4287-a148-0587f7343150
+      m_Path: <Gamepad>/select
       m_Interactions: 
       m_Processors: 
       m_Groups: 
-      m_Action: Throw
+      m_Action: Skip Cut Scene
       m_Flags: 0
     m_Flags: 0
   moveAmount: {x: 0, y: 0}

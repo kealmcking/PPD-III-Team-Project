@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa1ca0270ad91e40a392027fef8cd2a, type: 3}
   m_Name: Fear
   m_EditorClassIdentifier: 
-  trees: []
-  motive: {fileID: 0}
-  characterSprite_base: {fileID: 0}
+  trees:
+  - {fileID: 11400000, guid: 54bf76ee99dccab4da034b45d2c37ef1, type: 2}
+  - {fileID: 11400000, guid: 84f7a8ea778bf1c4fab0da718a3e0bc2, type: 2}
+  - {fileID: 11400000, guid: d7b1a5ef7aad0b14792e1a6334967e5f, type: 2}
+  - {fileID: 11400000, guid: 4240eeb4d7e218e4a9d8844250ec824d, type: 2}
+  - {fileID: 11400000, guid: 71e3d4119c11ffd49abe2582ccda650a, type: 2}
+  - {fileID: 11400000, guid: 512611ba792957841a5e7d3fa1058e45, type: 2}
+  motive: {fileID: 11400000, guid: 483a9b68953ad6648ae2632fc6e50297, type: 2}
+  characterSprite_base: {fileID: 21300000, guid: a440583c67cd93f49945b86033aaa361,
+    type: 3}
   characterSprite_happy: {fileID: 0}
   characterSprite_upset: {fileID: 0}
   characterSprite_mad: {fileID: 0}

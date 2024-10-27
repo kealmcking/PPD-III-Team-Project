@@ -24,6 +24,7 @@ namespace Input
         public InputAction useAction;
         public InputAction dropAction;
         public InputAction throwAction;
+        public InputAction skipCutSceneAction;
         [Header("VISIBLE FOR DEBUG PURPOSES")]
         [SerializeField] private Vector2 moveAmount;
         [SerializeField] private Vector2 aimAmount;
@@ -67,6 +68,7 @@ namespace Input
             useAction.performed += ctx => { OnUse(ctx); };
             dropAction.performed += ctx => { OnDrop(ctx); };
             throwAction.performed += ctx => { OnThrow(ctx); };
+            skipCutSceneAction.performed += ctx => { OnSkipCutScene(ctx); };
         }
 
       
@@ -109,6 +111,13 @@ namespace Input
         
         #region Input System Callbacks
         
+        //Controls skipping cutscene for main menu
+        public void OnSkipCutScene(InputAction.CallbackContext context)
+        {
+            PlayerableDirectorManager.instance.SkipCutScene();
+            skipCutSceneAction.Disable();
+        }
+
         // Controls interaction input
         public void OnInteract(InputAction.CallbackContext context)
         {
@@ -217,8 +226,15 @@ namespace Input
         public void OnInventory(InputAction.CallbackContext context)
         {
             if (GameManager.instance.IsPauseActive || DialogueManager.instance.IsActive) return;
-            if (GameManager.instance.InventoryActive) GameManager.instance.DeactivateInventoryUI();
-            else GameManager.instance.ActivateInventoryUI();
+            if (GameManager.instance.InventoryActive)
+            {
+                GameManager.instance.DeactivateInventoryUI();
+                TooltipManager.instance.hide();
+            }
+            else
+            {
+                GameManager.instance.ActivateInventoryUI();
+            }
             Debug.Log("Inventory Button Pressed");
         }
 
@@ -252,6 +268,7 @@ namespace Input
         // Disables all inputs the player can use in general gameplay
         public void DisableCharacterInputs()
         {
+            interactAction.Disable();
             moveAction.Disable();
             aimAction.Disable();
             crouchAction.Disable();
@@ -260,6 +277,8 @@ namespace Input
             {
                 inventoryAction.Disable();
             }
+
+            aimAmount = Vector2.zero;
             
             cancelAction.Enable();
             useAction.Disable();
@@ -272,8 +291,9 @@ namespace Input
         // Enables all inputs the player can use in general gameplay
         public void EnableCharacterInputs()
         {
-           
+            interactAction.Enable();
             cancelAction.Disable();
+            skipCutSceneAction.Disable();
             moveAction.Enable();
             aimAction.Enable();
             crouchAction.Enable();
@@ -304,6 +324,7 @@ namespace Input
             useAction.Enable();
             dropAction.Enable();
             throwAction.Enable();
+            skipCutSceneAction.Enable();
             EnableInteractUI.ImInInteractionZone += SetInteractable;
         }
 
@@ -320,6 +341,7 @@ namespace Input
             useAction.Disable();
             dropAction.Disable();
             throwAction.Disable();
+            skipCutSceneAction.Disable();
             EnableInteractUI.ImInInteractionZone -= SetInteractable;
         }
         
