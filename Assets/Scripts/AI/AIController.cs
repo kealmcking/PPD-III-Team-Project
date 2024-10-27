@@ -19,6 +19,7 @@ public class AIController : MonoBehaviour
     bool isEnemyChasing = false;
     bool isScared = false;
     bool isRandSFX = false;
+    bool isSFXPaused = false;
     [SerializeField] float attackDist = .5f;
     [SerializeField] float normSpeed = 1f;
     [SerializeField] float chaseSpeed = 2f;
@@ -77,9 +78,16 @@ public class AIController : MonoBehaviour
         if (!playerInRange && !isRoaming && agent.remainingDistance < 0.05f && someCo == null && !isEnemyChasing)
             someCo = StartCoroutine(roam());
 
-        if (!isRandSFX)
+        if (!isRandSFX) { StartCoroutine(RandomSound()); }
+
+        if(audioSource.isPlaying && GameManager.instance.IsPauseActive)
         {
-            StartCoroutine(RandomSound());
+            audioSource.Pause();
+            isSFXPaused = true;
+        } else if (isSFXPaused && !GameManager.instance.IsPauseActive)
+        {
+            audioSource.UnPause();
+            isSFXPaused = false;
         }
     }
 
