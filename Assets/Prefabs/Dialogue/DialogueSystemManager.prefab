@@ -436,11 +436,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pcButton_spr: {fileID: 0}
-  xboxButton_spr: {fileID: 21300000, guid: 1e90dc71c20781a4e91d2c482ff7bac3, type: 3}
-  psButton_spr: {fileID: 21300000, guid: 31161aefaf735994e857400816067edd, type: 3}
-  switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
+  xboxButton_spr: {fileID: 21300000, guid: 288e8fc8079202a468d466465424b4f5, type: 3}
+  psButton_spr: {fileID: 21300000, guid: 79d9a2f3f29ddfe4ea3f6610f8e8cacc, type: 3}
+  switchButton_spr: {fileID: 21300000, guid: 38641ddda50cdfa44882d3ff589474cd, type: 3}
   uiElement: {fileID: 1048446768460951740}
-  text: {fileID: 0}
+  text: {fileID: 8056959891224327134}
+  color: {r: 0, g: 0, b: 0, a: 1}
+  isDialogueUI: 1
 --- !u!1 &3457650054557102199
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,6 +1300,8 @@ MonoBehaviour:
   switchButton_spr: {fileID: 21300000, guid: 8433b11e0bc23084591c581da3cdb8f9, type: 3}
   uiElement: {fileID: 52403205281829691}
   text: {fileID: 0}
+  color: {r: 1, g: 0, b: 0, a: 1}
+  isDialogueUI: 1
 --- !u!1 &6905788380974473041
 GameObject:
   m_ObjectHideFlags: 0
