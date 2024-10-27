@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DialogueSystem;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnableInteractUI : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class EnableInteractUI : MonoBehaviour
 
     public static Action<bool, EnableInteractUI> ImInInteractionZone;
 
-    private bool isInMenu;
+    internal bool isInMenu;
     
 
     private void OnEnable()
@@ -92,7 +93,7 @@ public class EnableInteractUI : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !isInMenu && GetComponent<Suspect>() && interactCanvas != null)
+        if (other.CompareTag("Player") && !isInMenu && (GetComponent<Suspect>() || GetComponent<EnvironmentInteractable>()) && interactCanvas != null)
         {
             foreach (GameObject canvas in interactCanvas)
             {
@@ -124,6 +125,12 @@ public class EnableInteractUI : MonoBehaviour
             if (canvas.activeSelf)
             {
                 canvas.SetActive(false);
+                MenuActive(false);
+            }
+            else
+            {
+                canvas.SetActive(true);
+                MenuActive(true);
             }
         }
 
