@@ -259,6 +259,7 @@ namespace Input
         // Disables all inputs the player can use in general gameplay
         public void DisableCharacterInputs()
         {
+            interactAction.Disable();
             moveAction.Disable();
             aimAction.Disable();
             crouchAction.Disable();
@@ -279,7 +280,7 @@ namespace Input
         // Enables all inputs the player can use in general gameplay
         public void EnableCharacterInputs()
         {
-           
+            interactAction.Enable();
             cancelAction.Disable();
             moveAction.Enable();
             aimAction.Enable();
