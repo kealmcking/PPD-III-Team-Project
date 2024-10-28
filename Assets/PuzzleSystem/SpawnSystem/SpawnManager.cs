@@ -41,6 +41,7 @@ public class SpawnManager : MonoBehaviour
                 SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
             Ghost instance = Instantiate(ghost.Prefab, spawn.transform.position, spawn.transform.rotation);
             instance.SuspectData = suspectInstance.Data;
+            instance.SuspectData.Icon = instance.SuspectData.Icon;
             Destroy(suspectInstance.gameObject);
         }
         else if(spawnPoint != null)

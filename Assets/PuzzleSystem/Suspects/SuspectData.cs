@@ -12,7 +12,7 @@ public class SuspectData : ScriptableObject, ICustomizableComponent
     public Guid ID => id;
     public string Name => suspectName;
     public Suspect SuspectPrefab => suspectPrefab;
-    public Sprite Icon => icon;
+    public Sprite Icon { get { return icon; } set { icon = value; } }
     public NPC Npc { get { return npc; } set { npc = value; } }
     public Description Description => description;  
 }
