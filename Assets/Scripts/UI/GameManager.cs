@@ -460,7 +460,7 @@ public class GameManager : MonoBehaviour
         isTimeToSleep = false;
         _coroutine = null;
         timerOn = true;
-        UpdateTimer(15);
+        UpdateTimer(600);
         UpdateObjectiveText("Solve The Case");
     }
 
