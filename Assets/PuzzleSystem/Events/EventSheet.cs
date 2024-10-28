@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 using NUnit.Framework.Internal;
-using Unity.VisualScripting;
+
 
 public static class EventSheet 
 {
@@ -17,7 +17,7 @@ public static class EventSheet
     public static Action<int> SendDay;
     public static Action NewDay;
     public static Action<Suspect> SuspectDied;
-    public static Action<GhostData, SpawnPointType, bool,SpawnPoint> SpawnGhost;
+    public static Action<Suspect,GhostData, SpawnPointType, bool,SpawnPoint> SpawnGhost;
     public static Action<Ghost> SendGhost;
     public static Action<int> TodaysDayIndexIsThis;
     public static Action<Suspect, SpawnPointType, bool> SpawnKiller;

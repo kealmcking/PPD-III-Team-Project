@@ -31,7 +31,7 @@ public class SpawnManager : MonoBehaviour
         EventSheet.SpawnExcessClues -= SpawnClues;
         EventSheet.RelocateSuspects -= RelocateRemainingSuspects;
     }
-    private void SpawnGhost(GhostData ghost, SpawnPointType type, bool randomize = false, SpawnPoint spawnPoint = null) 
+    private void SpawnGhost(Suspect suspectInstance, GhostData ghost, SpawnPointType type, bool randomize = false, SpawnPoint spawnPoint = null) 
     {
         if (randomize)
         {
@@ -40,9 +40,8 @@ public class SpawnManager : MonoBehaviour
                 .ToList();
                 SpawnPoint spawn = Randomizer.GetRandomizedObjectFromList(filteredSpawns);
             Ghost instance = Instantiate(ghost.Prefab, spawn.transform.position, spawn.transform.rotation);
-  
-           // EventSheet.SendGhost?.Invoke(instance);
-
+            instance.SuspectData = suspectInstance.Data;
+            Destroy(suspectInstance.gameObject);
         }
         else if(spawnPoint != null)
         {

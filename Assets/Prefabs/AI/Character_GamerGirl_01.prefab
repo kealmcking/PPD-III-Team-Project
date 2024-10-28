@@ -3975,7 +3975,7 @@ MonoBehaviour:
   roomCenter: {x: 0, y: 0, z: 0}
   roomSize: {x: 10, y: 0, z: 10}
   suspect: {fileID: 3214553237748768367}
-  item: {fileID: 0}
+  item: {fileID: 1127545853911965699}
 --- !u!135 &4915429006296393656
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4712,6 +4712,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b25af807c5134844bf238cabc78c67d, type: 3}
+--- !u!114 &1127545853911965699 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7851275897846709209, guid: 6b25af807c5134844bf238cabc78c67d,
+    type: 3}
+  m_PrefabInstance: {fileID: 7156375037251820506}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f654ae99525e94ab46e0deae8ae93f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7160702305068977272 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4329741853857698, guid: 6b25af807c5134844bf238cabc78c67d,
