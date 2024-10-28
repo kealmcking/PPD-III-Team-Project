@@ -17,7 +17,7 @@ namespace DialogueSystem
         public static DialogueManager instance;
         private Suspect currentSuspect;
         private int currentDay;
-        AudioSource audioSource;
+        [SerializeField] private AudioSource audioSource;
 
         [Header("Dialogue/Dialogue Trees")] 
         [SerializeField] private NPC currentNPC;
@@ -55,14 +55,14 @@ namespace DialogueSystem
                 Destroy(gameObject);
             }
 
-            audioSource = GetComponent<AudioSource>();
+            //audioSource = GetComponent<AudioSource>();
             if (audioSource == null)
             {
                 Debug.Log("Dialogue audio Error");
             }
             else
             {
-                //audioSource.clip = audioManager.instance.dialogueMutter[UnityEngine.Random.Range(0,audioManager.instance.dialogueMutter.Length)];
+                audioSource.clip = audioManager.instance.dialogueMutter[UnityEngine.Random.Range(0,audioManager.instance.dialogueMutter.Length)];
                 audioSource.volume = audioManager.instance.dialogueVol;
                 audioSource.outputAudioMixerGroup = audioManager.instance.GetSFXAudioMixer();
                 audioSource.loop = true;
@@ -76,7 +76,14 @@ namespace DialogueSystem
             currentDialogueIndex = 0;
             speakerText.text = "";
             toggleSpeakerUI(false);
-            speakerImage.sprite = currentNPC.characterSprite_base;
+            if (currentSuspect is Ghost ghost)
+            {
+                speakerImage.sprite = ghost.GhostData.Icon;
+            }
+            else
+            {
+                speakerImage.sprite = currentNPC.characterSprite_base;
+            }
         }
 
         public bool GetIsActive()
@@ -224,16 +231,35 @@ namespace DialogueSystem
             {
                 TutorialUIManager.Instance.DisplayDialogueTutorial();
             }
-            currentSuspect = suspect;
-            currentNPC = currentSuspect.Data.Npc;
-            currentTree = currentNPC.trees[currentDay];
-            speakerImage.sprite = currentNPC.characterSprite_base;
-            dialogueContainer.SetActive(true);
-            DialogueMenuActive.Invoke(true);
-            InputManager.instance.DisableCharacterInputs();           
-            resetDialogueData(); // Reset at the beginning
-            buttonInitialization();
-            isActive = true;
+
+            if (suspect is Ghost ghost)
+            {
+                currentSuspect = suspect;
+                currentNPC = ghost.SuspectData.Npc;
+                currentTree = currentNPC.trees[currentDay];
+                speakerImage.sprite = ghost.GhostData.Icon;
+                dialogueContainer.SetActive(true);
+                DialogueMenuActive.Invoke(true);
+                InputManager.instance.DisableCharacterInputs();           
+                resetDialogueData(); // Reset at the beginning
+                buttonInitialization();
+                isActive = true;
+            }
+            else
+            {
+                currentSuspect = suspect;
+                currentNPC = currentSuspect.Data.Npc;
+                currentTree = currentNPC.trees[currentDay];
+                speakerImage.sprite = currentNPC.characterSprite_base;
+                dialogueContainer.SetActive(true);
+                DialogueMenuActive.Invoke(true);
+                InputManager.instance.DisableCharacterInputs();           
+                resetDialogueData(); // Reset at the beginning
+                buttonInitialization();
+                isActive = true;
+            }
+            
+
         }
 
         // For disabling the overall dialogue UI
