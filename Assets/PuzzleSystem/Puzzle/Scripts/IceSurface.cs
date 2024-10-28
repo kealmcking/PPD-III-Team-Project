@@ -13,7 +13,7 @@ public class IceSurface : MonoBehaviour
                 if (controller != null)
                 {
                     controller.slipperyFactor = slipperyFactor;
-                controller.isSlipping = true;
+                    controller.isSlipping = true;
                 }
             }
         }

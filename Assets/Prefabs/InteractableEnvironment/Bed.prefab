@@ -22,7 +22,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &5232915875709372173
 Transform:
@@ -71,6 +71,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 6ef71fb53ed68fd4180e64d11bb0de5b, type: 2}
+  - {fileID: 2100000, guid: dd3f2527807166449abd1194bd455c2a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -191,7 +192,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.2222244
+  m_Radius: 1.54
   m_Center: {x: 0, y: 0.56656146, z: 0}
 --- !u!114 &1880699709858457955
 MonoBehaviour:
@@ -205,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360ace237cbad0c40ab9499e1b7fa1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactCanvas: []
+  interactCanvas: {fileID: 0}
 --- !u!1001 &7330604176528013200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -217,7 +218,7 @@ PrefabInstance:
     - target: {fileID: 49445425006993445, guid: 200f650431621e645821b48c22823b79,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 59617848327392139, guid: 200f650431621e645821b48c22823b79,
         type: 3}
@@ -227,12 +228,12 @@ PrefabInstance:
     - target: {fileID: 59617848327392139, guid: 200f650431621e645821b48c22823b79,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3983822601758548981, guid: 200f650431621e645821b48c22823b79,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8546003795476385186, guid: 200f650431621e645821b48c22823b79,
         type: 3}
