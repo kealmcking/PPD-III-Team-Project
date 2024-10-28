@@ -7,7 +7,10 @@ public class ActivateConditionConfig : ConditionConfig
     public override void ConditionStatus(Condition conditionObject)
     {
         if (conditionObject != null && conditionObject.isInteractedWith)
-        ConfigConditionMet?.Invoke();
+        {
+            conditionObject.IsInteractable = false;
+            ConfigConditionMet?.Invoke();
+        }
     }
 
     public override void EnterSetup(Condition conditionObject)
@@ -15,6 +18,4 @@ public class ActivateConditionConfig : ConditionConfig
         conditionObject.IsInteractable = true;
     }
 
-    // Start is called before the first frame update
-    
 }

@@ -120,6 +120,7 @@ public class Condition : MonoBehaviour, IInteractable, ICustomizableComponent
             }
 
             isConditionMet = true;
+            interactUI.ToggleCanvasOff(true);
             ConditionStatus?.Invoke();
         }     
     }
