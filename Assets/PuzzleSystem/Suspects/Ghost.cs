@@ -13,8 +13,7 @@ public class Ghost : Suspect,  ICustomizableComponent
     public GhostData GhostData => ghostData;
     public SuspectData SuspectData { get { return suspectData; } set { suspectData = value; } }
 
-    [SerializeField] EnableInteractUI interactUI;
-    [SerializeField] Collider col;
+
   
     bool ghostMoaning = false;
 

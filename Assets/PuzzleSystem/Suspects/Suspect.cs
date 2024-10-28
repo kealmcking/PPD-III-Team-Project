@@ -13,8 +13,8 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
     [SerializeField] SuspectData data;
     [SerializeField] GameObject mask;
     public bool IsInteractable { get; set; } = true;
-    [SerializeField] EnableInteractUI interactUI;
-    [SerializeField] Collider col;
+    [SerializeField] protected EnableInteractUI interactUI;
+    [SerializeField] protected Collider col;
     [SerializeField] Animator anim;
     //add weapon as well to activate when revealing the killer
     Guid id = new Guid();
