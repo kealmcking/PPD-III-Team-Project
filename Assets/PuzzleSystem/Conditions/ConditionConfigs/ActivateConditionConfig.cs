@@ -12,7 +12,7 @@ public class ActivateConditionConfig : ConditionConfig
 
     public override void EnterSetup(Condition conditionObject)
     {
-        
+        conditionObject.IsInteractable = true;
     }
 
     // Start is called before the first frame update

@@ -68,6 +68,7 @@ public class IcePuzzleManager : MonoBehaviour
     }
     public void WinGame()
     {
+        source.loop = false;
         PuzzleComplete = true;  
     }
 }
