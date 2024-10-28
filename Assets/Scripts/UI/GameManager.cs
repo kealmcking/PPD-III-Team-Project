@@ -337,10 +337,7 @@ public class GameManager : MonoBehaviour
     public void ActivateSleepMenu()
     {
         menuActive = sleepUI;
-        if (!TutorialUIManager.Instance.DisplaySleeping)
-        {
-            TutorialUIManager.Instance.DisplaySleepingTutorial();
-        }
+  
         sleepUI.SetActive(true);
         //characterUI.SetActive(false);
     }

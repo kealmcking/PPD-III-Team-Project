@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using DialogueSystem;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class EnableInteractUI : MonoBehaviour
 {
@@ -36,8 +33,6 @@ public class EnableInteractUI : MonoBehaviour
                 interactCanvas = child.gameObject;
                 break;
             }
-
-
         }
     }
 

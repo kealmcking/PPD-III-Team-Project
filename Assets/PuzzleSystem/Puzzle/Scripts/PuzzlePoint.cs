@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 [RequireComponent(typeof(BoxCollider))]
 public class PuzzlePoint : MonoBehaviour
 {
@@ -22,6 +23,14 @@ public class PuzzlePoint : MonoBehaviour
             }
             else if (type == PuzzlePointType.Restart)
             {
+               
+                    playerController player = other.GetComponent<playerController>();
+                    if (player != null)
+                    {
+                    player.slipperyFactor = 1f;
+                    player.isSlipping = false;
+                    }
+                
                 CharacterController controller = other.GetComponent<CharacterController>();
                 controller.enabled = false;
                 other.gameObject.transform.position = IcePuzzleManager.Instance.RestartPoint.position;
