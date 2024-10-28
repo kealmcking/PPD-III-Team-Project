@@ -264,6 +264,13 @@ namespace Input
                 DialogueManager.instance.disableDialogueUI();
                 EnableCharacterInputs();
             }
+            
+            TutorialUIManager.Instance.CloseBlocked();
+            TutorialUIManager.Instance.CloseCraft();
+            TutorialUIManager.Instance.CloseDialogue();
+            TutorialUIManager.Instance.CloseGameplay();
+            TutorialUIManager.Instance.CloseSleeping();
+            TutorialUIManager.Instance.CloseVoting();
         }
 
         // Disables all inputs the player can use in general gameplay
