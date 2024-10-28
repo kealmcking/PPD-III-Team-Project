@@ -16,6 +16,7 @@ namespace Input
         public InputAction moveAction;
         public InputAction aimAction;
         public InputAction interactAction;
+        public InputAction uiInteractAction;
         public InputAction pauseAction;
         public InputAction crouchAction;
         public InputAction sprintAction;
@@ -55,6 +56,7 @@ namespace Input
             
             // Assign callbacks for actions
             interactAction.performed += ctx => { OnInteract(ctx); };
+            uiInteractAction.performed += ctx => { OnUIInteract(ctx); };
             
             pauseAction.performed += ctx => { OnPause(ctx); };
             
@@ -123,7 +125,14 @@ namespace Input
         public void OnInteract(InputAction.CallbackContext context)
         {
             if (!isInInteractableArea) return;
+            
+            EventSheet.IHavePressedInteractButton.Invoke();
+          
+            
+        }
 
+        public void OnUIInteract(InputAction.CallbackContext ctx)
+        {
             if (DialogueManager.instance.GetIsActive())
             {
                 if (DialogueManager.instance.GetIsInDialogue())
@@ -144,13 +153,8 @@ namespace Input
                     selectedObject.GetComponent<DialogueButton>().PressButton();
                 }
             }
-            else 
-            {
-                EventSheet.IHavePressedInteractButton.Invoke();
-            }
-          
-            
         }
+        
         private void OnUse(InputAction.CallbackContext ctx)
         {
             EventSheet.UseHeldItem?.Invoke();
@@ -264,12 +268,20 @@ namespace Input
                 DialogueManager.instance.disableDialogueUI();
                 EnableCharacterInputs();
             }
+
+            TutorialUIManager.Instance.CloseBlocked();
+            TutorialUIManager.Instance.CloseVoting();
+            TutorialUIManager.Instance.CloseCraft();
+            TutorialUIManager.Instance.CloseDialogue();
+            TutorialUIManager.Instance.CloseGameplay();
+            TutorialUIManager.Instance.CloseSleeping();
         }
 
         // Disables all inputs the player can use in general gameplay
         public void DisableCharacterInputs()
         {
-            //interactAction.Disable();
+            interactAction.Disable();
+            uiInteractAction.Enable();
             moveAction.Disable();
             aimAction.Disable();
             crouchAction.Disable();
@@ -294,6 +306,7 @@ namespace Input
         public void EnableCharacterInputs()
         {
             interactAction.Enable();
+            uiInteractAction.Disable();
             cancelAction.Disable();
             skipCutSceneAction.Disable();
             flashlightAction.Enable();

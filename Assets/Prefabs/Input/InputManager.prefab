@@ -151,6 +151,31 @@ MonoBehaviour:
       m_Action: Interact
       m_Flags: 0
     m_Flags: 0
+  uiInteractAction:
+    m_Name: Ui Interact
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 41386e17-1dea-45cc-9d2d-51e462d0ac3e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 41d4e33b-cfe9-43c2-9743-5108633beb12
+      m_Path: <Keyboard>/e
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Ui Interact
+      m_Flags: 0
+    - m_Name: 
+      m_Id: a7519b1e-51e5-4b98-a272-674e658dd1ed
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Ui Interact
+      m_Flags: 0
+    m_Flags: 0
   pauseAction:
     m_Name: Pause
     m_Type: 0
