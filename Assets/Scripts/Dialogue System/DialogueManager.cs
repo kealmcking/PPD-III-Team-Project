@@ -54,20 +54,17 @@ namespace DialogueSystem
             {
                 Destroy(gameObject);
             }
+            
 
-            //audioSource = GetComponent<AudioSource>();
-            if (audioSource == null)
-            {
-                Debug.Log("Dialogue audio Error");
-            }
-            else
-            {
-                audioSource.clip = audioManager.instance.dialogueMutter[UnityEngine.Random.Range(0,audioManager.instance.dialogueMutter.Length)];
-                audioSource.volume = audioManager.instance.dialogueVol;
-                audioSource.outputAudioMixerGroup = audioManager.instance.GetSFXAudioMixer();
-                audioSource.loop = true;
-                audioSource.playOnAwake = false;
-            }
+        }
+
+        private void Start()
+        {
+            audioSource.clip = audioManager.instance.dialogueMutter[UnityEngine.Random.Range(0,audioManager.instance.dialogueMutter.Length)];
+            audioSource.volume = audioManager.instance.dialogueVol;
+            audioSource.outputAudioMixerGroup = audioManager.instance.GetSFXAudioMixer();
+            audioSource.loop = true;
+            audioSource.playOnAwake = false;
         }
 
         // Resets some components of the dialogue data upon new dialogue selection
