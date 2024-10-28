@@ -20,6 +20,7 @@ namespace Input
         public InputAction crouchAction;
         public InputAction sprintAction;
         public InputAction inventoryAction;
+        public InputAction flashlightAction;
         public InputAction cancelAction;
         public InputAction useAction;
         public InputAction dropAction;
@@ -268,7 +269,7 @@ namespace Input
         // Disables all inputs the player can use in general gameplay
         public void DisableCharacterInputs()
         {
-            interactAction.Disable();
+            //interactAction.Disable();
             moveAction.Disable();
             aimAction.Disable();
             crouchAction.Disable();
@@ -277,6 +278,7 @@ namespace Input
             {
                 inventoryAction.Disable();
             }
+            flashlightAction.Disable();
 
             aimAmount = Vector2.zero;
             
@@ -294,6 +296,7 @@ namespace Input
             interactAction.Enable();
             cancelAction.Disable();
             skipCutSceneAction.Disable();
+            flashlightAction.Enable();
             moveAction.Enable();
             aimAction.Enable();
             crouchAction.Enable();
@@ -314,6 +317,7 @@ namespace Input
         
         public void OnEnable()
         {
+            flashlightAction.Enable();
             interactAction.Enable();
             moveAction.Enable();
             aimAction.Enable();
@@ -330,6 +334,7 @@ namespace Input
 
         public void OnDisable()
         {
+            flashlightAction.Disable();
             interactAction.Disable();
             moveAction.Disable();
             aimAction.Disable();
