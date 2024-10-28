@@ -251,6 +251,31 @@ MonoBehaviour:
       m_Action: Inventory
       m_Flags: 0
     m_Flags: 0
+  flashlightAction:
+    m_Name: Flashlight
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 1d1c84ec-fc16-4614-9300-195f565159cc
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: c498ab56-977f-44a9-bb43-54dc82520b63
+      m_Path: <Keyboard>/f
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Flashlight
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 005d8def-cd18-4bb5-a129-701b98ac0a36
+      m_Path: <Gamepad>/rightStickPress
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Flashlight
+      m_Flags: 0
+    m_Flags: 0
   cancelAction:
     m_Name: Cancel
     m_Type: 0
