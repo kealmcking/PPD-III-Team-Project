@@ -1,10 +1,11 @@
+using DialogueSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 
-public class Ghost : MonoBehaviour, IInteractable, ICustomizableComponent
+public class Ghost : Suspect,  ICustomizableComponent
 {
     AudioSource audioSource;
     SuspectData suspectData;
@@ -14,11 +15,12 @@ public class Ghost : MonoBehaviour, IInteractable, ICustomizableComponent
 
     [SerializeField] EnableInteractUI interactUI;
     [SerializeField] Collider col;
-    public bool IsInteractable { get; set; } = true;
+  
     bool ghostMoaning = false;
 
     public virtual void Awake()
     {
+     
         col ??= GetComponent<SphereCollider>();
         col.isTrigger = true;
         interactUI ??= GetComponent<EnableInteractUI>();
@@ -54,15 +56,13 @@ public class Ghost : MonoBehaviour, IInteractable, ICustomizableComponent
         ghostMoaning = false;
     }
 
-    public GameObject GetObject()
-    {
-        return gameObject;
-    }
 
-    public virtual void Interact()
+
+    public override void Interact()
     {
 
         interactUI.ToggleCanvasOff();
+        DialogueManager.instance.enableDialogueUI(this);
     }
 
  

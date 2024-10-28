@@ -26,7 +26,7 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
 
    
     public GameObject Mask => mask;
-    public void Awake()
+    private void Awake()
     {
         col ??= GetComponent<SphereCollider>();
         col.isTrigger = true;
@@ -45,7 +45,7 @@ public class Suspect : MonoBehaviour, IInteractable, ICustomizableComponent
             mask.SetActive(true);
         }
     }
-    public void Interact()
+    public virtual void Interact()
     {
         interactUI.ToggleCanvasOff();
         DialogueManager.instance.enableDialogueUI(this);     
