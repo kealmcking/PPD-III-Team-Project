@@ -389,7 +389,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3361710895778622859}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 4377777421880958820}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -661,6 +662,59 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &4377777421880958820
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56008f103e07e90438640017ffd81e7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events:
+  - eventName: Step
+    triggerTime: 0.657
+    clipsMask: 4090
+    cloneFormation: 0
+    cloneSpacing: 0.74
+    useBatchSlider: 1
+    batchTriggerTime: 0.657
+    individualTriggerTimes:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  - eventName: Step
+    triggerTime: 0.132
+    clipsMask: 4090
+    cloneFormation: 0
+    cloneSpacing: 1
+    useBatchSlider: 1
+    batchTriggerTime: 0.132
+    individualTriggerTimes:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  isPreviewing: 0
+  foldout: 1
 --- !u!206 &5886844478869139196
 BlendTree:
   m_ObjectHideFlags: 1
